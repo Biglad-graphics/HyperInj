@@ -30,6 +30,10 @@ const interDisplay = localFont({
 export const metadata: Metadata = {
   title: "HyperInj",
   description: "HyperInj – AI-powered trading on Injective",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
