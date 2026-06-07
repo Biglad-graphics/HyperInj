@@ -5,7 +5,7 @@ services:
     runtime: python
     rootDir: agentic-backend
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn agentic_backend.main:app --host 0.0.0.0 --port $PORT
+    startCommand: PYTHONPATH=src uvicorn agentic_backend.main:app --host 0.0.0.0 --port $PORT
     plan: free
     healthCheckPath: /health
     envVars:
@@ -19,10 +19,9 @@ services:
   # ── Execution Engine (Express/Node) ───────────────────────────────────
   - type: web
     name: hyperinj-execution-engine
-    runtime: node
-    rootDir: execution-engine
-    buildCommand: npm install && npm run build
-    startCommand: node dist/server.js
+    runtime: docker
+    dockerfilePath: execution-engine/Dockerfile
+    dockerContext: execution-engine
     plan: free
     healthCheckPath: /health
     envVars:
@@ -53,6 +52,8 @@ services:
           property: connectionString
       - key: AI_BASE_URL
         sync: false          # set to wss://hyperinj-agentic-backend.onrender.com/ws/chat
+      - key: API_BASE_URL
+        sync: false          # set to https://hyperinj-execution-engine.onrender.com
       - key: INJECTIVE_NETWORK
         value: mainnet
 
