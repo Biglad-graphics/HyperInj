@@ -1,0 +1,3896 @@
+{
+    "2crows": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Two Crows",
+        "description": "Two Crows: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "2crows"
+    },
+    " ": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Three Black Crows",
+        "description": "Three Black Crows: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "3blackcrows"
+    },
+    "3inside": {
+        "category": "Miscellaneous",
+        "name": "Three Inside Up/Down",
+        "description": "Three Inside Up/Down: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "3inside"
+    },
+    "3linestrike": {
+        "category": "Miscellaneous",
+        "name": "Three-Line Strike",
+        "description": "Three-Line Strike: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "3linestrike"
+    },
+    "3outside": {
+        "category": "Miscellaneous",
+        "name": "Three Outside Up/Down",
+        "description": "Three Outside Up/Down: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "3outside"
+    },
+    "3starsinsouth": {
+        "category": "Momentum",
+        "name": "Three Stars In The South",
+        "description": "Three Stars In The South: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "3starsinsouth"
+    },
+    "3whitesoldiers": {
+        "category": "Miscellaneous",
+        "name": "Three Advancing White Soldiers",
+        "description": "Three Advancing White Soldiers: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "3whitesoldiers"
+    },
+    "abandonedbaby": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Abandoned Baby",
+        "description": "Abandoned Baby: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "abandonedbaby"
+    },
+    "abs": {
+        "category": "Math Transform / Operators",
+        "name": "Abs",
+        "description": "Abs: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "abs"
+    },
+    "accbands": {
+        "category": "Bands / Volatility",
+        "name": "Acceleration Bands",
+        "description": "Acceleration Bands: measures price volatility and helps spot expansion/contraction phases.",
+        "signal": "Higher values = higher volatility; band squeezes often precede breakouts",
+        "benefits": [
+            "Detects volatility regimes",
+            "Helps set stops/targets",
+            "Identifies squeeze/breakout opportunities"
+        ],
+        "inference": {
+            "high": "High volatility - wider stops/targets suggested",
+            "low": "Low volatility - potential breakout ahead",
+            "neutral": "Normal volatility"
+        },
+        "timeframe": "All timeframes; day traders may prefer intraday charts",
+        "risk_level": "Medium",
+        "use_case": "Position sizing, breakout strategies, stop placement",
+        "id": "accbands"
+    },
+    "accosc": {
+        "category": "Math Transform / Operators",
+        "name": "Accelerator Oscillator",
+        "description": "Accelerator Oscillator: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "accosc"
+    },
+    "ad": {
+        "category": "Volume",
+        "name": "Chaikin A/D Line",
+        "description": "Chaikin A/D Line: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "ad"
+    },
+    "add": {
+        "category": "Volume",
+        "name": "Add",
+        "description": "Add: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "add"
+    },
+    "adosc": {
+        "category": "Volume",
+        "name": "Chaikin A/D Oscillator",
+        "description": "Chaikin A/D Oscillator: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "adosc"
+    },
+    "advanceblock": {
+        "category": "Volume",
+        "name": "Advance Block",
+        "description": "Advance Block: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "advanceblock"
+    },
+    "adx": {
+        "category": "Momentum",
+        "name": "Average Directional Movement Index",
+        "description": "Average Directional Movement Index: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "adx"
+    },
+    "adxr": {
+        "category": "Momentum",
+        "name": "Average Directional Movement Index Rating",
+        "description": "Average Directional Movement Index Rating: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "adxr"
+    },
+    "ao": {
+        "category": "Momentum",
+        "name": "Awesome Oscillator",
+        "description": "Awesome Oscillator: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "ao"
+    },
+    "apo": {
+        "category": "Momentum",
+        "name": "Absolute Price Oscillator",
+        "description": "Absolute Price Oscillator: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "apo"
+    },
+    "aroon": {
+        "category": "Miscellaneous",
+        "name": "Aroon",
+        "description": "Aroon: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "aroon"
+    },
+    "aroonosc": {
+        "category": "Oscillators",
+        "name": "Aroon Oscillator",
+        "description": "Aroon Oscillator: oscillator to indicate momentum/mean-reversion within range.",
+        "signal": "Range-limited signals; watch for overbought/oversold levels and crossovers",
+        "benefits": [
+            "Ranges well in sideways markets",
+            "Helps spot divergences",
+            "Complements trend indicators"
+        ],
+        "inference": {
+            "overbought": "Possible reversal down - consider taking profits",
+            "oversold": "Possible reversal up - consider buying",
+            "neutral": "Hold / wait for confirmation"
+        },
+        "timeframe": "Intraday to daily",
+        "risk_level": "Medium",
+        "use_case": "Mean-reversion trades, divergence spotting, entry timing",
+        "id": "aroonosc"
+    },
+    "atan": {
+        "category": "Math Transform / Operators",
+        "name": "Atan",
+        "description": "Atan: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "atan"
+    },
+    "atr": {
+        "category": "Volatility",
+        "name": "Average True Range",
+        "description": "Average True Range: measures price volatility and helps spot expansion/contraction phases.",
+        "signal": "Higher values = higher volatility; band squeezes often precede breakouts",
+        "benefits": [
+            "Detects volatility regimes",
+            "Helps set stops/targets",
+            "Identifies squeeze/breakout opportunities"
+        ],
+        "inference": {
+            "high": "High volatility - wider stops/targets suggested",
+            "low": "Low volatility - potential breakout ahead",
+            "neutral": "Normal volatility"
+        },
+        "timeframe": "All timeframes; day traders may prefer intraday charts",
+        "risk_level": "Medium",
+        "use_case": "Position sizing, breakout strategies, stop placement",
+        "id": "atr"
+    },
+    "avgprice": {
+        "category": "Price",
+        "name": "Avgprice",
+        "description": "Avgprice: price-derived metric used for analysis or as input to other indicators.",
+        "signal": "N/A - raw price-based measure",
+        "benefits": [
+            "Direct relation to market prices",
+            "Useful input for calculations",
+            "Simple and interpretable"
+        ],
+        "inference": {
+            "n/a": "Use with other indicators for signals"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature input, reference price, visualization",
+        "id": "avgprice"
+    },
+    "bbands": {
+        "category": "Volatility",
+        "name": "Bollinger Bands",
+        "description": "Bollinger Bands: measures price volatility and helps spot expansion/contraction phases.",
+        "signal": "Higher values = higher volatility; band squeezes often precede breakouts",
+        "benefits": [
+            "Detects volatility regimes",
+            "Helps set stops/targets",
+            "Identifies squeeze/breakout opportunities"
+        ],
+        "inference": {
+            "high": "High volatility - wider stops/targets suggested",
+            "low": "Low volatility - potential breakout ahead",
+            "neutral": "Normal volatility"
+        },
+        "timeframe": "All timeframes; day traders may prefer intraday charts",
+        "risk_level": "Medium",
+        "use_case": "Position sizing, breakout strategies, stop placement",
+        "id": "bbands"
+    },
+    "bbw": {
+        "category": "Volatility",
+        "name": "Bollinger Bands Width",
+        "description": "Bollinger Bands Width: measures price volatility and helps spot expansion/contraction phases.",
+        "signal": "Higher values = higher volatility; band squeezes often precede breakouts",
+        "benefits": [
+            "Detects volatility regimes",
+            "Helps set stops/targets",
+            "Identifies squeeze/breakout opportunities"
+        ],
+        "inference": {
+            "high": "High volatility - wider stops/targets suggested",
+            "low": "Low volatility - potential breakout ahead",
+            "neutral": "Normal volatility"
+        },
+        "timeframe": "All timeframes; day traders may prefer intraday charts",
+        "risk_level": "Medium",
+        "use_case": "Position sizing, breakout strategies, stop placement",
+        "id": "bbw"
+    },
+    "belthold": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Belthold",
+        "description": "Belthold: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "belthold"
+    },
+    "beta": {
+        "category": "Statistic functions",
+        "name": "Beta",
+        "description": "Beta: statistical function for analysis and risk/portfolio metrics.",
+        "signal": "N/A - statistical output",
+        "benefits": [
+            "Quantifies relationships and variability",
+            "Useful for risk management and modeling",
+            "Supports portfolio analytics"
+        ],
+        "inference": {
+            "n/a": "Interpret in context of strategy or model"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Risk metrics, backtesting features, correlation analysis",
+        "id": "beta"
+    },
+    "bop": {
+        "category": "Miscellaneous",
+        "name": "Balance Of Power",
+        "description": "Balance Of Power: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "bop"
+    },
+    "breakaway": {
+        "category": "Miscellaneous",
+        "name": "Breakaway",
+        "description": "Breakaway: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "breakaway"
+    },
+    "candle": {
+        "category": "Miscellaneous",
+        "name": "Candle",
+        "description": "Candle: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "candle"
+    },
+    "candles": {
+        "category": "Miscellaneous",
+        "name": "Candles",
+        "description": "Candles: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "candles"
+    },
+    "cci": {
+        "category": "Miscellaneous",
+        "name": "Commodity Channel Index",
+        "description": "Commodity Channel Index: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "cci"
+    },
+    "ceil": {
+        "category": "Math Transform / Operators",
+        "name": "Ceil",
+        "description": "Ceil: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "ceil"
+    },
+    "chop": {
+        "category": "Miscellaneous",
+        "name": "Chop",
+        "description": "Chop: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "chop"
+    },
+    "closingmarubozu": {
+        "category": "Overlap Studies / Trend",
+        "name": "Closingmarubozu",
+        "description": "Closingmarubozu: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "closingmarubozu"
+    },
+    "cmf": {
+        "category": "Volume",
+        "name": "Chaikin Money Flow",
+        "description": "Chaikin Money Flow: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "cmf"
+    },
+    "cmo": {
+        "category": "Momentum",
+        "name": "Chande Momentum Oscillator",
+        "description": "Chande Momentum Oscillator: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "cmo"
+    },
+    "concealbabyswall": {
+        "category": "Miscellaneous",
+        "name": "Concealbabyswall",
+        "description": "Concealbabyswall: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "concealbabyswall"
+    },
+    "coppockcurve": {
+        "category": "Momentum",
+        "name": "Coppockcurve",
+        "description": "Coppockcurve: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "coppockcurve"
+    },
+    "correl": {
+        "category": "Statistic functions",
+        "name": "Correl",
+        "description": "Correl: statistical function for analysis and risk/portfolio metrics.",
+        "signal": "N/A - statistical output",
+        "benefits": [
+            "Quantifies relationships and variability",
+            "Useful for risk management and modeling",
+            "Supports portfolio analytics"
+        ],
+        "inference": {
+            "n/a": "Interpret in context of strategy or model"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Risk metrics, backtesting features, correlation analysis",
+        "id": "correl"
+    },
+    "cos": {
+        "category": "Math Transform / Operators",
+        "name": "Cos",
+        "description": "Cos: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "cos"
+    },
+    "counterattack": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Counterattack",
+        "description": "Counterattack: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "counterattack"
+    },
+    "darkcloudcover": {
+        "category": "Miscellaneous",
+        "name": "Darkcloudcover",
+        "description": "Darkcloudcover: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "darkcloudcover"
+    },
+    "dema": {
+        "category": "Overlap Studies / Trend",
+        "name": "Dema",
+        "description": "Dema: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "dema"
+    },
+    "div": {
+        "category": "Math Transform / Operators",
+        "name": "Div",
+        "description": "Div: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "div"
+    },
+    "dm": {
+        "category": "Miscellaneous",
+        "name": "Dm",
+        "description": "Dm: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "dm"
+    },
+    "dmi": {
+        "category": "Miscellaneous",
+        "name": "Directional Movement Index",
+        "description": "Directional Movement Index: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "dmi"
+    },
+    "doji": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Doji",
+        "description": "Doji: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "doji"
+    },
+    "dojistar": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Dojistar",
+        "description": "Dojistar: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "dojistar"
+    },
+    "donchianchannels": {
+        "category": "Overlap Studies / Trend",
+        "name": "Donchianchannels",
+        "description": "Donchianchannels: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "donchianchannels"
+    },
+    "dpo": {
+        "category": "Oscillators",
+        "name": "Dpo",
+        "description": "Dpo: oscillator to indicate momentum/mean-reversion within range.",
+        "signal": "Range-limited signals; watch for overbought/oversold levels and crossovers",
+        "benefits": [
+            "Ranges well in sideways markets",
+            "Helps spot divergences",
+            "Complements trend indicators"
+        ],
+        "inference": {
+            "overbought": "Possible reversal down - consider taking profits",
+            "oversold": "Possible reversal up - consider buying",
+            "neutral": "Hold / wait for confirmation"
+        },
+        "timeframe": "Intraday to daily",
+        "risk_level": "Medium",
+        "use_case": "Mean-reversion trades, divergence spotting, entry timing",
+        "id": "dpo"
+    },
+    "dragonflydoji": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Dragonflydoji",
+        "description": "Dragonflydoji: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "dragonflydoji"
+    },
+    "dx": {
+        "category": "Miscellaneous",
+        "name": "Dx",
+        "description": "Dx: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "dx"
+    },
+    "ema": {
+        "category": "Overlap Studies / Trend",
+        "name": "Exponential Moving Average (EMA)",
+        "description": "Exponential Moving Average (EMA): trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "ema"
+    },
+    "engulfing": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Engulfing Pattern",
+        "description": "Engulfing Pattern: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "engulfing"
+    },
+    "eom": {
+        "category": "Miscellaneous",
+        "name": "Eom",
+        "description": "Eom: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "eom"
+    },
+    "eveningdojistar": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Eveningdojistar",
+        "description": "Eveningdojistar: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "eveningdojistar"
+    },
+    "eveningstar": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Eveningstar",
+        "description": "Eveningstar: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "eveningstar"
+    },
+    "fibonacciretracement": {
+        "category": "Miscellaneous",
+        "name": "Fibonacci Retracement",
+        "description": "Fibonacci Retracement: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "fibonacciretracement"
+    },
+    "fisher": {
+        "category": "Momentum",
+        "name": "Fisher",
+        "description": "Fisher: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "fisher"
+    },
+    "floor": {
+        "category": "Math Transform / Operators",
+        "name": "Floor",
+        "description": "Floor: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "floor"
+    },
+    "fosc": {
+        "category": "Oscillators",
+        "name": "Fosc",
+        "description": "Fosc: oscillator to indicate momentum/mean-reversion within range.",
+        "signal": "Range-limited signals; watch for overbought/oversold levels and crossovers",
+        "benefits": [
+            "Ranges well in sideways markets",
+            "Helps spot divergences",
+            "Complements trend indicators"
+        ],
+        "inference": {
+            "overbought": "Possible reversal down - consider taking profits",
+            "oversold": "Possible reversal up - consider buying",
+            "neutral": "Hold / wait for confirmation"
+        },
+        "timeframe": "Intraday to daily",
+        "risk_level": "Medium",
+        "use_case": "Mean-reversion trades, divergence spotting, entry timing",
+        "id": "fosc"
+    },
+    "gapsidesidewhite": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Gapsidesidewhite",
+        "description": "Gapsidesidewhite: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "gapsidesidewhite"
+    },
+    "gravestonedoji": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Gravestonedoji",
+        "description": "Gravestonedoji: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "gravestonedoji"
+    },
+    "hammer": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Hammer",
+        "description": "Hammer: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "hammer"
+    },
+    "hangingman": {
+        "category": "Overlap Studies / Trend",
+        "name": "Hangingman",
+        "description": "Hangingman: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "hangingman"
+    },
+    "harami": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Harami",
+        "description": "Harami: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "harami"
+    },
+    "haramicross": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Haramicross",
+        "description": "Haramicross: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "haramicross"
+    },
+    "highwave": {
+        "category": "Miscellaneous",
+        "name": "Highwave",
+        "description": "Highwave: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "highwave"
+    },
+    "hikkake": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Hikkake",
+        "description": "Hikkake: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "hikkake"
+    },
+    "hikkakemod": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Hikkakemod",
+        "description": "Hikkakemod: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "hikkakemod"
+    },
+    "hma": {
+        "category": "Overlap Studies / Trend",
+        "name": "Hull Moving Average",
+        "description": "Hull Moving Average: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "hma"
+    },
+    "homingpigeon": {
+        "category": "Statistic functions",
+        "name": "Homingpigeon",
+        "description": "Homingpigeon: statistical function for analysis and risk/portfolio metrics.",
+        "signal": "N/A - statistical output",
+        "benefits": [
+            "Quantifies relationships and variability",
+            "Useful for risk management and modeling",
+            "Supports portfolio analytics"
+        ],
+        "inference": {
+            "n/a": "Interpret in context of strategy or model"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Risk metrics, backtesting features, correlation analysis",
+        "id": "homingpigeon"
+    },
+    "ht_dcperiod": {
+        "category": "Miscellaneous",
+        "name": "Ht Dcperiod",
+        "description": "Ht Dcperiod: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "ht_dcperiod"
+    },
+    "ht_dcphase": {
+        "category": "Miscellaneous",
+        "name": "Ht Dcphase",
+        "description": "Ht Dcphase: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "ht_dcphase"
+    },
+    "ht_phasor": {
+        "category": "Miscellaneous",
+        "name": "Ht Phasor",
+        "description": "Ht Phasor: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "ht_phasor"
+    },
+    "ht_sine": {
+        "category": "Math Transform / Operators",
+        "name": "Ht Sine",
+        "description": "Ht Sine: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "ht_sine"
+    },
+    "ht_trendline": {
+        "category": "Miscellaneous",
+        "name": "Ht Trendline",
+        "description": "Ht Trendline: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "ht_trendline"
+    },
+    "ht_trendmode": {
+        "category": "Miscellaneous",
+        "name": "Ht Trendmode",
+        "description": "Ht Trendmode: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "ht_trendmode"
+    },
+    "ichimoku": {
+        "category": "Overlap Studies / Trend",
+        "name": "Ichimoku Cloud",
+        "description": "Ichimoku Cloud: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "ichimoku"
+    },
+    "identical3crows": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Identical3Crows",
+        "description": "Identical3Crows: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "identical3crows"
+    },
+    "inneck": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Inneck",
+        "description": "Inneck: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "inneck"
+    },
+    "invertedhammer": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Invertedhammer",
+        "description": "Invertedhammer: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "invertedhammer"
+    },
+    "kama": {
+        "category": "Overlap Studies / Trend",
+        "name": "Kama",
+        "description": "Kama: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "kama"
+    },
+    "kdj": {
+        "category": "Momentum",
+        "name": "Kdj",
+        "description": "Kdj: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "kdj"
+    },
+    "keltnerchannels": {
+        "category": "Overlap Studies / Trend",
+        "name": "Keltner Channels",
+        "description": "Keltner Channels: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "keltnerchannels"
+    },
+    "kicking": {
+        "category": "Miscellaneous",
+        "name": "Kicking",
+        "description": "Kicking: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "kicking"
+    },
+    "kickingbylength": {
+        "category": "Miscellaneous",
+        "name": "Kickingbylength",
+        "description": "Kickingbylength: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "kickingbylength"
+    },
+    "kvo": {
+        "category": "Volume",
+        "name": "Kvo",
+        "description": "Kvo: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "kvo"
+    },
+    "ladderbottom": {
+        "category": "Volume",
+        "name": "Ladderbottom",
+        "description": "Ladderbottom: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "ladderbottom"
+    },
+    "linearreg": {
+        "category": "Statistic functions",
+        "name": "Linearreg",
+        "description": "Linearreg: statistical function for analysis and risk/portfolio metrics.",
+        "signal": "N/A - statistical output",
+        "benefits": [
+            "Quantifies relationships and variability",
+            "Useful for risk management and modeling",
+            "Supports portfolio analytics"
+        ],
+        "inference": {
+            "n/a": "Interpret in context of strategy or model"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Risk metrics, backtesting features, correlation analysis",
+        "id": "linearreg"
+    },
+    "linearreg_angle": {
+        "category": "Statistic functions",
+        "name": "Linearreg Angle",
+        "description": "Linearreg Angle: statistical function for analysis and risk/portfolio metrics.",
+        "signal": "N/A - statistical output",
+        "benefits": [
+            "Quantifies relationships and variability",
+            "Useful for risk management and modeling",
+            "Supports portfolio analytics"
+        ],
+        "inference": {
+            "n/a": "Interpret in context of strategy or model"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Risk metrics, backtesting features, correlation analysis",
+        "id": "linearreg_angle"
+    },
+    "linearreg_intercept": {
+        "category": "Statistic functions",
+        "name": "Linearreg Intercept",
+        "description": "Linearreg Intercept: statistical function for analysis and risk/portfolio metrics.",
+        "signal": "N/A - statistical output",
+        "benefits": [
+            "Quantifies relationships and variability",
+            "Useful for risk management and modeling",
+            "Supports portfolio analytics"
+        ],
+        "inference": {
+            "n/a": "Interpret in context of strategy or model"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Risk metrics, backtesting features, correlation analysis",
+        "id": "linearreg_intercept"
+    },
+    "linearreg_slope": {
+        "category": "Statistic functions",
+        "name": "Linearreg Slope",
+        "description": "Linearreg Slope: statistical function for analysis and risk/portfolio metrics.",
+        "signal": "N/A - statistical output",
+        "benefits": [
+            "Quantifies relationships and variability",
+            "Useful for risk management and modeling",
+            "Supports portfolio analytics"
+        ],
+        "inference": {
+            "n/a": "Interpret in context of strategy or model"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Risk metrics, backtesting features, correlation analysis",
+        "id": "linearreg_slope"
+    },
+    "ln": {
+        "category": "Math Transform / Operators",
+        "name": "Ln",
+        "description": "Ln: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "ln"
+    },
+    "log10": {
+        "category": "Math Transform / Operators",
+        "name": "Log10",
+        "description": "Log10: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "log10"
+    },
+    "longleggeddoji": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Longleggeddoji",
+        "description": "Longleggeddoji: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "longleggeddoji"
+    },
+    "longline": {
+        "category": "Miscellaneous",
+        "name": "Longline",
+        "description": "Longline: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "longline"
+    },
+    "ma": {
+        "category": "Overlap Studies / Trend",
+        "name": "Ma",
+        "description": "Ma: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "ma"
+    },
+    "macd": {
+        "category": "Momentum",
+        "name": "MACD",
+        "description": "MACD: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "macd"
+    },
+    "macdext": {
+        "category": "Momentum",
+        "name": "MACDext",
+        "description": "MACDext: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "macdext"
+    },
+    "mama": {
+        "category": "Overlap Studies / Trend",
+        "name": "Mama",
+        "description": "Mama: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "mama"
+    },
+    "marketfi": {
+        "category": "Overlap Studies / Trend",
+        "name": "Marketfi",
+        "description": "Marketfi: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "marketfi"
+    },
+    "marubozu": {
+        "category": "Overlap Studies / Trend",
+        "name": "Marubozu",
+        "description": "Marubozu: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "marubozu"
+    },
+    "mass": {
+        "category": "Overlap Studies / Trend",
+        "name": "Mass",
+        "description": "Mass: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "mass"
+    },
+    "matchinglow": {
+        "category": "Overlap Studies / Trend",
+        "name": "Matchinglow",
+        "description": "Matchinglow: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "matchinglow"
+    },
+    "mathold": {
+        "category": "Overlap Studies / Trend",
+        "name": "Mathold",
+        "description": "Mathold: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "mathold"
+    },
+    "max": {
+        "category": "Overlap Studies / Trend",
+        "name": "Max",
+        "description": "Max: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "max"
+    },
+    "maxindex": {
+        "category": "Overlap Studies / Trend",
+        "name": "Maxindex",
+        "description": "Maxindex: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "maxindex"
+    },
+    "medprice": {
+        "category": "Price",
+        "name": "Medprice",
+        "description": "Medprice: price-derived metric used for analysis or as input to other indicators.",
+        "signal": "N/A - raw price-based measure",
+        "benefits": [
+            "Direct relation to market prices",
+            "Useful input for calculations",
+            "Simple and interpretable"
+        ],
+        "inference": {
+            "n/a": "Use with other indicators for signals"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature input, reference price, visualization",
+        "id": "medprice"
+    },
+    "mfi": {
+        "category": "Momentum",
+        "name": "Money Flow Index",
+        "description": "Money Flow Index: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "mfi"
+    },
+    "midpoint": {
+        "category": "Overlap Studies / Trend",
+        "name": "Midpoint",
+        "description": "Midpoint: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "midpoint"
+    },
+    "midprice": {
+        "category": "Overlap Studies / Trend",
+        "name": "Midprice",
+        "description": "Midprice: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "midprice"
+    },
+    "min": {
+        "category": "Statistic functions",
+        "name": "Min",
+        "description": "Min: statistical function for analysis and risk/portfolio metrics.",
+        "signal": "N/A - statistical output",
+        "benefits": [
+            "Quantifies relationships and variability",
+            "Useful for risk management and modeling",
+            "Supports portfolio analytics"
+        ],
+        "inference": {
+            "n/a": "Interpret in context of strategy or model"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Risk metrics, backtesting features, correlation analysis",
+        "id": "min"
+    },
+    "minindex": {
+        "category": "Statistic functions",
+        "name": "Minindex",
+        "description": "Minindex: statistical function for analysis and risk/portfolio metrics.",
+        "signal": "N/A - statistical output",
+        "benefits": [
+            "Quantifies relationships and variability",
+            "Useful for risk management and modeling",
+            "Supports portfolio analytics"
+        ],
+        "inference": {
+            "n/a": "Interpret in context of strategy or model"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Risk metrics, backtesting features, correlation analysis",
+        "id": "minindex"
+    },
+    "minmax": {
+        "category": "Overlap Studies / Trend",
+        "name": "Minmax",
+        "description": "Minmax: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "minmax"
+    },
+    "minmaxindex": {
+        "category": "Overlap Studies / Trend",
+        "name": "Minmaxindex",
+        "description": "Minmaxindex: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "minmaxindex"
+    },
+    "minus_di": {
+        "category": "Statistic functions",
+        "name": "Minus Di",
+        "description": "Minus Di: statistical function for analysis and risk/portfolio metrics.",
+        "signal": "N/A - statistical output",
+        "benefits": [
+            "Quantifies relationships and variability",
+            "Useful for risk management and modeling",
+            "Supports portfolio analytics"
+        ],
+        "inference": {
+            "n/a": "Interpret in context of strategy or model"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Risk metrics, backtesting features, correlation analysis",
+        "id": "minus_di"
+    },
+    "minus_dm": {
+        "category": "Statistic functions",
+        "name": "Minus Dm",
+        "description": "Minus Dm: statistical function for analysis and risk/portfolio metrics.",
+        "signal": "N/A - statistical output",
+        "benefits": [
+            "Quantifies relationships and variability",
+            "Useful for risk management and modeling",
+            "Supports portfolio analytics"
+        ],
+        "inference": {
+            "n/a": "Interpret in context of strategy or model"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Risk metrics, backtesting features, correlation analysis",
+        "id": "minus_dm"
+    },
+    "mom": {
+        "category": "Momentum",
+        "name": "Momentum",
+        "description": "Momentum: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "mom"
+    },
+    "morningdojistar": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Morningdojistar",
+        "description": "Morningdojistar: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "morningdojistar"
+    },
+    "morningstar": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Morningstar",
+        "description": "Morningstar: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "morningstar"
+    },
+    "msw": {
+        "category": "Miscellaneous",
+        "name": "Msw",
+        "description": "Msw: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "msw"
+    },
+    "mul": {
+        "category": "Math Transform / Operators",
+        "name": "Mul",
+        "description": "Mul: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "mul"
+    },
+    "mult": {
+        "category": "Math Transform / Operators",
+        "name": "Mult",
+        "description": "Mult: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "mult"
+    },
+    "natr": {
+        "category": "Volatility",
+        "name": "Normalized Average True Range",
+        "description": "Normalized Average True Range: measures price volatility and helps spot expansion/contraction phases.",
+        "signal": "Higher values = higher volatility; band squeezes often precede breakouts",
+        "benefits": [
+            "Detects volatility regimes",
+            "Helps set stops/targets",
+            "Identifies squeeze/breakout opportunities"
+        ],
+        "inference": {
+            "high": "High volatility - wider stops/targets suggested",
+            "low": "Low volatility - potential breakout ahead",
+            "neutral": "Normal volatility"
+        },
+        "timeframe": "All timeframes; day traders may prefer intraday charts",
+        "risk_level": "Medium",
+        "use_case": "Position sizing, breakout strategies, stop placement",
+        "id": "natr"
+    },
+    "nvi": {
+        "category": "Volume",
+        "name": "Nvi",
+        "description": "Nvi: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "nvi"
+    },
+    "obv": {
+        "category": "Volume",
+        "name": "On Balance Volume",
+        "description": "On Balance Volume: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "obv"
+    },
+    "onneck": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Onneck",
+        "description": "Onneck: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "onneck"
+    },
+    "pd": {
+        "category": "Miscellaneous",
+        "name": "Pd",
+        "description": "Pd: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "pd"
+    },
+    "piercing": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Piercing",
+        "description": "Piercing: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "piercing"
+    },
+    "pivotpoints": {
+        "category": "Miscellaneous",
+        "name": "Pivotpoints",
+        "description": "Pivotpoints: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "pivotpoints"
+    },
+    "plus_di": {
+        "category": "Miscellaneous",
+        "name": "Plus Di",
+        "description": "Plus Di: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "plus_di"
+    },
+    "plus_dm": {
+        "category": "Miscellaneous",
+        "name": "Plus Dm",
+        "description": "Plus Dm: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "plus_dm"
+    },
+    "ppo": {
+        "category": "Momentum",
+        "name": "Ppo",
+        "description": "Ppo: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "ppo"
+    },
+    "price": {
+        "category": "Price",
+        "name": "Price",
+        "description": "Price: price-derived metric used for analysis or as input to other indicators.",
+        "signal": "N/A - raw price-based measure",
+        "benefits": [
+            "Direct relation to market prices",
+            "Useful input for calculations",
+            "Simple and interpretable"
+        ],
+        "inference": {
+            "n/a": "Use with other indicators for signals"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature input, reference price, visualization",
+        "id": "price"
+    },
+    "priorswinghigh": {
+        "category": "Price",
+        "name": "Priorswinghigh",
+        "description": "Priorswinghigh: price-derived metric used for analysis or as input to other indicators.",
+        "signal": "N/A - raw price-based measure",
+        "benefits": [
+            "Direct relation to market prices",
+            "Useful input for calculations",
+            "Simple and interpretable"
+        ],
+        "inference": {
+            "n/a": "Use with other indicators for signals"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature input, reference price, visualization",
+        "id": "priorswinghigh"
+    },
+    "priorswinglow": {
+        "category": "Price",
+        "name": "Priorswinglow",
+        "description": "Priorswinglow: price-derived metric used for analysis or as input to other indicators.",
+        "signal": "N/A - raw price-based measure",
+        "benefits": [
+            "Direct relation to market prices",
+            "Useful input for calculations",
+            "Simple and interpretable"
+        ],
+        "inference": {
+            "n/a": "Use with other indicators for signals"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature input, reference price, visualization",
+        "id": "priorswinglow"
+    },
+    "psar": {
+        "category": "Overlap Studies / Trend",
+        "name": "Parabolic SAR",
+        "description": "Parabolic SAR: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "psar"
+    },
+    "pvi": {
+        "category": "Volume",
+        "name": "Pvi",
+        "description": "Pvi: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "pvi"
+    },
+    "qstick": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Qstick",
+        "description": "Qstick: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "qstick"
+    },
+    "rickshawman": {
+        "category": "Overlap Studies / Trend",
+        "name": "Rickshawman",
+        "description": "Rickshawman: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "rickshawman"
+    },
+    "risefall3methods": {
+        "category": "Miscellaneous",
+        "name": "Risefall3Methods",
+        "description": "Risefall3Methods: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "risefall3methods"
+    },
+    "roc": {
+        "category": "Momentum",
+        "name": "Roc",
+        "description": "Roc: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "roc"
+    },
+    "rocp": {
+        "category": "Momentum",
+        "name": "Rocp",
+        "description": "Rocp: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "rocp"
+    },
+    "rocr": {
+        "category": "Momentum",
+        "name": "Rocr",
+        "description": "Rocr: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "rocr"
+    },
+    "rocr100": {
+        "category": "Momentum",
+        "name": "Rocr100",
+        "description": "Rocr100: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "rocr100"
+    },
+    "round": {
+        "category": "Math Transform / Operators",
+        "name": "Round",
+        "description": "Round: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "round"
+    },
+    "rsi": {
+        "category": "Momentum",
+        "name": "Relative Strength Index",
+        "description": "Relative Strength Index: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "rsi"
+    },
+    "rvgi": {
+        "category": "Momentum",
+        "name": "Rvgi",
+        "description": "Rvgi: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "rvgi"
+    },
+    "separatinglines": {
+        "category": "Miscellaneous",
+        "name": "Separatinglines",
+        "description": "Separatinglines: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "separatinglines"
+    },
+    "shootingstar": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Shootingstar",
+        "description": "Shootingstar: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "shootingstar"
+    },
+    "shortline": {
+        "category": "Miscellaneous",
+        "name": "Shortline",
+        "description": "Shortline: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "shortline"
+    },
+    "sin": {
+        "category": "Math Transform / Operators",
+        "name": "Sin",
+        "description": "Sin: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "sin"
+    },
+    "sma": {
+        "category": "Overlap Studies / Trend",
+        "name": "Simple Moving Average",
+        "description": "Simple Moving Average: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "sma"
+    },
+    "smma": {
+        "category": "Overlap Studies / Trend",
+        "name": "Smma",
+        "description": "Smma: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "smma"
+    },
+    "spinningtop": {
+        "category": "Miscellaneous",
+        "name": "Spinningtop",
+        "description": "Spinningtop: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "spinningtop"
+    },
+    "sqrt": {
+        "category": "Math Transform / Operators",
+        "name": "Sqrt",
+        "description": "Sqrt: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "sqrt"
+    },
+    "squeeze": {
+        "category": "Volatility",
+        "name": "Squeeze",
+        "description": "Squeeze: measures price volatility and helps spot expansion/contraction phases.",
+        "signal": "Higher values = higher volatility; band squeezes often precede breakouts",
+        "benefits": [
+            "Detects volatility regimes",
+            "Helps set stops/targets",
+            "Identifies squeeze/breakout opportunities"
+        ],
+        "inference": {
+            "high": "High volatility - wider stops/targets suggested",
+            "low": "Low volatility - potential breakout ahead",
+            "neutral": "Normal volatility"
+        },
+        "timeframe": "All timeframes; day traders may prefer intraday charts",
+        "risk_level": "Medium",
+        "use_case": "Position sizing, breakout strategies, stop placement",
+        "id": "squeeze"
+    },
+    "stalledpattern": {
+        "category": "Miscellaneous",
+        "name": "Stalledpattern",
+        "description": "Stalledpattern: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "stalledpattern"
+    },
+    "stc": {
+        "category": "Momentum",
+        "name": "Stc",
+        "description": "Stc: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "stc"
+    },
+    "stddev": {
+        "category": "Volatility",
+        "name": "Stddev",
+        "description": "Stddev: measures price volatility and helps spot expansion/contraction phases.",
+        "signal": "Higher values = higher volatility; band squeezes often precede breakouts",
+        "benefits": [
+            "Detects volatility regimes",
+            "Helps set stops/targets",
+            "Identifies squeeze/breakout opportunities"
+        ],
+        "inference": {
+            "high": "High volatility - wider stops/targets suggested",
+            "low": "Low volatility - potential breakout ahead",
+            "neutral": "Normal volatility"
+        },
+        "timeframe": "All timeframes; day traders may prefer intraday charts",
+        "risk_level": "Medium",
+        "use_case": "Position sizing, breakout strategies, stop placement",
+        "id": "stddev"
+    },
+    "sticksandwich": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Sticksandwich",
+        "description": "Sticksandwich: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "sticksandwich"
+    },
+    "stoch": {
+        "category": "Momentum",
+        "name": "Stochastic Oscillator",
+        "description": "Stochastic Oscillator: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "stoch"
+    },
+    "stochf": {
+        "category": "Momentum",
+        "name": "Stochf",
+        "description": "Stochf: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "stochf"
+    },
+    "stochrsi": {
+        "category": "Momentum",
+        "name": "Stochrsi",
+        "description": "Stochrsi: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "stochrsi"
+    },
+    "sub": {
+        "category": "Math Transform / Operators",
+        "name": "Sub",
+        "description": "Sub: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "sub"
+    },
+    "sum": {
+        "category": "Math Transform / Operators",
+        "name": "Sum",
+        "description": "Sum: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "sum"
+    },
+    "supertrend": {
+        "category": "Overlap Studies / Trend",
+        "name": "Supertrend",
+        "description": "Supertrend: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "supertrend"
+    },
+    "t3": {
+        "category": "Overlap Studies / Trend",
+        "name": "T3",
+        "description": "T3: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "t3"
+    },
+    "takuri": {
+        "category": "Miscellaneous",
+        "name": "Takuri",
+        "description": "Takuri: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "takuri"
+    },
+    "tan": {
+        "category": "Math Transform / Operators",
+        "name": "Tan",
+        "description": "Tan: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "tan"
+    },
+    "tanh": {
+        "category": "Math Transform / Operators",
+        "name": "Tanh",
+        "description": "Tanh: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "tanh"
+    },
+    "tasukigap": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Tasukigap",
+        "description": "Tasukigap: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "tasukigap"
+    },
+    "tdsequential": {
+        "category": "Miscellaneous",
+        "name": "Tdsequential",
+        "description": "Tdsequential: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "tdsequential"
+    },
+    "tema": {
+        "category": "Overlap Studies / Trend",
+        "name": "Tema",
+        "description": "Tema: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "tema"
+    },
+    "thrusting": {
+        "category": "Miscellaneous",
+        "name": "Thrusting",
+        "description": "Thrusting: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "thrusting"
+    },
+    "todeg": {
+        "category": "Math Transform / Operators",
+        "name": "Todeg",
+        "description": "Todeg: mathematical transform or operator used in indicator pipelines.",
+        "signal": "N/A - utility functions",
+        "benefits": [
+            "Low-level building blocks for indicators",
+            "Useful for feature engineering",
+            "Deterministic outputs"
+        ],
+        "inference": {
+            "n/a": "Used within calculations; not a trading signal by itself"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature engineering, indicator construction",
+        "id": "todeg"
+    },
+    "torad": {
+        "category": "Volume",
+        "name": "Torad",
+        "description": "Torad: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "torad"
+    },
+    "tr": {
+        "category": "Miscellaneous",
+        "name": "True Range",
+        "description": "True Range: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "tr"
+    },
+    "trima": {
+        "category": "Overlap Studies / Trend",
+        "name": "Trima",
+        "description": "Trima: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "trima"
+    },
+    "tristar": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Tristar",
+        "description": "Tristar: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "tristar"
+    },
+    "trix": {
+        "category": "Momentum",
+        "name": "TRIX",
+        "description": "TRIX: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "trix"
+    },
+    "trunc": {
+        "category": "Miscellaneous",
+        "name": "Trunc",
+        "description": "Trunc: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "trunc"
+    },
+    "tsf": {
+        "category": "Miscellaneous",
+        "name": "Tsf",
+        "description": "Tsf: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "tsf"
+    },
+    "typprice": {
+        "category": "Price",
+        "name": "Typprice",
+        "description": "Typprice: price-derived metric used for analysis or as input to other indicators.",
+        "signal": "N/A - raw price-based measure",
+        "benefits": [
+            "Direct relation to market prices",
+            "Useful input for calculations",
+            "Simple and interpretable"
+        ],
+        "inference": {
+            "n/a": "Use with other indicators for signals"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature input, reference price, visualization",
+        "id": "typprice"
+    },
+    "ultosc": {
+        "category": "Momentum",
+        "name": "Ultosc",
+        "description": "Ultosc: momentum indicator to measure strength and direction of price movements.",
+        "signal": "Varies by indicator (e.g., RSI: 0-100; MACD: MACD vs Signal line)",
+        "benefits": [
+            "Identifies overbought/oversold conditions",
+            "Confirms trend strength",
+            "Helps spot divergences"
+        ],
+        "inference": {
+            "bullish": "Positive momentum - bullish bias",
+            "bearish": "Negative momentum - bearish bias",
+            "neutral": "No clear momentum"
+        },
+        "timeframe": "All timeframes; best on 1h and above for trend-following",
+        "risk_level": "Low-Medium",
+        "use_case": "Entry/exit confirmation, divergence detection, trend strength",
+        "id": "ultosc"
+    },
+    "unique3river": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Unique3River",
+        "description": "Unique3River: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "unique3river"
+    },
+    "upsidegap2crows": {
+        "category": "Candlestick Pattern / Pattern recognition",
+        "name": "Upsidegap2Crows",
+        "description": "Upsidegap2Crows: candlestick pattern used to detect potential reversals or continuation signals.",
+        "signal": "100 = Bullish, -100 = Bearish, 0 = No Pattern",
+        "benefits": [
+            "Identifies potential reversal points",
+            "Useful for entry/exit timing",
+            "Complements other indicators"
+        ],
+        "inference": {
+            "100": "Bullish pattern detected - consider long/confirm with other signals",
+            "-100": "Bearish pattern detected - consider short/exit longs/confirm",
+            "0": "Pattern not detected - no signal"
+        },
+        "timeframe": "Most reliable on 4h, 1d, 1w",
+        "risk_level": "Medium",
+        "use_case": "Swing trading, reversal detection, confirmation",
+        "id": "upsidegap2crows"
+    },
+    "var": {
+        "category": "Statistic functions",
+        "name": "Var",
+        "description": "Var: statistical function for analysis and risk/portfolio metrics.",
+        "signal": "N/A - statistical output",
+        "benefits": [
+            "Quantifies relationships and variability",
+            "Useful for risk management and modeling",
+            "Supports portfolio analytics"
+        ],
+        "inference": {
+            "n/a": "Interpret in context of strategy or model"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Risk metrics, backtesting features, correlation analysis",
+        "id": "var"
+    },
+    "vhf": {
+        "category": "Volatility",
+        "name": "Vhf",
+        "description": "Vhf: measures price volatility and helps spot expansion/contraction phases.",
+        "signal": "Higher values = higher volatility; band squeezes often precede breakouts",
+        "benefits": [
+            "Detects volatility regimes",
+            "Helps set stops/targets",
+            "Identifies squeeze/breakout opportunities"
+        ],
+        "inference": {
+            "high": "High volatility - wider stops/targets suggested",
+            "low": "Low volatility - potential breakout ahead",
+            "neutral": "Normal volatility"
+        },
+        "timeframe": "All timeframes; day traders may prefer intraday charts",
+        "risk_level": "Medium",
+        "use_case": "Position sizing, breakout strategies, stop placement",
+        "id": "vhf"
+    },
+    "vidya": {
+        "category": "Overlap Studies / Trend",
+        "name": "Vidya",
+        "description": "Vidya: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "vidya"
+    },
+    "volatility": {
+        "category": "Volatility",
+        "name": "Volatility",
+        "description": "Volatility: measures price volatility and helps spot expansion/contraction phases.",
+        "signal": "Higher values = higher volatility; band squeezes often precede breakouts",
+        "benefits": [
+            "Detects volatility regimes",
+            "Helps set stops/targets",
+            "Identifies squeeze/breakout opportunities"
+        ],
+        "inference": {
+            "high": "High volatility - wider stops/targets suggested",
+            "low": "Low volatility - potential breakout ahead",
+            "neutral": "Normal volatility"
+        },
+        "timeframe": "All timeframes; day traders may prefer intraday charts",
+        "risk_level": "Medium",
+        "use_case": "Position sizing, breakout strategies, stop placement",
+        "id": "volatility"
+    },
+    "volume": {
+        "category": "Volume",
+        "name": "Volume",
+        "description": "Volume: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "volume"
+    },
+    "volumesplit": {
+        "category": "Volume",
+        "name": "Volumesplit",
+        "description": "Volumesplit: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "volumesplit"
+    },
+    "vortex": {
+        "category": "Miscellaneous",
+        "name": "Vortex",
+        "description": "Vortex: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "vortex"
+    },
+    "vosc": {
+        "category": "Volume",
+        "name": "Vosc",
+        "description": "Vosc: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "vosc"
+    },
+    "vwap": {
+        "category": "Overlap Studies / Trend",
+        "name": "Volume Weighted Average Price (VWAP)",
+        "description": "Volume Weighted Average Price (VWAP): trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "vwap"
+    },
+    "vwma": {
+        "category": "Overlap Studies / Trend",
+        "name": "Vwma",
+        "description": "Vwma: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "vwma"
+    },
+    "wad": {
+        "category": "Volume",
+        "name": "Wad",
+        "description": "Wad: volume-related metric to assess buying/selling pressure.",
+        "signal": "Varies; higher positive values indicate accumulation, negative indicate distribution",
+        "benefits": [
+            "Confirms price moves",
+            "Detects accumulation/distribution",
+            "Useful for validating breakouts"
+        ],
+        "inference": {
+            "accumulation": "Buying pressure increasing - bullish",
+            "distribution": "Selling pressure increasing - bearish",
+            "neutral": "No clear volume bias"
+        },
+        "timeframe": "All timeframes; higher timeframes preferred for reliability",
+        "risk_level": "Low",
+        "use_case": "Breakout validation, trend confirmation, liquidity analysis",
+        "id": "wad"
+    },
+    "wclprice": {
+        "category": "Price",
+        "name": "Wclprice",
+        "description": "Wclprice: price-derived metric used for analysis or as input to other indicators.",
+        "signal": "N/A - raw price-based measure",
+        "benefits": [
+            "Direct relation to market prices",
+            "Useful input for calculations",
+            "Simple and interpretable"
+        ],
+        "inference": {
+            "n/a": "Use with other indicators for signals"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Low",
+        "use_case": "Feature input, reference price, visualization",
+        "id": "wclprice"
+    },
+    "wilders": {
+        "category": "Miscellaneous",
+        "name": "Wilders",
+        "description": "Wilders: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "wilders"
+    },
+    "williamsalligator": {
+        "category": "Overlap Studies / Trend",
+        "name": "Williamsalligator",
+        "description": "Williamsalligator: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "williamsalligator"
+    },
+    "willr": {
+        "category": "Miscellaneous",
+        "name": "Willr",
+        "description": "Willr: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "willr"
+    },
+    "wma": {
+        "category": "Overlap Studies / Trend",
+        "name": "Wma",
+        "description": "Wma: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "wma"
+    },
+    "xsidegap3methods": {
+        "category": "Miscellaneous",
+        "name": "Xsidegap3Methods",
+        "description": "Xsidegap3Methods: generic indicator or utility.",
+        "signal": "Varies",
+        "benefits": [
+            "Useful as part of a larger analytic stack"
+        ],
+        "inference": {
+            "n/a": "Refer to specific indicator documentation"
+        },
+        "timeframe": "All timeframes",
+        "risk_level": "Medium",
+        "use_case": "General analysis",
+        "id": "xsidegap3methods"
+    },
+    "zlema": {
+        "category": "Overlap Studies / Trend",
+        "name": "Zlema",
+        "description": "Zlema: trend/overlap study commonly used to smooth price and indicate trend direction.",
+        "signal": "Price vs indicator crossover or slope indicates trend direction",
+        "benefits": [
+            "Smooths noise",
+            "Defines dynamic support/resistance",
+            "Good for trend-following systems"
+        ],
+        "inference": {
+            "bullish": "Indicator and price suggest uptrend - consider long",
+            "bearish": "Indicator suggests downtrend - consider short",
+            "flat": "No clear trend"
+        },
+        "timeframe": "1h and higher; daily for strongest signals",
+        "risk_level": "Low-Medium",
+        "use_case": "Trend following, smoothing, dynamic SR levels",
+        "id": "zlema"
+    }
+}
