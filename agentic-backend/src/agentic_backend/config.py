@@ -6,7 +6,8 @@ class Settings(BaseSettings):
     APP_NAME: str = "Agentic Backend"
 
     # Keys
-    OPENAI_API_KEY: str | None = None
+    ANTHROPIC_API_KEY: str | None = None
+    ANTHROPIC_BASE_URL: str = "https://api.anthropic.com"
     SERPAPI_API_KEY: str | None = None
     GOOGLE_API_KEY: str | None = None
     GOOGLE_CX: str | None = None

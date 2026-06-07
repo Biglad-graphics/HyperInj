@@ -4,8 +4,8 @@ from ..models.state_models import *
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 from ..users.users import get_agent_weight_and_prompt , get_strategy_details
-from langchain.chat_models import init_chat_model
-llm=init_chat_model("openai:gpt-4o")
+from .llm import get_llm, get_fast_llm
+llm = get_llm()
 from ..agents.finance import load_available_indicators
 AVAILABLE_INDICATOR= load_available_indicators()
 def supervisor_node(state: SupervisorState) -> SupervisorState:

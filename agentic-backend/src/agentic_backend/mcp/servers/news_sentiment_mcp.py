@@ -5,7 +5,7 @@ import json
 from bs4 import BeautifulSoup
 from fastmcp import FastMCP
 from dotenv import load_dotenv, find_dotenv
-from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
 import sys
 import importlib.util
 # Pass the absolute path of the prompt module
@@ -17,7 +17,8 @@ sentiment_prompt = prompt_module.sentiment_prompt
 
 load_dotenv(find_dotenv())
 
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "your_openai_api_key_here")
+ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
+ANTHROPIC_BASE_URL = os.getenv("ANTHROPIC_BASE_URL", "https://api.anthropic.com")
 SERPER_API_KEY = os.getenv("SERPAPI_API_KEY", "your_api_key_here")
 # print(f"Using SERPER_API_KEY: {OPENAI_API_KEY}")
 
@@ -44,7 +45,12 @@ def fetch_news_sentiment(query: str, gl: str = "us") -> dict:
     """
     Fetch latest market news and give detailed news for sentiment analysis .
     """
-    summerise_model= ChatOpenAI(model="gpt-4o-mini", temperature=0.3)
+    summerise_model = ChatAnthropic(
+        model="claude-haiku-4-5-20251001",
+        temperature=0.3,
+        anthropic_api_key=ANTHROPIC_API_KEY,
+        anthropic_api_url=ANTHROPIC_BASE_URL,
+    )
     url = "https://google.serper.dev/news"
     headers = {
         "X-API-KEY": SERPER_API_KEY,

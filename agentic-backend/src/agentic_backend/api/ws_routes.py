@@ -20,7 +20,7 @@ from datetime import datetime
 import subprocess
 import tempfile
 import sys
-from openai import OpenAI
+import anthropic as _anthropic
 from dotenv import load_dotenv,find_dotenv
 load_dotenv(find_dotenv())
 router = APIRouter()
@@ -335,8 +335,11 @@ Generate the markdown report now:
 
 
 
-# Initialize OpenAI client
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+# Initialize Anthropic client (pointed at FreeModel)
+client = _anthropic.Anthropic(
+    api_key=os.getenv("ANTHROPIC_API_KEY", ""),
+    base_url=os.getenv("ANTHROPIC_BASE_URL", "https://api.anthropic.com"),
+)
 
 # Pydantic models
 class BacktestRequest(BaseModel):
@@ -390,17 +393,15 @@ Generate complete backtesting code now. Output ONLY the code.
 """
 
     try:
-        response = client.chat.completions.create(
-            model="gpt-4o",
-            messages=[
-                {"role": "system", "content": "You are a professional Python developer specializing in quantitative trading. Generate only valid, executable code."},
-                {"role": "user", "content": prompt}
-            ],
+        response = client.messages.create(
+            model="claude-sonnet-4-6",
+            system="You are a professional Python developer specializing in quantitative trading. Generate only valid, executable code.",
+            messages=[{"role": "user", "content": prompt}],
             temperature=0.2,
-            max_tokens=4000
+            max_tokens=4000,
         )
-        
-        generated_code = response.choices[0].message.content.strip()
+
+        generated_code = response.content[0].text.strip()
         
         # Remove markdown code blocks if present
         if generated_code.startswith("```"):

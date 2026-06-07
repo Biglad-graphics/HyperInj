@@ -8,9 +8,9 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
 # finance_tools= tools["financial_tools"]
-from langchain.chat_models import init_chat_model
+from .llm import get_llm, get_fast_llm
 
-llm=init_chat_model("openai:gpt-4o-mini")
+llm = get_fast_llm()
 
 async def websearch_agent_node(state: SupervisorState) -> SupervisorState:
     """Run the web search agent with the current task and update state."""

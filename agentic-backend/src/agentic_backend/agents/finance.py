@@ -9,9 +9,9 @@ load_dotenv(find_dotenv())
 from ..users.users import get_agent_weight_and_prompt , get_strategy_details
 import json
 import os
-from langchain.chat_models import init_chat_model
+from .llm import get_llm, get_fast_llm
 
-llm=init_chat_model("openai:gpt-4o")
+llm = get_llm()
 
 # Load available indicators from JSON
 def load_available_indicators():

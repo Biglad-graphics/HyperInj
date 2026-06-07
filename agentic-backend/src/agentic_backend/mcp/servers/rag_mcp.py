@@ -3,25 +3,20 @@ import os
 import sys
 import glob
 import chromadb
-from openai import OpenAI
 from langchain.document_loaders import PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from dotenv import load_dotenv
 load_dotenv()
 
-# Set your OpenAI API key
-client = OpenAI()
 mcp = FastMCP("RAG Search MCP Server")
-# Initialize ChromaDB persistent client
+# Initialize ChromaDB persistent client (uses its own built-in embeddings)
 chroma_client = chromadb.PersistentClient(path="../chroma_db")
 
 def get_embedding(text):
-    """Get OpenAI embedding for given text."""
-    response = client.embeddings.create(
-        model="text-embedding-ada-002",
-        input=text
-    )
-    return response.data[0].embedding
+    """Get embedding using ChromaDB's default embedding function."""
+    from chromadb.utils import embedding_functions
+    ef = embedding_functions.DefaultEmbeddingFunction()
+    return ef([text])[0]
 
 # -------------------- Collection Setup --------------------
 

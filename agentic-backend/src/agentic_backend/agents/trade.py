@@ -5,11 +5,11 @@ from langgraph.prebuilt import create_react_agent
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 from ..users.users import get_agent_weight_and_prompt , get_strategy_details
-from langchain.chat_models import init_chat_model
+from .llm import get_llm, get_fast_llm
 from ..api.users import get_user
 import json
 
-llm = init_chat_model("openai:gpt-4o")
+llm = get_llm()
 
 
 async def trade_agent_node(state: SupervisorState) -> SupervisorState:

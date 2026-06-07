@@ -4,10 +4,10 @@ from ..agents.base import build_agent_state
 from ..mcp.clients import init_clients
 from ..prompt import news_sentiment_prompt
 from langgraph.prebuilt import create_react_agent
-from langchain.chat_models import init_chat_model
+from .llm import get_llm, get_fast_llm
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
-llm=init_chat_model("openai:gpt-4o-mini")
+llm = get_fast_llm()
 from ..users.users import get_agent_weight_and_prompt , get_strategy_details
 
 
