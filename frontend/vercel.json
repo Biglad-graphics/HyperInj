@@ -1,0 +1,12 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "env": {
+    "NEXT_PUBLIC_PRIVY_APP_ID": "@privy-app-id",
+    "NEXT_PUBLIC_PRIVY_CLIENT_ID": "@privy-client-id",
+    "NEXT_PUBLIC_API_BASE_URL": "@api-base-url",
+    "NEXT_PUBLIC_AGENT_WS_URL": "@agent-ws-url"
+  }
+}
