@@ -11,6 +11,7 @@ import AgenticDecisions from "./AgenticDecisions";
 import PositionsList from "./PositionsList";
 import { getUsersStrategy } from "../../services/strategy.service";
 import { getUserId } from "../../utils/userStorage";
+import { useAgenticWebSocket } from "../../hooks/useAgenticWebSocket";
 
 type StrategyDetailPageProps = {
   strategyId: string;
@@ -23,6 +24,12 @@ const StrategyDetailPage = ({ strategyId }: StrategyDetailPageProps) => {
   const [activeTab, setActiveTab] = useState<
     "overview" | "positions" | "decisions"
   >("overview");
+
+  const userId = getUserId();
+  const { messages, latestOutput, isConnected, isThinking, sendMessage } = useAgenticWebSocket(
+    userId,
+    strategyId
+  );
 
   useEffect(() => {
     const fetchStrategy = async () => {
@@ -155,6 +162,31 @@ const StrategyDetailPage = ({ strategyId }: StrategyDetailPageProps) => {
                     </span>
                   </>
                 )}
+              </div>
+              {/* AI Analysis Controls */}
+              <div className="flex items-center gap-3 mt-4">
+                <button
+                  className={`btn-primary px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 ${isThinking ? "opacity-60 cursor-not-allowed" : ""}`}
+                  disabled={isThinking || !isConnected}
+                  onClick={() => sendMessage(`Analyse ${strategy?.cryptoAsset || "INJ"} on ${strategy?.timeframe || "1h"} timeframe and decide if I should trade`)}
+                >
+                  {isThinking ? (
+                    <>
+                      <span className="w-3 h-3 rounded-full bg-white animate-pulse inline-block" />
+                      Thinking...
+                    </>
+                  ) : (
+                    <>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <path d="M13 10V3L4 14h7v7l9-11h-7z" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      Run Analysis
+                    </>
+                  )}
+                </button>
+                <span className={`text-xs font-medium px-2 py-1 rounded-lg ${isConnected ? "bg-green-500/10 text-green-500" : "bg-red-500/10 text-red-500"}`}>
+                  {isConnected ? "AI Connected" : "AI Offline"}
+                </span>
               </div>
             </div>
             <div className="flex gap-3">
@@ -325,10 +357,24 @@ const StrategyDetailPage = ({ strategyId }: StrategyDetailPageProps) => {
           )}
 
           {activeTab === "decisions" && (
-            <div className="text-center py-12">
-              <div className="text-theme-secondary">
-                No AI decisions recorded yet
-              </div>
+            <div>
+              {messages.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="text-theme-secondary">
+                    No AI decisions recorded yet. Click &quot;Run Analysis&quot; to start.
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {latestOutput && (
+                    <div className="p-4 bg-theme-on-surface-1 rounded-xl border border-theme-stroke">
+                      <div className="text-caption-2 text-theme-tertiary mb-1">Latest Output</div>
+                      <div className="text-base-2 text-theme-primary">{latestOutput}</div>
+                    </div>
+                  )}
+                  <AgenticDecisions liveMessages={messages} />
+                </div>
+              )}
             </div>
           )}
         </Card>
