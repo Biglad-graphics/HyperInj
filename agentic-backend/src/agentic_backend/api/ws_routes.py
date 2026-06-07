@@ -15,7 +15,6 @@ import json
 import asyncio
 import os
 from datetime import datetime
-import ast
 from datetime import datetime
 import subprocess
 import tempfile
@@ -80,7 +79,7 @@ async def chat_endpoint(websocket: WebSocket):
     try:
         while True:
             msg = await websocket.receive_text()
-            msg = ast.literal_eval(msg)
+            msg = json.loads(msg)
             
             thread_id = msg.get("thread_id", "default")
             user_id = msg.get("user_id", "User")
@@ -184,7 +183,7 @@ async def chat_endpoint(websocket: WebSocket):
 #     try:
 #         while True:
 #             msg = await websocket.receive_text()
-#             msg = ast.literal_eval(msg)
+#             msg = json.loads(msg)
 #             user_id = msg.get("user_id", "default")
 #             strategy_id=msg.get("strategyId","default")
 
@@ -269,7 +268,7 @@ async def generate_thread_report(user_id: str, thread_id: str):
         conversation_text += f"\n### Exchange {idx}\n**User Query:** {user_query}\n\n**Response:** {final_response}\n"
 
     # Initialize LLM
-    llm = init_chat_model("openai:gpt-4o-mini")
+    llm = init_chat_model("anthropic:claude-haiku-4-5-20251001")
 
     # Create prompt for report generation
     report_prompt = f"""
@@ -414,7 +413,7 @@ Generate complete backtesting code now. Output ONLY the code.
         return generated_code.strip()
     
     except Exception as e:
-        raise Exception(f"Error generating code with OpenAI: {str(e)}")
+        raise Exception(f"Error generating code with Anthropic: {str(e)}")
 
 
 def run_backtest_subprocess(generated_code: str) -> dict:

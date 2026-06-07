@@ -10,10 +10,9 @@ load_dotenv(find_dotenv())
 # finance_tools= tools["financial_tools"]
 from .llm import get_llm, get_fast_llm
 
-llm = get_fast_llm()
-
 async def websearch_agent_node(state: SupervisorState) -> SupervisorState:
     """Run the web search agent with the current task and update state."""
+    llm = get_fast_llm()
     user_id = state.user_detail              # from state
     strategy_id = state.thread_id            # from state
     agent_name = "websearch"                   # or "technical" if finance = technical

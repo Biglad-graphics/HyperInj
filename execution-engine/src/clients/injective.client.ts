@@ -60,7 +60,7 @@ export class InjectiveClient {
   ) {
     const privateKey = PrivateKey.fromHex(privateKeyHex);
     const injectiveAddress = privateKey.toBech32();
-    const subaccountId = getDefaultSubaccountId(privateKey.toAddress());
+    const subaccountId = getDefaultSubaccountId(privateKey.toBech32());
 
     // Fetch current order book to get best price
     const orderbook = await derivativesApi.fetchOrderbook(marketId);
@@ -103,7 +103,7 @@ export class InjectiveClient {
   ) {
     const privateKey = PrivateKey.fromHex(privateKeyHex);
     const injectiveAddress = privateKey.toBech32();
-    const subaccountId = getDefaultSubaccountId(privateKey.toAddress());
+    const subaccountId = getDefaultSubaccountId(privateKey.toBech32());
 
     const orderbook = await spotApi.fetchOrderbook(marketId);
     const bestPrice =

@@ -5,11 +5,11 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 from ..users.users import get_agent_weight_and_prompt , get_strategy_details
 from .llm import get_llm, get_fast_llm
-llm = get_llm()
 from ..agents.finance import load_available_indicators
 AVAILABLE_INDICATOR= load_available_indicators()
 def supervisor_node(state: SupervisorState) -> SupervisorState:
     """Supervisor decides the next agent + task based on state so far."""
+    llm = get_llm()
 
     step = len(state.decisions) + 1
     user_id = state.user_detail  # coming from state

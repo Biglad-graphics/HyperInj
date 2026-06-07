@@ -11,8 +11,6 @@ import json
 import os
 from .llm import get_llm, get_fast_llm
 
-llm = get_llm()
-
 # Load available indicators from JSON
 def load_available_indicators():
     """Load list of available indicators from indicators_full.json"""
@@ -29,6 +27,7 @@ AVAILABLE_INDICATORS = load_available_indicators()
 
 async def financial_agent_node(state: SupervisorState) -> SupervisorState:
     """Run the financial agent with the current task and update state."""
+    llm = get_llm()
     user_id = state.user_detail              # from state
     strategy_id = state.thread_id            # from state
     agent_name = "technical"                 # or "technical" if finance = technical

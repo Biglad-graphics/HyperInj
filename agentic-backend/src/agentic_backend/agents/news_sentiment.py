@@ -7,12 +7,12 @@ from langgraph.prebuilt import create_react_agent
 from .llm import get_llm, get_fast_llm
 from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
-llm = get_fast_llm()
 from ..users.users import get_agent_weight_and_prompt , get_strategy_details
 
 
 async def news_sentiment_agent_node(state: SupervisorState) -> SupervisorState:
     """Run the news sentiment agent with the current task and update state."""
+    llm = get_fast_llm()
 
     user_id = state.user_detail              # from state
     strategy_id = state.thread_id            # from state

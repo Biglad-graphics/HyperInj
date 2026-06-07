@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { usePrivy } from "@privy-io/react-auth";
+import { useState } from "react";
 import Card from "@/components/Card";
 import CurrencyFormat from "@/components/CurrencyFormat";
 import Image from "@/components/Image";
@@ -7,7 +6,7 @@ import Tooltip from "@/components/Tooltip";
 import Modal from "@/components/Modal";
 import CashOut from "../CashOut";
 import CashOutPreview from "../CashOutPreview";
-import { getUserPositions } from "../../../services/hyperliquidPortfolio.service";
+import { useInjectivePortfolio } from "../../../hooks/useInjectivePortfolio";
 
 type SummaryProps = {};
 
@@ -16,51 +15,18 @@ const Summary = ({}: SummaryProps) => {
     const [visibleModal, setVisibleModal] = useState(false);
     const [walletAddress, setWalletAddress] = useState("");
     const [withdrawAmount, setWithdrawAmount] = useState("");
-    const [accountValue, setAccountValue] = useState<number>(0);
-    const [withdrawable, setWithdrawable] = useState<number>(0);
-    const [loading, setLoading] = useState<boolean>(true);
-    const { authenticated, user } = usePrivy();
-
-    useEffect(() => {
-        const fetchPortfolioData = async () => {
-            if (authenticated && user) {
-                try {
-                    setLoading(true);
-                    // Get wallet address from Privy user
-                    const wallet = user.linkedAccounts?.find(
-                        (account) => account.type === "wallet"
-                    );
-
-                    if (wallet && "address" in wallet) {
-                        const positions = await getUserPositions(wallet.address);
-                        if (positions?.marginSummary?.accountValue) {
-                            setAccountValue(parseFloat(positions.marginSummary.accountValue));
-                        }
-                        if (positions?.withdrawable) {
-                            setWithdrawable(parseFloat(positions.withdrawable));
-                        }
-                    }
-                } catch (error) {
-                    console.error("Error fetching portfolio data:", error);
-                } finally {
-                    setLoading(false);
-                }
-            }
-        };
-
-        fetchPortfolioData();
-    }, [authenticated, user]);
+    const { totalValue, loading } = useInjectivePortfolio();
 
     const items = [
         {
             title: "Available to trade",
-            price: loading ? 0 : withdrawable,
+            price: loading ? 0 : totalValue,
             tooltip: "Total funds available for trading",
             image: "/images/currency-dollar.svg",
         },
         {
             title: "Available to withdraw",
-            price: loading ? 0 : withdrawable,
+            price: loading ? 0 : totalValue,
             tooltip: "Total funds available for withdrawal",
             image: "/images/arrow-narrow-up-right.svg",
         },
@@ -72,7 +38,7 @@ const Summary = ({}: SummaryProps) => {
                 <div className="pt-6">
                     <CurrencyFormat
                         className="mb-4 text-h3"
-                        value={loading ? 0 : accountValue}
+                        value={loading ? 0 : totalValue}
                         currency="$"
                     />
                     <div className="mb-8 space-y-8">

@@ -9,13 +9,11 @@ from .llm import get_llm, get_fast_llm
 from ..api.users import get_user
 import json
 
-llm = get_llm()
-
 
 async def trade_agent_node(state: SupervisorState) -> SupervisorState:
     """Run the trade agent with the current task and update state."""
+    llm = get_llm()
 
-    
     user_id = state.user_detail              # from state
     strategy_id = state.thread_id            # from state
     agent_name = "executor"                   # or "technical" if finance = technical
