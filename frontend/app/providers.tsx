@@ -28,6 +28,18 @@ export function Providers({ children }: { children: React.ReactNode }) {
               public: { http: ["https://mainnet.injective.network/"] },
             },
           },
+          supportedChains: [
+            {
+              id: 2525,
+              name: "Injective",
+              network: "injective",
+              nativeCurrency: { name: "Injective", symbol: "INJ", decimals: 18 },
+              rpcUrls: {
+                default: { http: ["https://mainnet.injective.network/"] },
+                public: { http: ["https://mainnet.injective.network/"] },
+              },
+            },
+          ],
         }}
       >
         <ChakraProvider>{children}</ChakraProvider>
