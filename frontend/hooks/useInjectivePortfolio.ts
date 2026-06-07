@@ -34,15 +34,15 @@ export const useInjectivePortfolio = (): PortfolioState => {
 
         // Injective portfolio response shape: portfolio.bankBalances, portfolio.subaccounts
         let totalValue = 0;
-        if (portfolio?.bankBalances) {
-          for (const bal of portfolio.bankBalances) {
+        if (portfolio?.bankBalancesList) {
+          for (const bal of portfolio.bankBalancesList) {
             if (bal.denom === "inj") {
               totalValue += parseFloat(bal.amount) / 1e18;
             }
           }
         }
-        if (portfolio?.subaccounts) {
-          for (const sub of portfolio.subaccounts) {
+        if (portfolio?.subaccountsList) {
+          for (const sub of (portfolio as any).subaccountsList) {
             if (sub.denom === "peggy0xdAC17F958D2ee523a2206206994597C13D831ec7") {
               totalValue += parseFloat(sub.deposit?.totalBalance || "0") / 1e6;
             }
