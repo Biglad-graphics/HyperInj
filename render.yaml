@@ -19,15 +19,12 @@ services:
   # ── Execution Engine (Express/Node) ───────────────────────────────────
   - type: web
     name: hyperinj-execution-engine
-    runtime: node
+    runtime: docker
     rootDir: execution-engine
-    buildCommand: npm install && npm run build
-    startCommand: node dist/server.js
+    dockerfilePath: ./Dockerfile
     plan: free
     healthCheckPath: /health
     envVars:
-      - key: NODE_VERSION
-        value: "18"
       - key: NODE_ENV
         value: production
       - key: MONGODB_URI
