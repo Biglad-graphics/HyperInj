@@ -5,17 +5,17 @@ dotenv.config();
 
 const WS_URL = process.env["AI_BASE_URL"];
 
-if (!WS_URL) {
-  throw new Error("❌ Missing AI_BASE_URL in environment variables");
-}
-
 let ws: WebSocket | null = null;
 
 /**
  * Establishes and maintains a persistent WebSocket connection to the AI backend.
  */
 export function startAgenticWebSocket() {
-  ws = new WebSocket(WS_URL!);
+  if (!WS_URL) {
+    log("AI_BASE_URL not set — agentic WebSocket disabled");
+    return;
+  }
+  ws = new WebSocket(WS_URL);
 
   ws.on("open", () => {
     log(`🤖 Connected to AI WebSocket at ${WS_URL}`);

@@ -23,6 +23,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@nktkas/hyperliquid": "^0.16.0",
     "@injectivelabs/sdk-ts": "^1.14.26",
     "@injectivelabs/networks": "^1.14.26",
     "@injectivelabs/ts-types": "^1.14.26",

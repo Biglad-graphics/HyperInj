@@ -19,7 +19,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
             },
           },
           defaultChain: {
-            id: 1,
+            id: 2525,
             name: "Injective",
             network: "injective",
             nativeCurrency: { name: "Injective", symbol: "INJ", decimals: 18 },

@@ -17,6 +17,9 @@ const portfolioApi = new IndexerGrpcAccountPortfolioApi(endpoints.indexer);
 const derivativesApi = new IndexerGrpcDerivativesApi(endpoints.indexer);
 const spotApi = new IndexerGrpcSpotApi(endpoints.indexer);
 
+// Default fee recipient — injective burn address used as placeholder
+const DEFAULT_FEE_RECIPIENT = "inj1zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyg3zyg";
+
 export class InjectiveClient {
   /**
    * Fetch account portfolio for a given Injective address.
@@ -27,17 +30,16 @@ export class InjectiveClient {
   }
 
   /**
-   * Get withdrawable balance (sum of bank INJ balance in USD equivalent).
+   * Get withdrawable balance (sum of bank USDT balance).
    */
   static async getAvailableBalance(injectiveAddress: string): Promise<string> {
     const portfolio = await portfolioApi.fetchAccountPortfolio(injectiveAddress);
     let totalUsdt = 0;
-    if (portfolio?.bankBalances) {
-      for (const bal of portfolio.bankBalances) {
-        // USDT peggy denom
-        if (bal.denom === "peggy0xdAC17F958D2ee523a2206206994597C13D831ec7") {
-          totalUsdt += parseFloat(bal.amount) / 1e6;
-        }
+    const balances = (portfolio as any)?.bankBalancesList ?? (portfolio as any)?.bankBalances ?? [];
+    for (const bal of balances) {
+      // USDT peggy denom
+      if (bal.denom === "peggy0xdAC17F958D2ee523a2206206994597C13D831ec7") {
+        totalUsdt += parseFloat(bal.amount) / 1e6;
       }
     }
     return totalUsdt.toFixed(2);
@@ -45,11 +47,6 @@ export class InjectiveClient {
 
   /**
    * Place a derivative (perpetual) market order on Injective.
-   * @param privateKeyHex  - hex private key of the agent wallet (0x prefixed)
-   * @param marketId       - Injective derivative market ID (0x...)
-   * @param quantity       - order quantity as string (e.g. "0.01")
-   * @param side           - "buy" | "sell"
-   * @param margin         - collateral margin as string (USDT, e.g. "10")
    */
   static async placeDerivativeOrder(
     privateKeyHex: string,
@@ -63,16 +60,19 @@ export class InjectiveClient {
     const subaccountId = getDefaultSubaccountId(privateKey.toBech32());
 
     // Fetch current order book to get best price
-    const orderbook = await derivativesApi.fetchOrderbook(marketId);
+    const orderbook = await derivativesApi.fetchOrderbook(marketId) as any;
+    const buys: any[] = orderbook?.buys ?? orderbook?.buys ?? [];
+    const sells: any[] = orderbook?.sells ?? orderbook?.sells ?? [];
     const bestPrice =
       side === "buy"
-        ? orderbook.buys?.[0]?.price ?? "0"
-        : orderbook.sells?.[0]?.price ?? "0";
+        ? (buys[0]?.price ?? "0")
+        : (sells[0]?.price ?? "0");
 
     const msg = MsgCreateDerivativeMarketOrder.fromJSON({
       injectiveAddress,
       subaccountId,
       marketId,
+      feeRecipient: DEFAULT_FEE_RECIPIENT,
       orderType: side === "buy" ? 1 : 2, // 1=BUY, 2=SELL
       price: bestPrice,
       quantity,
@@ -90,10 +90,6 @@ export class InjectiveClient {
 
   /**
    * Place a spot market order on Injective.
-   * @param privateKeyHex - hex private key
-   * @param marketId      - Injective spot market ID (0x...)
-   * @param quantity      - base token quantity
-   * @param side          - "buy" | "sell"
    */
   static async placeSpotOrder(
     privateKeyHex: string,
@@ -105,16 +101,19 @@ export class InjectiveClient {
     const injectiveAddress = privateKey.toBech32();
     const subaccountId = getDefaultSubaccountId(privateKey.toBech32());
 
-    const orderbook = await spotApi.fetchOrderbook(marketId);
+    const orderbook = await spotApi.fetchOrderbook(marketId) as any;
+    const buys: any[] = orderbook?.buys ?? [];
+    const sells: any[] = orderbook?.sells ?? [];
     const bestPrice =
       side === "buy"
-        ? orderbook.buys?.[0]?.price ?? "0"
-        : orderbook.sells?.[0]?.price ?? "0";
+        ? (buys[0]?.price ?? "0")
+        : (sells[0]?.price ?? "0");
 
     const msg = MsgCreateSpotMarketOrder.fromJSON({
       injectiveAddress,
       subaccountId,
       marketId,
+      feeRecipient: DEFAULT_FEE_RECIPIENT,
       orderType: side === "buy" ? 1 : 2,
       price: bestPrice,
       quantity,
