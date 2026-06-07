@@ -5,7 +5,9 @@ import asyncio
 from .config import settings
 # from .api.routes import router as api_router
 from .api.ws_routes import router as ws_router
+from .api.user_routes import router as user_router
 from .services.orchestrator import build_graph
+from .models.db_models import init_db
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -14,6 +16,8 @@ from fastapi.middleware.cors import CORSMiddleware
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # --- Startup logic ---
+    init_db()
+    print("Database initialised")
     print("Building graph...")
     try:
         build_graph()
@@ -47,6 +51,7 @@ def create_app() -> FastAPI:
         allow_headers=["*"],  # Allow all headers
     )
     app.include_router(ws_router)  # WebSocket routes don't need prefix
+    app.include_router(user_router)
     return app
 
 app = create_app()
