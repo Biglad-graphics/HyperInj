@@ -260,6 +260,7 @@ const AgentChat = ({
         ws.current.close();
       }
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [websocketUrl]);
 
   const sendMessage = (messageText: string) => {
@@ -307,6 +308,7 @@ const AgentChat = ({
       prevMessageRef.current = externalMessage;
       sendMessage(externalMessage);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [externalMessage]);
 
   const renderMessage = (msg: Message) => {

@@ -1,29 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import Icon from "@/components/Icon";
 import { getUserTradeHistory } from "../../services/hyperliquidPortfolio.service";
 
 type TradeHistoryItem = {
   coin: string;
-  px: string;
-  sz: string;
+  price: string;
+  quantity: string;
   side: string;
   time: number;
-  startPosition: string;
-  dir: string;
-  closedPnl: string;
+  pnl: string;
   hash: string;
-  oid: number;
-  crossed: boolean;
-  fee: string;
-  tid: number;
-  feeToken: string;
-  twapId: null | number;
+  type: "spot" | "derivative";
 };
 
-type TradeHistoryProps = {};
-
-const TradeHistory = ({}: TradeHistoryProps) => {
+const TradeHistory = () => {
   const [trades, setTrades] = useState<TradeHistoryItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -31,94 +22,76 @@ const TradeHistory = ({}: TradeHistoryProps) => {
 
   const ITEMS_PER_PAGE = 10;
 
-  useEffect(() => {
-    const fetchTradeHistory = async () => {
-      if (authenticated && user) {
-        try {
-          setLoading(true);
-          // Get wallet address from Privy user
-          const wallet = user.linkedAccounts?.find(
-            (account) => account.type === "wallet"
-          );
+  const fetchTradeHistory = useCallback(async () => {
+    if (!authenticated || !user) return;
+    const wallet = user.linkedAccounts?.find((a) => a.type === "wallet");
+    if (!wallet || !("address" in wallet)) return;
 
-          if (wallet && "address" in wallet) {
-            const tradeHistory = await getUserTradeHistory(wallet.address);
-            // Get the last 6 trades
-            // const recentTrades = tradeHistory.slice(-8).reverse();
-            const recentTrades = tradeHistory;
-            setTrades(recentTrades);
-            setCurrentPage(1); // Reset to first page when new data loads
-          }
-        } catch (error) {
-          console.error("Error fetching trade history:", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
+    try {
+      setLoading(true);
+      const { spotTrades, derivativeTrades } = await getUserTradeHistory(wallet.address);
 
-    fetchTradeHistory();
+      const normalized: TradeHistoryItem[] = [
+        ...((spotTrades?.trades ?? []).map((t: any) => ({
+          coin: t.marketId ?? "—",
+          price: t.price ?? "0",
+          quantity: t.quantity ?? "0",
+          side: t.tradeDirection ?? "—",
+          time: Number(t.executedAt ?? 0),
+          pnl: "—",
+          hash: t.tradeId ?? "",
+          type: "spot" as const,
+        }))),
+        ...((derivativeTrades?.trades ?? []).map((t: any) => ({
+          coin: t.marketId ?? "—",
+          price: t.executionPrice ?? "0",
+          quantity: t.executionQuantity ?? "0",
+          side: t.tradeDirection ?? "—",
+          time: Number(t.executedAt ?? 0),
+          pnl: t.payout ?? "0",
+          hash: t.tradeId ?? "",
+          type: "derivative" as const,
+        }))),
+      ].sort((a, b) => b.time - a.time);
+
+      setTrades(normalized);
+      setCurrentPage(1);
+    } catch (error) {
+      console.error("Error fetching trade history:", error);
+    } finally {
+      setLoading(false);
+    }
   }, [authenticated, user]);
 
+  useEffect(() => {
+    fetchTradeHistory();
+  }, [fetchTradeHistory]);
+
   const formatTime = (timestamp: number): string => {
+    if (!timestamp) return "—";
     const date = new Date(timestamp);
-    const now = new Date();
-    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
-
-    if (diffInSeconds < 60) {
-      return `${diffInSeconds}s ago`;
-    } else if (diffInSeconds < 3600) {
-      return `${Math.floor(diffInSeconds / 60)}m ago`;
-    } else if (diffInSeconds < 86400) {
-      return `${Math.floor(diffInSeconds / 3600)}h ago`;
-    } else {
-      return date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    }
+    const diffInSeconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    if (diffInSeconds < 60) return `${diffInSeconds}s ago`;
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   };
 
-  const formatHash = (hash: string): string => {
-    return `${hash.slice(0, 6)}...${hash.slice(-3)}`;
-  };
+  const formatHash = (hash: string): string =>
+    hash.length > 9 ? `${hash.slice(0, 6)}...${hash.slice(-3)}` : hash;
 
   const handleHashClick = (hash: string) => {
     window.open(`https://explorer.injective.network/transaction/${hash}`, "_blank");
   };
 
-  // Pagination calculations
   const totalPages = Math.ceil(trades.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const endIndex = startIndex + ITEMS_PER_PAGE;
-  const paginatedTrades = trades.slice(startIndex, endIndex);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    // Scroll to top of table
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handlePrevious = () => {
-    if (currentPage > 1) {
-      handlePageChange(currentPage - 1);
-    }
-  };
-
-  const handleNext = () => {
-    if (currentPage < totalPages) {
-      handlePageChange(currentPage + 1);
-    }
-  };
+  const paginatedTrades = trades.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   if (loading) {
     return (
       <div className="flex justify-center items-center py-8">
-        <div className="text-base-1 text-theme-secondary">
-          Loading trade history...
-        </div>
+        <div className="text-base-1 text-theme-secondary">Loading trade history...</div>
       </div>
     );
   }
@@ -127,9 +100,7 @@ const TradeHistory = ({}: TradeHistoryProps) => {
     return (
       <div className="flex justify-center items-center py-8">
         <div className="text-base-1 text-theme-secondary">
-          {!authenticated
-            ? "Please connect your wallet to view trade history"
-            : "No trades found"}
+          {!authenticated ? "Please connect your wallet to view trade history" : "No trades found"}
         </div>
       </div>
     );
@@ -140,66 +111,38 @@ const TradeHistory = ({}: TradeHistoryProps) => {
       <table className="w-full">
         <thead>
           <tr>
-            <th className="pl-6 py-3 text-left text-caption-2m text-theme-secondary md:pl-4">
-              Coin
-            </th>
-            <th className="pl-4 py-3 text-left text-caption-2m text-theme-secondary md:hidden">
-              Close Price
-            </th>
-            <th className="pl-4 py-3 text-left text-caption-2m text-theme-secondary">
-              Size
-            </th>
-            <th className="pl-4 py-3 text-left text-caption-2m text-theme-secondary md:hidden">
-              Direction
-            </th>
-            <th className="pl-4 py-3 text-left text-caption-2m text-theme-secondary">
-              PnL
-            </th>
-            <th className="pl-4 py-3 text-left text-caption-2m text-theme-secondary md:hidden">
-              Time
-            </th>
-            <th className="pl-4 py-3 pr-6 text-left text-caption-2m text-theme-secondary md:pr-4">
-              Tx Hash
-            </th>
+            <th className="pl-6 py-3 text-left text-caption-2m text-theme-secondary md:pl-4">Market</th>
+            <th className="pl-4 py-3 text-left text-caption-2m text-theme-secondary md:hidden">Price</th>
+            <th className="pl-4 py-3 text-left text-caption-2m text-theme-secondary">Size</th>
+            <th className="pl-4 py-3 text-left text-caption-2m text-theme-secondary md:hidden">Side</th>
+            <th className="pl-4 py-3 text-left text-caption-2m text-theme-secondary">PnL</th>
+            <th className="pl-4 py-3 text-left text-caption-2m text-theme-secondary md:hidden">Time</th>
+            <th className="pl-4 py-3 pr-6 text-left text-caption-2m text-theme-secondary md:pr-4">Tx</th>
           </tr>
         </thead>
         <tbody>
           {paginatedTrades.map((trade, index) => {
-            const pnlValue = parseFloat(trade.closedPnl);
-            const isProfitable = pnlValue >= 0;
-
+            const pnlNum = parseFloat(trade.pnl);
+            const isProfitable = !isNaN(pnlNum) && pnlNum >= 0;
             return (
-              <tr className="" key={`${trade.hash}-${index}`}>
+              <tr key={`${trade.hash}-${index}`}>
                 <td className="border-t border-theme-stroke pl-6 py-3 md:pl-4">
                   <div className="text-base-1s font-semibold">{trade.coin}</div>
                 </td>
                 <td className="border-t border-theme-stroke pl-4 py-3 text-base-1s md:hidden">
-                  ${parseFloat(trade.px).toLocaleString()}
+                  {parseFloat(trade.price).toLocaleString()}
                 </td>
-                <td className="border-t border-theme-stroke pl-4 py-3 text-base-1s">
-                  {trade.sz}
-                </td>
+                <td className="border-t border-theme-stroke pl-4 py-3 text-base-1s">{trade.quantity}</td>
                 <td className="border-t border-theme-stroke pl-4 py-3 md:hidden">
-                  <span
-                    className={`inline-flex px-2 py-1 rounded text-caption-2m ${
-                      trade.dir.includes("Close")
-                        ? "bg-theme-red/10 text-theme-red"
-                        : trade.dir.includes("Long")
-                        ? "bg-theme-green/10 text-theme-green"
-                        : "bg-theme-red/10 text-theme-red"
-                    }`}
-                  >
-                    {trade.dir}
+                  <span className={`inline-flex px-2 py-1 rounded text-caption-2m ${
+                    trade.side === "buy" ? "bg-theme-green/10 text-theme-green" : "bg-theme-red/10 text-theme-red"
+                  }`}>
+                    {trade.side}
                   </span>
                 </td>
                 <td className="border-t border-theme-stroke pl-4 py-3">
-                  <div
-                    className={`text-base-1s font-semibold ${
-                      isProfitable ? "text-theme-green" : "text-theme-red"
-                    }`}
-                  >
-                    {isProfitable ? "+" : ""}
-                    {trade.closedPnl}
+                  <div className={`text-base-1s font-semibold ${isProfitable ? "text-theme-green" : "text-theme-red"}`}>
+                    {trade.pnl === "—" ? "—" : `${isProfitable ? "+" : ""}${trade.pnl}`}
                   </div>
                 </td>
                 <td className="border-t border-theme-stroke pl-4 py-3 text-caption-2 text-theme-secondary md:hidden">
@@ -220,79 +163,34 @@ const TradeHistory = ({}: TradeHistoryProps) => {
         </tbody>
       </table>
 
-      {/* Pagination Controls */}
       {totalPages > 1 && (
         <div className="flex items-center justify-between px-6 py-4 border-t border-theme-stroke md:px-4">
           <div className="text-caption-2 text-theme-secondary">
-            Showing {startIndex + 1}-{Math.min(endIndex, trades.length)} of{" "}
-            {trades.length} trades
+            Showing {startIndex + 1}–{Math.min(startIndex + ITEMS_PER_PAGE, trades.length)} of {trades.length}
           </div>
-
           <div className="flex items-center space-x-2">
             <button
-              onClick={handlePrevious}
+              onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
               disabled={currentPage === 1}
-              className={`px-3 py-1.5 rounded-lg text-caption-2m transition-colors ${
-                currentPage === 1
-                  ? "text-theme-tertiary cursor-not-allowed"
-                  : "text-theme-primary hover:bg-theme-on-surface-2"
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-caption-2m transition-colors ${currentPage === 1 ? "text-theme-tertiary cursor-not-allowed" : "text-theme-primary hover:bg-theme-on-surface-2"}`}
             >
               Previous
             </button>
-
-            <div className="flex items-center space-x-1">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (page) => {
-                  // Show first page, last page, current page, and pages around current
-                  const showPage =
-                    page === 1 ||
-                    page === totalPages ||
-                    (page >= currentPage - 1 && page <= currentPage + 1);
-
-                  if (!showPage) {
-                    // Show ellipsis
-                    if (
-                      page === currentPage - 2 ||
-                      page === currentPage + 2
-                    ) {
-                      return (
-                        <span
-                          key={page}
-                          className="px-2 text-theme-tertiary"
-                        >
-                          ...
-                        </span>
-                      );
-                    }
-                    return null;
-                  }
-
-                  return (
-                    <button
-                      key={page}
-                      onClick={() => handlePageChange(page)}
-                      className={`px-3 py-1.5 rounded-lg text-caption-2m transition-colors ${
-                        currentPage === page
-                          ? "bg-theme-brand text-white"
-                          : "text-theme-primary hover:bg-theme-on-surface-2"
-                      }`}
-                    >
-                      {page}
-                    </button>
-                  );
-                }
-              )}
-            </div>
-
+            {Array.from({ length: totalPages }, (_, i) => i + 1)
+              .filter((p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 1)
+              .map((page) => (
+                <button
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`px-3 py-1.5 rounded-lg text-caption-2m transition-colors ${currentPage === page ? "bg-theme-brand text-white" : "text-theme-primary hover:bg-theme-on-surface-2"}`}
+                >
+                  {page}
+                </button>
+              ))}
             <button
-              onClick={handleNext}
+              onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
               disabled={currentPage === totalPages}
-              className={`px-3 py-1.5 rounded-lg text-caption-2m transition-colors ${
-                currentPage === totalPages
-                  ? "text-theme-tertiary cursor-not-allowed"
-                  : "text-theme-primary hover:bg-theme-on-surface-2"
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-caption-2m transition-colors ${currentPage === totalPages ? "text-theme-tertiary cursor-not-allowed" : "text-theme-primary hover:bg-theme-on-surface-2"}`}
             >
               Next
             </button>
