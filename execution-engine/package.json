@@ -23,7 +23,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@nktkas/hyperliquid": "0.25.2",
+    "@injectivelabs/sdk-ts": "^1.14.26",
+    "@injectivelabs/networks": "^1.14.26",
+    "@injectivelabs/ts-types": "^1.14.26",
     "@privy-io/node": "^0.3.0",
     "@privy-io/server-auth": "^1.32.5",
     "@types/swagger-jsdoc": "^6.0.4",

@@ -1,2 +1,2 @@
-export { getAvailableBalance } from './getAvailableBalance.controller';
-export { placeOrder } from './placeOrder.controller';
+// Redirects to Injective implementation
+export { getAvailableBalance, placeOrder } from '../injective';
