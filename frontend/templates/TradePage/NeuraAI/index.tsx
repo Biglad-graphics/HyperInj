@@ -14,7 +14,7 @@ const NeuraAI = ({}: NeuraAIProps) => {
     <div className="pt-6 md:pt-4">
       <div className="flex items-center mb-6 md:mb04">
         <div className="mr-auto text-title-1s md:text-[1.125rem]">
-          Cognix AI
+          HyperInj AI
         </div>
         {message !== "" && (
           <button className="btn-square mr-3">

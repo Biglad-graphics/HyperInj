@@ -32,7 +32,7 @@ const Sending = ({ onConfirm, onClose }: SendingProps) => (
       <Option classTitle="!w-30" title="Price" color="bg-theme-red">
         1 ETH = US$3579,78
       </Option>
-      <Option classTitle="!w-30" title="Cognix fee" color="bg-theme-purple">
+      <Option classTitle="!w-30" title="HyperInj fee" color="bg-theme-purple">
         US$0.00
       </Option>
       <Option classTitle="!w-30" title="Total">

@@ -61,7 +61,7 @@ const Message = ({
         value={value}
         onChange={onChange}
         onKeyPress={onKeyPress}
-        placeholder={placeholder || "Ask Cognix AI anything"}
+        placeholder={placeholder || "Ask HyperInj AI anything"}
         disabled={disabled}
       />
       <button

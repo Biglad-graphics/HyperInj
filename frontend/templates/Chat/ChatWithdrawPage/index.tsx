@@ -8,7 +8,7 @@ import Withdraw from "@/components/Chat/Withdraw";
 
 const ChatPage = () => {
   return (
-    <Layout title="Cognix AI">
+    <Layout title="HyperInj AI">
       <Chat>
         <Question content="Auto withdraw to my MetaMask wallet if the ETH balance goes over 3 ETH." />
         <Answer content="Sure, please confirm your Metamask address:">

@@ -210,7 +210,7 @@ const SignInPage = () => {
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="font-semibold text-base text-base-2 mb-1">
-                Live on Hyperliquid
+                Live on Injective
               </h3>
               <p className="text-sm text-base-2/70 leading-relaxed">
                 Automated execution and real-time position management

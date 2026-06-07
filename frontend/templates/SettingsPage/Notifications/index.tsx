@@ -28,19 +28,19 @@ const Notifications = ({}: NotificationsProps) => {
     },
     {
       title: "Updates & Promotions",
-      content: "Receive important Cognix promotions and updates.",
+      content: "Receive important HyperInj promotions and updates.",
       value: updates,
       setValue: setUpdates,
     },
     {
       title: "Payout processed",
-      content: "Receive important Cognix promotions and updates.",
+      content: "Receive important HyperInj promotions and updates.",
       value: payoutProcessed,
       setValue: setPayoutProcessed,
     },
     {
       title: "Google Authenticator (2FA)",
-      content: "Receive important Cognix promotions and updates.",
+      content: "Receive important HyperInj promotions and updates.",
       value: googleAuthenticator,
       setValue: setGoogleAuthenticator,
     },

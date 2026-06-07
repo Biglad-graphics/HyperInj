@@ -2,7 +2,7 @@
  * Utility functions for managing user data in localStorage
  */
 
-const USER_STORAGE_KEY = "Cognix_user_data";
+const USER_STORAGE_KEY = "HyperInj_user_data";
 
 export interface UserData {
   userId: string; // MongoDB _id from backend

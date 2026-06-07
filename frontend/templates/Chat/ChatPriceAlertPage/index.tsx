@@ -8,7 +8,7 @@ import PriceAlert from "@/components/Chat/PriceAlert";
 
 const ChatPage = () => {
   return (
-    <Layout title="Cognix AI">
+    <Layout title="HyperInj AI">
       <Chat>
         <Question content="Based on my assets, set up bulk price alerts" />
         <Answer content="Certainly, you now have a total of 5 assets, and I have already set the price alert. Please review them below and make any manual adjustments if needed.">

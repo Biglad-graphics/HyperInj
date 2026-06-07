@@ -86,7 +86,7 @@ const TradeHistory = ({}: TradeHistoryProps) => {
   };
 
   const handleHashClick = (hash: string) => {
-    window.open(`https://app.hyperliquid.xyz/explorer/tx/${hash}`, "_blank");
+    window.open(`https://explorer.injective.network/transaction/${hash}`, "_blank");
   };
 
   // Pagination calculations

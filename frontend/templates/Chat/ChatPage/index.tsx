@@ -5,7 +5,7 @@ import Chat from "@/components/Chat";
 
 const ChatPage = () => {
   return (
-    <Layout title="Cognix AI">
+    <Layout title="HyperInj AI">
       <Chat />
     </Layout>
   );

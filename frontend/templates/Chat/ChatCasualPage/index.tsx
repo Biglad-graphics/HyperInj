@@ -7,7 +7,7 @@ import Answer from "@/components/Chat/Answer";
 
 const ChatPage = () => {
   return (
-    <Layout title="Cognix AI">
+    <Layout title="HyperInj AI">
       <Chat>
         <Question content="Generate an NFT idea" />
         <Answer

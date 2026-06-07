@@ -25,7 +25,7 @@ export const navigation = [
   },
   {
     id: "4",
-    title: "Cognix AI",
+    title: "HyperInj AI",
     icon: "star-plus",
     url: "/chat",
   },
