@@ -1,79 +1,87 @@
-# HyperInj Deployment Guide
+# HyperInj — Deployment Guide
 
-## Prerequisites
+## Architecture
 
-- [Railway account](https://railway.app) and [Railway CLI](https://docs.railway.app/develop/cli): `npm install -g @railway/cli`
-- [Vercel account](https://vercel.com) and [Vercel CLI](https://vercel.com/docs/cli): `npm install -g vercel`
-- Git repository pushed to GitHub
-
----
-
-## Step 1: Deploy Redis on Railway
-
-1. In the Railway dashboard, create a new project.
-2. Click **+ New** → **Database** → **Redis**.
-3. Once provisioned, copy the `REDIS_URL` from the **Variables** tab — you'll need it in Step 4.
+| Service | Platform | Notes |
+|---------|----------|-------|
+| Frontend (Next.js) | Vercel | Zero-config, global CDN |
+| Agentic Backend (FastAPI) | Render | WebSocket + REST |
+| Execution Engine (Express) | Render | REST API + Injective orders |
+| Algorithm Engine (BullMQ) | Render | Background worker |
+| Redis | Render | Managed Redis (free tier) |
+| MongoDB | Atlas | Already configured |
 
 ---
 
-## Step 2: Deploy agentic-backend on Railway
+## Step 1 — Deploy backends on Render
 
-1. In the same Railway project, click **+ New** → **GitHub Repo** → select this repo.
-2. Set the **Root Directory** to `agentic-backend`.
-3. Railway will use `agentic-backend/railway.toml` automatically.
-4. Add the following environment variables in the Railway **Variables** tab:
+1. Go to [render.com](https://render.com) → **New → Blueprint**
+2. Connect your GitHub account and select `Biglad-graphics/HyperInj`
+3. Render will detect `render.yaml` at the repo root and create all 4 services automatically.
+4. During setup, fill in the **secret env vars** in the Render dashboard:
 
-| Variable | Value |
-|---|---|
-| `ANTHROPIC_API_KEY` | Your Anthropic API key |
-| `ANTHROPIC_BASE_URL` | Anthropic API base URL (e.g. `https://api.anthropic.com`) |
-| `DATABASE_URL` | Your database connection string |
+   **hyperinj-agentic-backend:**
+   ```
+   ANTHROPIC_API_KEY=fe_oa_e0b50ea4f7ca5f63365cbdec0d402b3aab7fc066b38ea920
+   ```
 
-5. Note the public URL assigned to this service (e.g. `https://agentic-backend-xxxx.railway.app`).
+   **hyperinj-execution-engine:**
+   ```
+   MONGODB_URI=mongodb+srv://bigladgraphics_db_user:<password>@cluster0.hsb7dxe.mongodb.net/hyperinj?retryWrites=true&w=majority
+   ```
 
----
+5. Wait for all services to go **Live** (first deploy takes 3–5 min each).
+6. Copy the agentic-backend public URL, e.g.:
+   ```
+   https://hyperinj-agentic-backend.onrender.com
+   ```
 
-## Step 3: Deploy execution-engine on Railway
-
-1. Click **+ New** → **GitHub Repo** → same repo.
-2. Set **Root Directory** to `execution-engine`.
-3. Add environment variables:
-
-| Variable | Value |
-|---|---|
-| `MONGODB_URI` | Your MongoDB connection string |
-| `INJECTIVE_NETWORK` | `mainnet` |
+> **Note:** Free-tier services spin down after 15 min of inactivity and wake on the next request (~30s cold start). Upgrade to Starter ($7/mo) to keep them always-on.
 
 ---
 
-## Step 4: Deploy algorithm-engine on Railway
+## Step 2 — Deploy frontend on Vercel
 
-1. Click **+ New** → **GitHub Repo** → same repo.
-2. Set **Root Directory** to `algorithm-engine`.
-3. Add environment variables:
+1. Go to [vercel.com](https://vercel.com) → **New Project → Import Git Repository**
+2. Select `Biglad-graphics/HyperInj`
+3. Set **Root Directory** → `frontend`
+4. Add these environment variables:
 
-| Variable | Value |
-|---|---|
-| `REDIS_URL` | The Redis URL from Step 1 |
-| `AI_BASE_URL` | The agentic-backend URL from Step 2 |
+   ```
+   NEXT_PUBLIC_PRIVY_APP_ID=cmq3vti8800an0cjo33gx0qmd
+   NEXT_PUBLIC_PRIVY_CLIENT_ID=client-WY6aFJpwJr5cEXCt63DbDoauhWcDXs6Z7vvMygiSY2WHE
+   NEXT_PUBLIC_API_BASE_URL=https://hyperinj-agentic-backend.onrender.com
+   NEXT_PUBLIC_AGENT_WS_URL=wss://hyperinj-agentic-backend.onrender.com
+   ```
 
----
-
-## Step 5: Deploy frontend on Vercel
-
-1. Run `vercel` from the `frontend/` directory, or connect the repo in the Vercel dashboard and set the **Root Directory** to `frontend`.
-2. Add the following environment variables in Vercel project settings:
-
-| Variable | Value |
-|---|---|
-| `NEXT_PUBLIC_PRIVY_APP_ID` | Your Privy app ID |
-| `NEXT_PUBLIC_PRIVY_CLIENT_ID` | Your Privy client ID |
-| `NEXT_PUBLIC_API_BASE_URL` | agentic-backend URL from Step 2 (https://) |
-| `NEXT_PUBLIC_AGENT_WS_URL` | agentic-backend URL from Step 2 (wss://) |
+5. Click **Deploy**.
 
 ---
 
-## Local Development
+## Local development
 
-Copy `frontend/.env.production` to `frontend/.env.local` and fill in real values.
-For backend services, create `.env` files in each service directory using the variables listed above.
+Each service reads from its own `.env` file (gitignored). Defaults:
+
+```
+# agentic-backend/.env
+ANTHROPIC_API_KEY=...
+ANTHROPIC_BASE_URL=https://cc.freemodel.dev
+
+# execution-engine/.env
+MONGODB_URI=...
+PORT=4000
+INJECTIVE_NETWORK=mainnet
+
+# algorithm-engine/.env
+REDIS_URL=redis://127.0.0.1:6379
+AI_BASE_URL=ws://localhost:8000/ws/chat
+INJECTIVE_NETWORK=mainnet
+
+# frontend/.env.local
+NEXT_PUBLIC_PRIVY_APP_ID=...
+NEXT_PUBLIC_PRIVY_CLIENT_ID=...
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+NEXT_PUBLIC_AGENT_WS_URL=ws://localhost:8000
+```
+
+Start Redis locally: `cd algorithm-engine && docker compose up -d`

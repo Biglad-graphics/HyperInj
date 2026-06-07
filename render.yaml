@@ -1,0 +1,66 @@
+services:
+  # ── Agentic Backend (FastAPI) ─────────────────────────────────────────
+  - type: web
+    name: hyperinj-agentic-backend
+    runtime: python
+    rootDir: agentic-backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn agentic_backend.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false          # set manually in Render dashboard
+      - key: ANTHROPIC_BASE_URL
+        value: https://cc.freemodel.dev
+      - key: PYTHON_VERSION
+        value: "3.11"
+
+  # ── Execution Engine (Express/Node) ───────────────────────────────────
+  - type: web
+    name: hyperinj-execution-engine
+    runtime: node
+    rootDir: execution-engine
+    buildCommand: npm install && npm run build
+    startCommand: node dist/server.js
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "18"
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false          # set manually in Render dashboard
+      - key: INJECTIVE_NETWORK
+        value: mainnet
+      - key: LOG_LEVEL
+        value: info
+
+  # ── Algorithm Engine (BullMQ worker) ─────────────────────────────────
+  - type: worker
+    name: hyperinj-algorithm-engine
+    runtime: node
+    rootDir: algorithm-engine
+    buildCommand: npm install && npm run build
+    startCommand: node dist/index.js
+    plan: free
+    envVars:
+      - key: NODE_VERSION
+        value: "18"
+      - key: REDIS_URL
+        fromService:
+          type: redis
+          name: hyperinj-redis
+          property: connectionString
+      - key: AI_BASE_URL
+        sync: false          # set to wss://hyperinj-agentic-backend.onrender.com/ws/chat
+      - key: INJECTIVE_NETWORK
+        value: mainnet
+
+# ── Redis ──────────────────────────────────────────────────────────────
+databases:
+  - name: hyperinj-redis
+    type: redis
+    plan: free
+    ipAllowList: []
