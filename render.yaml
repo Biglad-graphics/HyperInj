@@ -19,9 +19,10 @@ services:
   # ── Execution Engine (Express/Node) ───────────────────────────────────
   - type: web
     name: hyperinj-execution-engine
-    runtime: docker
-    dockerfilePath: execution-engine/Dockerfile
-    dockerContext: execution-engine
+    runtime: node
+    rootDir: execution-engine
+    buildCommand: npm install && npm run build
+    startCommand: node dist/server.js
     plan: free
     healthCheckPath: /health
     envVars:
