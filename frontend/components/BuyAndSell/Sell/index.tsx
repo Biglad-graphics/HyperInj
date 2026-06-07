@@ -37,7 +37,7 @@ const Sell = ({}: SellProps) => {
                 </Option>
                 <Option
                     classTitle="2xl:!mr-3"
-                    image="/images/crypto-icon-7.png"
+                    image="/images/btc.svg"
                     stroke
                 >
                     <div className="text-theme-secondary">

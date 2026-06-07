@@ -25,7 +25,7 @@ const Buy = ({}: BuyProps) => {
                 </Option>
                 <Option
                     classTitle="2xl:!mr-3"
-                    image="/images/crypto-icon-2.png"
+                    image="/images/eth.svg"
                     stroke
                 >
                     <div className="text-theme-secondary">

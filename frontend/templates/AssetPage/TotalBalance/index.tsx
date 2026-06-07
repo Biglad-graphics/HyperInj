@@ -38,7 +38,7 @@ const TotalBalance = ({}: TotalBalanceProps) => {
                 <div className="mr-3">
                     <Image
                         className="crypto-logo w-6"
-                        src="/images/crypto-icon-2.png"
+                        src="/images/eth.svg"
                         width={24}
                         height={24}
                         alt=""

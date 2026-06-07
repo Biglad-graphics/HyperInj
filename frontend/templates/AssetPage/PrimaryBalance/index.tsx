@@ -79,7 +79,7 @@ const PrimaryBalance = ({}: PrimaryBalanceProps) => {
                     <div className="mr-3 text-0">
                         <Image
                             className="crypto-logo w-4"
-                            src="/images/crypto-icon-2.png"
+                            src="/images/eth.svg"
                             width={16}
                             height={16}
                             alt=""

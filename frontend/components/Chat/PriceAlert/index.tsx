@@ -5,27 +5,27 @@ import Icon from "@/components/Icon";
 const items = [
     {
         title: "ETH",
-        image: "/images/crypto-icon-2.png",
+        image: "/images/eth.svg",
         price: 236.88,
     },
     {
         title: "USDC",
-        image: "/images/crypto-icon-1.png",
+        image: "/images/inj.svg",
         price: 432.45,
     },
     {
         title: "USDC",
-        image: "/images/crypto-icon-4.png",
+        image: "/images/usdt.svg",
         price: 651.32,
     },
     {
         title: "USDC",
-        image: "/images/crypto-icon-3.png",
+        image: "/images/atom.svg",
         price: 223.55,
     },
     {
         title: "USDC",
-        image: "/images/crypto-icon-6.png",
+        image: "/images/inj.svg",
         price: 124.55,
     },
 ];

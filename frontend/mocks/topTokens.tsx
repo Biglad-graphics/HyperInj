@@ -1,7 +1,7 @@
 export const topTokens = [
   {
     id: "0",
-    icon: "/images/crypto-icon-1.png",
+    icon: "/images/inj.svg",
     currencyFull: "Injective",
     currencyShort: "INJ",
     price: "$24.50",
@@ -23,7 +23,7 @@ export const topTokens = [
   },
   {
     id: "1",
-    icon: "/images/crypto-icon-3.png",
+    icon: "/images/atom.svg",
     currencyFull: "Cosmos",
     currencyShort: "ATOM",
     price: "$8.42",
@@ -45,7 +45,7 @@ export const topTokens = [
   },
   {
     id: "2",
-    icon: "/images/crypto-icon-4.png",
+    icon: "/images/usdt.svg",
     currencyFull: "Tether USD",
     currencyShort: "USDT",
     price: "$1.00",
@@ -67,7 +67,7 @@ export const topTokens = [
   },
   {
     id: "3",
-    icon: "/images/crypto-icon-2.png",
+    icon: "/images/eth.svg",
     currencyFull: "Ethereum",
     currencyShort: "ETH",
     price: "$3,250.00",

@@ -1,7 +1,7 @@
 export const prices = [
     {
         id: "0",
-        icon: "/images/crypto-icon-4.png",
+        icon: "/images/usdt.svg",
         currencyFull: "Ethereum",
         currencyShort: "ETH",
         price: "$0.1855",
@@ -59,7 +59,7 @@ export const prices = [
     },
     {
         id: "1",
-        icon: "/images/crypto-icon-6.png",
+        icon: "/images/inj.svg",
         currencyFull: "Driipcoin",
         currencyShort: "DRC",
         price: "$0.2968",
@@ -117,7 +117,7 @@ export const prices = [
     },
     {
         id: "2",
-        icon: "/images/crypto-icon-3.png",
+        icon: "/images/atom.svg",
         currencyFull: "Ethereum",
         currencyShort: "ETH",
         price: "$0.1323",
@@ -175,7 +175,7 @@ export const prices = [
     },
     {
         id: "3",
-        icon: "/images/crypto-icon-4.png",
+        icon: "/images/usdt.svg",
         currencyFull: "Ethereum",
         currencyShort: "ETH",
         price: "$0.1855",
@@ -233,7 +233,7 @@ export const prices = [
     },
     {
         id: "4",
-        icon: "/images/crypto-icon-1.png",
+        icon: "/images/inj.svg",
         currencyFull: "Driipcoin",
         currencyShort: "DRC",
         price: "$0.2968",
@@ -291,7 +291,7 @@ export const prices = [
     },
     {
         id: "5",
-        icon: "/images/crypto-icon-4.png",
+        icon: "/images/usdt.svg",
         currencyFull: "Ethereum",
         currencyShort: "ETH",
         price: "$0.1323",

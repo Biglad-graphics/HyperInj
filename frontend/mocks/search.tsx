@@ -1,7 +1,7 @@
 export const trendingAssets = [
     {
         id: "0",
-        icon: "/images/crypto-icon-1.png",
+        icon: "/images/inj.svg",
         currencyFull: "Bitcoin",
         currencyShort: "BTC",
         number: 234,
@@ -10,7 +10,7 @@ export const trendingAssets = [
     },
     {
         id: "1",
-        icon: "/images/crypto-icon-2.png",
+        icon: "/images/eth.svg",
         currencyFull: "Ethereum",
         currencyShort: "ETH",
         number: 46,
@@ -19,7 +19,7 @@ export const trendingAssets = [
     },
     {
         id: "2",
-        icon: "/images/crypto-icon-3.png",
+        icon: "/images/atom.svg",
         currencyFull: "Bitcoin",
         currencyShort: "BTC",
         number: 234,

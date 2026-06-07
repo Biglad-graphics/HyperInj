@@ -1,0 +1,8 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="20" cy="20" r="20" fill="#627EEA"/>
+  <!-- Ethereum diamond mark -->
+  <path d="M20 9L12 20.5L20 24.5L28 20.5L20 9Z" fill="white" fill-opacity="0.9"/>
+  <path d="M20 9L12 20.5L20 24.5V9Z" fill="white" fill-opacity="0.5"/>
+  <path d="M12 22L20 31L28 22L20 26L12 22Z" fill="white" fill-opacity="0.9"/>
+  <path d="M12 22L20 31V26L12 22Z" fill="white" fill-opacity="0.5"/>
+</svg>

@@ -1,0 +1,13 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="20" cy="20" r="20" fill="#F7931A"/>
+  <!-- Bitcoin ₿ mark -->
+  <!-- Left vertical stem -->
+  <rect x="13" y="10" width="3" height="20" rx="1" fill="white"/>
+  <!-- Top bump -->
+  <path d="M16 11H22C24.2 11 26 12.8 26 15C26 17.2 24.2 19 22 19H16V11Z" fill="white"/>
+  <!-- Bottom bump (wider) -->
+  <path d="M16 19H23C25.2 19 27 20.8 27 23C27 25.2 25.2 27 23 27H16V19Z" fill="white"/>
+  <!-- Serifs top -->
+  <rect x="14" y="10" width="5" height="2" rx="1" fill="white"/>
+  <rect x="14" y="28" width="5" height="2" rx="1" fill="white"/>
+</svg>

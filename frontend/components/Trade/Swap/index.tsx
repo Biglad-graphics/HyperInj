@@ -45,7 +45,7 @@ const Swap = ({ onSelect, onContinue }: SwapProps) => {
                             <div className="mr-3 relative z-2">
                                 <Image
                                     className="crypto-logo w-10"
-                                    src="/images/crypto-icon-2.png"
+                                    src="/images/eth.svg"
                                     width={40}
                                     height={40}
                                     alt=""
@@ -73,7 +73,7 @@ const Swap = ({ onSelect, onContinue }: SwapProps) => {
                             <div className="mr-3 relative z-2">
                                 <Image
                                     className="crypto-logo w-10"
-                                    src="/images/crypto-icon-3.png"
+                                    src="/images/atom.svg"
                                     width={40}
                                     height={40}
                                     alt=""

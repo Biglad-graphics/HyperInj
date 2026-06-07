@@ -32,7 +32,7 @@ const Send = ({}: SendProps) => {
                         <div className="shrink-0 mr-2">
                             <Image
                                 className="crypto-logo w-6"
-                                src="/images/crypto-icon-2.png"
+                                src="/images/eth.svg"
                                 width={24}
                                 height={24}
                                 alt=""

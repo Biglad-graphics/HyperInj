@@ -32,7 +32,7 @@ const PreviewSwap = ({ onBack }: PreviewSwapProps) => {
                     <div className="">
                         <Image
                             className="crypto-logo w-8"
-                            src="/images/crypto-icon-2.png"
+                            src="/images/eth.svg"
                             width={32}
                             height={32}
                             alt=""
@@ -45,7 +45,7 @@ const PreviewSwap = ({ onBack }: PreviewSwapProps) => {
                     <div className="">
                         <Image
                             className="crypto-logo w-8"
-                            src="/images/crypto-icon-3.png"
+                            src="/images/atom.svg"
                             width={32}
                             height={32}
                             alt=""

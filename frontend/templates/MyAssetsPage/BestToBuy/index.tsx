@@ -44,7 +44,7 @@ const BestToBuy = ({}: BestToBuyProps) => {
                         <div className="mr-2">
                             <Image
                                 className="w-6"
-                                src="/images/crypto-icon-gray-2.png"
+                                src="/images/eth-gray.svg"
                                 width={24}
                                 height={24}
                                 alt=""

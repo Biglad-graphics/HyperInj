@@ -29,7 +29,7 @@ const Trade = ({}: TradeProps) => {
                         />
                         <Image
                             className="crypto-logo absolute top-1/2 left-3 w-6 -translate-y-1/2"
-                            src="/images/crypto-icon-2.png"
+                            src="/images/eth.svg"
                             width={24}
                             height={24}
                             alt=""

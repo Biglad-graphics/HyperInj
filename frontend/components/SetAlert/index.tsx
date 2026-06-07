@@ -32,7 +32,7 @@ const SetAlert = ({}: SetAlertProps) => {
                 <div className="mb-3 text-center">
                     <Image
                         className="crypto-logo w-12"
-                        src="/images/crypto-icon-2.png"
+                        src="/images/eth.svg"
                         width={48}
                         height={48}
                         alt=""
