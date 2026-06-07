@@ -28,7 +28,7 @@ export const getOpenOrders = async (injectiveAddress: string) => {
 
 export const getUserPositions = async (injectiveAddress: string) => {
   const positions = await derivativesApi.fetchPositions({
-    address: injectiveAddress,
+    subaccountId: injectiveAddress,
   });
   return positions;
 };
