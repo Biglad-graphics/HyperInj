@@ -6,6 +6,7 @@ import {
   createStrategy, getUserStrategies, getUserStrategy,
   updateStrategy, deleteStrategy,
 } from '../controllers/strategy';
+import { registerUser, getUserByWalletId } from '../controllers/user';
 
 const router = Router();
 
@@ -33,5 +34,9 @@ router.delete('/strategies/strategy/:strategyId', deleteStrategy);
 // Injective exchange
 router.get('/injective/balance/:address', getAvailableBalance);
 router.post('/injective/order', placeOrder);
+
+// Users
+router.post('/v1/user/register', registerUser);
+router.get('/v1/user/:wallet_id/walletId', getUserByWalletId);
 
 export default router;
