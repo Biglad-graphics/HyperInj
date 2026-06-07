@@ -1,176 +1,90 @@
 export const topTokens = [
-    {
-        id: "0",
-        icon: "/images/crypto-icon-4.png",
-        currencyFull: "Ripple",
-        currencyShort: "XRP",
-        price: "$0.4831",
-        percent: 26.66,
-        itemsCharts: [
-            {
-                name: "1",
-                price: 1000,
-            },
-            {
-                name: "2",
-                price: 1500,
-            },
-            {
-                name: "3",
-                price: 500,
-            },
-            {
-                name: "4",
-                price: 2500,
-            },
-            {
-                name: "5",
-                price: 2200,
-            },
-            {
-                name: "6",
-                price: 1400,
-            },
-            {
-                name: "7",
-                price: 1000,
-            },
-            {
-                name: "8",
-                price: 1500,
-            },
-            {
-                name: "9",
-                price: 500,
-            },
-            {
-                name: "10",
-                price: 2500,
-            },
-            {
-                name: "11",
-                price: 2200,
-            },
-            {
-                name: "12",
-                price: 1400,
-            },
-        ],
-    },
-    {
-        id: "1",
-        icon: "/images/crypto-icon-3.png",
-        currencyFull: "Ethereum",
-        currencyShort: "ETH",
-        price: "$2,968.31",
-        percent: 15.42,
-        itemsCharts: [
-            {
-                name: "1",
-                price: 1500,
-            },
-            {
-                name: "2",
-                price: 1200,
-            },
-            {
-                name: "3",
-                price: 500,
-            },
-            {
-                name: "4",
-                price: 2000,
-            },
-            {
-                name: "5",
-                price: 3200,
-            },
-            {
-                name: "6",
-                price: 2400,
-            },
-            {
-                name: "7",
-                price: 1000,
-            },
-            {
-                name: "8",
-                price: 2500,
-            },
-            {
-                name: "9",
-                price: 1500,
-            },
-            {
-                name: "10",
-                price: 2500,
-            },
-            {
-                name: "11",
-                price: 2200,
-            },
-            {
-                name: "12",
-                price: 1800,
-            },
-        ],
-    },
-    {
-        id: "2",
-        icon: "/images/crypto-icon-5.png",
-        currencyFull: "Solana",
-        currencyShort: "SOL",
-        price: "$132.38",
-        percent: -5.12,
-        itemsCharts: [
-            {
-                name: "1",
-                price: 600,
-            },
-            {
-                name: "2",
-                price: 1500,
-            },
-            {
-                name: "3",
-                price: 2500,
-            },
-            {
-                name: "4",
-                price: 1200,
-            },
-            {
-                name: "5",
-                price: 2800,
-            },
-            {
-                name: "6",
-                price: 1900,
-            },
-            {
-                name: "7",
-                price: 2400,
-            },
-            {
-                name: "8",
-                price: 2000,
-            },
-            {
-                name: "9",
-                price: 2200,
-            },
-            {
-                name: "10",
-                price: 1700,
-            },
-            {
-                name: "11",
-                price: 1300,
-            },
-            {
-                name: "12",
-                price: 900,
-            },
-        ],
-    },
+  {
+    id: "0",
+    icon: "/images/crypto-icon-1.png",
+    currencyFull: "Injective",
+    currencyShort: "INJ",
+    price: "$24.50",
+    percent: 3.21,
+    itemsCharts: [
+      { name: "1", price: 2000 },
+      { name: "2", price: 2200 },
+      { name: "3", price: 1800 },
+      { name: "4", price: 2500 },
+      { name: "5", price: 2300 },
+      { name: "6", price: 2700 },
+      { name: "7", price: 2450 },
+      { name: "8", price: 2600 },
+      { name: "9", price: 2400 },
+      { name: "10", price: 2500 },
+      { name: "11", price: 2650 },
+      { name: "12", price: 2450 },
+    ],
+  },
+  {
+    id: "1",
+    icon: "/images/crypto-icon-3.png",
+    currencyFull: "Cosmos",
+    currencyShort: "ATOM",
+    price: "$8.42",
+    percent: 1.85,
+    itemsCharts: [
+      { name: "1", price: 800 },
+      { name: "2", price: 850 },
+      { name: "3", price: 780 },
+      { name: "4", price: 900 },
+      { name: "5", price: 860 },
+      { name: "6", price: 920 },
+      { name: "7", price: 840 },
+      { name: "8", price: 880 },
+      { name: "9", price: 860 },
+      { name: "10", price: 840 },
+      { name: "11", price: 870 },
+      { name: "12", price: 842 },
+    ],
+  },
+  {
+    id: "2",
+    icon: "/images/crypto-icon-4.png",
+    currencyFull: "Tether USD",
+    currencyShort: "USDT",
+    price: "$1.00",
+    percent: 0.01,
+    itemsCharts: [
+      { name: "1", price: 1000 },
+      { name: "2", price: 1001 },
+      { name: "3", price: 999 },
+      { name: "4", price: 1000 },
+      { name: "5", price: 1001 },
+      { name: "6", price: 1000 },
+      { name: "7", price: 999 },
+      { name: "8", price: 1000 },
+      { name: "9", price: 1001 },
+      { name: "10", price: 1000 },
+      { name: "11", price: 1000 },
+      { name: "12", price: 1000 },
+    ],
+  },
+  {
+    id: "3",
+    icon: "/images/crypto-icon-2.png",
+    currencyFull: "Ethereum",
+    currencyShort: "ETH",
+    price: "$3,250.00",
+    percent: 2.14,
+    itemsCharts: [
+      { name: "1", price: 3100 },
+      { name: "2", price: 3200 },
+      { name: "3", price: 3050 },
+      { name: "4", price: 3300 },
+      { name: "5", price: 3250 },
+      { name: "6", price: 3400 },
+      { name: "7", price: 3200 },
+      { name: "8", price: 3300 },
+      { name: "9", price: 3250 },
+      { name: "10", price: 3280 },
+      { name: "11", price: 3260 },
+      { name: "12", price: 3250 },
+    ],
+  },
 ];

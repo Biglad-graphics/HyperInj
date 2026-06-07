@@ -14,7 +14,7 @@ import {
   TransportConfig,
 } from "viem";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
-import { arbitrum } from "viem/chains";
+import { mainnet } from "viem/chains";
 import { getUserDetails, registerUser } from "services/user.service";
 import Login from "@/components/Login";
 import Field from "@/components/Field";
@@ -76,7 +76,7 @@ const SignInPage = () => {
       const provider = await wallet.getEthereumProvider();
       const walletClient = createWalletClient({
         account: wallet.address as `0x${string}`,
-        chain: arbitrum, // or your desired chain
+        chain: mainnet,
         transport: custom(provider),
       });
 

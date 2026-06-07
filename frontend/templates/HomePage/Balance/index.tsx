@@ -1,14 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AreaChart, Area, XAxis, Tooltip, ResponsiveContainer } from "recharts";
 // import { useColorMode } from "@chakra-ui/color-mode";
 import { useColorMode } from "@chakra-ui/react";
-import { usePrivy } from "@privy-io/react-auth";
 import Card from "@/components/Card";
 import CurrencyFormat from "@/components/CurrencyFormat";
 import Percent from "@/components/Percent";
 
 import { chartBalanceHome } from "@/mocks/charts";
-import { getUserPositions } from "../../../services/hyperliquidPortfolio.service";
+import { useInjectivePortfolio } from "../../../hooks/useInjectivePortfolio";
 
 const duration = [
   {
@@ -48,38 +47,9 @@ type BalanceProps = {};
 
 const Balance = ({}: BalanceProps) => {
   const [time, setTime] = useState(duration[0]);
-  const [accountValue, setAccountValue] = useState<number>(0);
-  const [loading, setLoading] = useState<boolean>(true);
   const { colorMode } = useColorMode();
   const isDarkMode = colorMode === "dark";
-  const { authenticated, user } = usePrivy();
-
-  useEffect(() => {
-    const fetchPortfolioData = async () => {
-      if (authenticated && user) {
-        try {
-          setLoading(true);
-          // Get wallet address from Privy user
-          const wallet = user.linkedAccounts?.find(
-            (account) => account.type === "wallet"
-          );
-
-          if (wallet && "address" in wallet) {
-            const positions = await getUserPositions(wallet.address);
-            if (positions?.marginSummary?.accountValue) {
-              setAccountValue(parseFloat(positions.marginSummary.accountValue));
-            }
-          }
-        } catch (error) {
-          console.error("Error fetching portfolio data:", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchPortfolioData();
-  }, [authenticated, user]);
+  const { totalValue: accountValue, loading } = useInjectivePortfolio();
 
   return (
     <Card
