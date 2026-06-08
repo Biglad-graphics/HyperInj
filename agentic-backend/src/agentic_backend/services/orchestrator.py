@@ -15,7 +15,7 @@ _app = None
 
 # Router function
 def router(state: SupervisorState):
-    if state.current_task is None:
+    if state.current_task is None or not state.decisions:
         return "END"
     sel = state.decisions[-1].selected_agent.lower().replace(" ", "_")
     if sel in ("finance_agent", "financeagent", "finance", "crypto_price_agent", "cryptopriceagent", "crypto"):

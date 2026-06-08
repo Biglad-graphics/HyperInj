@@ -96,11 +96,18 @@ def supervisor_node(state: SupervisorState) -> SupervisorState:
 
 
 
-    response = llm.invoke(system_prompt)
+    try:
+        response = llm.invoke(system_prompt)
+    except Exception as llm_err:
+        # LLM/API failure — treat as FINISH so the graph doesn't crash
+        print(f"[supervisor] LLM invoke failed: {llm_err}")
+        state.final_output = "I'm having trouble connecting to my reasoning engine right now. Please try again in a moment."
+        state.current_task = None
+        return state
 
     # --- normalize response to string ---
     if hasattr(response, "content"):
-        raw_text = response.content
+        raw_text = response.content if isinstance(response.content, str) else ""
     elif isinstance(response, str):
         raw_text = response
     else:
@@ -112,7 +119,6 @@ def supervisor_node(state: SupervisorState) -> SupervisorState:
     try:
         parsed = json.loads(raw_text)
     except Exception:
-        # fallback: strip to nearest JSON object
         start = raw_text.find("{")
         end = raw_text.rfind("}") + 1
         if start != -1 and end > start:
@@ -122,7 +128,6 @@ def supervisor_node(state: SupervisorState) -> SupervisorState:
                 pass
 
     if not parsed:
-        # LLM returned no parseable JSON — treat as FINISH
         parsed = {"selected_agent": "FINISH", "task": "", "reasoning": "No structured response from LLM"}
 
     selected_agent = parsed.get("selected_agent")
@@ -178,15 +183,17 @@ Guidelines:
 Provide your final response as plain text (not JSON).
 """
 
-        final_response = llm.invoke(final_response_prompt)
-
-        # Extract content from response
-        if hasattr(final_response, "content"):
-            state.final_output = final_response.content
-        elif isinstance(final_response, str):
-            state.final_output = final_response
-        else:
-            state.final_output = str(final_response)
+        try:
+            final_response = llm.invoke(final_response_prompt)
+            if hasattr(final_response, "content"):
+                state.final_output = final_response.content if isinstance(final_response.content, str) else str(final_response.content)
+            elif isinstance(final_response, str):
+                state.final_output = final_response
+            else:
+                state.final_output = str(final_response)
+        except Exception as llm_err:
+            print(f"[supervisor] final LLM invoke failed: {llm_err}")
+            state.final_output = "I gathered the information but couldn't synthesize a response. Please try again."
 
         state.current_task = None
         return state
