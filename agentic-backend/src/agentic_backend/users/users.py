@@ -3,7 +3,7 @@ from dotenv import load_dotenv , find_dotenv
 load_dotenv(find_dotenv())
 import os 
 
-BASE_URL = os.getenv("NODE_BACKEND_URL")  # your backend URL
+BASE_URL = os.getenv("NODE_BACKEND_URL") or os.getenv("API_BASE_URL", "https://hyperinj.onrender.com")
 
 
 def fetch_single_strategy(user_id: str, strategy_id: str):
