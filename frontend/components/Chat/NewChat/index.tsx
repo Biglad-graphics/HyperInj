@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import Icon from "@/components/Icon";
 import { getUserId } from "../../../utils/userStorage";
-import { getUserStrategies } from "../../../services/strategy.service";
 
 type MessageContent = {
   type: "supervisor" | "agent" | "supervisor_final" | "error" | "unknown";
@@ -52,7 +51,7 @@ const AgentChat = ({
   const generateUniqueThreadId = () => {
     const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
     let out = "";
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < 12; i++) {
       out += chars[Math.floor(Math.random() * chars.length)];
     }
     return out;
@@ -78,25 +77,9 @@ const AgentChat = ({
 
       setUserId(currentUserId);
 
-      try {
-        const strategies = await getUserStrategies(currentUserId);
-        if (strategies && strategies.length > 0) {
-          // Use the first strategy as thread_id
-          // setThreadId(strategies[0]._id);
-
-          const threadId = generateUniqueThreadId();
-          setThreadId(threadId);
-
-          // console.log("Using strategy as thread_id:", strategies[0]._id);
-          console.log("Using strategy as thread_id:", threadId);
-        } else {
-          console.warn(
-            "No strategies found for user. Create a strategy first."
-          );
-        }
-      } catch (error) {
-        console.error("Failed to fetch strategies:", error);
-      }
+      // Always generate a thread ID so users can chat without a strategy
+      const newThreadId = generateUniqueThreadId();
+      setThreadId(newThreadId);
     };
 
     fetchUserAndStrategy();
