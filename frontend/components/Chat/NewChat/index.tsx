@@ -183,25 +183,26 @@ const AgentChat = ({
     };
   };
 
-  // WebSocket connection
-  useEffect(() => {
-    ws.current = new WebSocket(websocketUrl);
+  const reconnectTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const reconnectDelay = useRef(2000);
+  const unmounted = useRef(false);
 
-    ws.current.onopen = () => {
-      console.log("✅ Connected to WebSocket");
+  const connect = () => {
+    if (unmounted.current) return;
+    const socket = new WebSocket(websocketUrl);
+    ws.current = socket;
+
+    socket.onopen = () => {
       setIsConnected(true);
+      reconnectDelay.current = 2000;
     };
 
-    ws.current.onmessage = (event) => {
-      console.log("Received:", event.data);
-
+    socket.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
 
-        // Check if this is the final signal
         if (data.type === "final") {
           setIsProcessing(false);
-          // Fetch trade signal if the user's message was trade-related
           if (isTradeRelated(lastUserMessageRef.current)) {
             fetchTradeSignal(lastUserMessageRef.current).then((signal) => {
               if (signal) setTradeSignal(signal);
@@ -210,11 +211,21 @@ const AgentChat = ({
           return;
         }
 
-        // Handle chunk type responses
-        if (data.type === "chunk" && data.state) {
-          // Format the message based on response type
-          const formattedMessage = formatResponse(data);
+        if (data.type === "error") {
+          setIsProcessing(false);
+          setMessages((prev) => [
+            ...prev,
+            {
+              from: "server",
+              content: { type: "error", text: data.message || "An error occurred." },
+              timestamp: new Date().toLocaleTimeString(),
+            },
+          ]);
+          return;
+        }
 
+        if (data.type === "chunk" && data.state) {
+          const formattedMessage = formatResponse(data);
           setMessages((prev) => [
             ...prev,
             {
@@ -224,36 +235,34 @@ const AgentChat = ({
               timestamp: new Date().toLocaleTimeString(),
             },
           ]);
-        } else {
-          console.warn("Unknown message type:", data);
         }
       } catch (error) {
         console.error("Error parsing message:", error);
-        setMessages((prev) => [
-          ...prev,
-          {
-            from: "server",
-            content: { type: "error", text: String(event.data) },
-            timestamp: new Date().toLocaleTimeString(),
-          },
-        ]);
       }
     };
 
-    ws.current.onerror = (error) => {
-      console.error("WebSocket error:", error);
-    };
+    socket.onerror = () => { /* handled by onclose */ };
 
-    ws.current.onclose = () => {
-      console.log("❌ Disconnected from WebSocket");
+    socket.onclose = () => {
       setIsConnected(false);
       setIsProcessing(false);
-    };
-
-    return () => {
-      if (ws.current) {
-        ws.current.close();
+      if (!unmounted.current) {
+        reconnectTimer.current = setTimeout(() => {
+          reconnectDelay.current = Math.min(reconnectDelay.current * 1.5, 15000);
+          connect();
+        }, reconnectDelay.current);
       }
+    };
+  };
+
+  // WebSocket connection with auto-reconnect
+  useEffect(() => {
+    unmounted.current = false;
+    connect();
+    return () => {
+      unmounted.current = true;
+      if (reconnectTimer.current) clearTimeout(reconnectTimer.current);
+      ws.current?.close();
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [websocketUrl]);
@@ -474,18 +483,18 @@ const AgentChat = ({
       );
     }
 
-    // Unknown format fallback
+    // Error / unknown fallback
     return (
       <div className="flex gap-3">
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-theme-secondary flex items-center justify-center">
-          <Icon className="w-4 h-4 fill-white" name="alert-circle" />
+        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-theme-red/20 flex items-center justify-center">
+          <Icon className="w-4 h-4 fill-theme-red" name="alert-circle" />
         </div>
-
         <div className="flex-1 max-w-[85%]">
-          <div className="rounded-2xl px-4 py-3 bg-theme-on-surface border border-theme-stroke">
-            <pre className="text-caption-1m text-theme-primary whitespace-pre-wrap">
+          <div className="rounded-2xl px-4 py-3 bg-theme-red/10 border border-theme-red/20">
+            <p className="text-body-2s text-theme-red font-medium mb-0.5">Agent error</p>
+            <p className="text-caption-1m text-theme-secondary whitespace-pre-wrap">
               {content.text}
-            </pre>
+            </p>
           </div>
         </div>
       </div>
