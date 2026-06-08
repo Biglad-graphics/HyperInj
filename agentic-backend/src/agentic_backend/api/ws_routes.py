@@ -24,7 +24,7 @@ from groq import AsyncGroq
 from pydantic import BaseModel, Field
 
 from ..api.xample import EXAMPLE_STRATEGY_CODE1, EXAMPLE_STRATEGY_CODE2
-from ..core.agents import build_agent_context, is_trade_query, run_agents
+from ..core.agents import build_agent_context, format_agent_sections, is_trade_query, run_agents
 from ..core.cache import agent_cache, market_cache
 from ..core.groq_client import FAST_MODEL, MAIN_MODEL, chat_complete, chat_stream, get_client
 from ..services.persistence import (
@@ -42,15 +42,40 @@ router = APIRouter()
 # System prompt
 # ---------------------------------------------------------------------------
 
-_SYSTEM = """You are HyperInj Copilot — an expert crypto trading AI specializing in \
-Injective Protocol (INJ) and DeFi. You give fast, precise, data-driven answers.
+_SYSTEM = """You are the Decision Agent for HyperInj — an elite fund manager who synthesizes \
+market, sentiment, and risk analysis into a final, authoritative verdict.
 
-Rules:
-- Be concise and direct. No filler.
-- For trade queries always state: trend, signal (BUY/SELL/HOLD), key risk, brief reasoning.
-- Use markdown bullet points for structured answers.
-- Always add a one-line risk disclaimer on trade signals.
-- Never say "I cannot access real-time data" — reason from the context you have."""
+Your role: receive pre-analysis from three specialist agents and deliver the final call.
+
+PERSONALITY:
+- Authoritative, decisive, zero fluff
+- Sounds expensive and trustworthy
+- Makes users want to ask more
+
+MANDATORY RESPONSE FORMAT for trade/analysis queries:
+---
+**Market Analysis:**
+<one sharp insight from market agent — price action, momentum, structure>
+
+**Sentiment:**
+<one sharp insight from sentiment agent — crowd behavior, hype phase>
+
+**Risk:**
+<one sharp insight from risk agent — downside first, stop level>
+
+---
+
+**Verdict: BUY | WAIT | AVOID**
+<1–2 lines. Decisive. Authoritative. Why now or why not.>
+
+---
+
+RULES:
+- No long paragraphs. Short, punchy lines only.
+- No phrases like "it depends", "I cannot", "as an AI"
+- No generic disclaimers
+- Use terms: momentum, structure, liquidity, breakout, positioning, confirmation
+- For non-trade queries: answer directly, still sharp and minimal"""
 
 
 # ---------------------------------------------------------------------------
@@ -94,37 +119,42 @@ async def chat_endpoint(websocket: WebSocket):
             # 2. Run agent analysis in parallel (only for trade queries)
             # ------------------------------------------------------------------
             agent_ctx = ""
+            agent_prefix = ""
             if is_trade_query(user_message):
                 try:
-                    agents = await asyncio.wait_for(
-                        run_agents(user_message), timeout=3.5
-                    )
+                    agents = await asyncio.wait_for(run_agents(user_message), timeout=3.5)
                     agent_ctx = build_agent_context(agents)
-                    logger.info(f"[chat] agents: {agent_ctx}")
+                    agent_prefix = format_agent_sections(agents)
                 except asyncio.TimeoutError:
                     logger.warning("[chat] agent analysis timed out — skipping")
                 except Exception as e:
                     logger.warning(f"[chat] agent error (non-fatal): {e}")
 
             # ------------------------------------------------------------------
-            # 3. Build messages for Groq
+            # 3. Build messages for Groq Decision Agent
             # ------------------------------------------------------------------
             system = _SYSTEM
             if agent_ctx:
-                system += f"\n\nAgent pre-analysis (use as context):\n{agent_ctx}"
+                system += f"\n\nPre-analysis from specialist agents:\n{agent_ctx}"
 
             messages = history + [{"role": "user", "content": user_message}]
 
             # ------------------------------------------------------------------
-            # 4. Stream response
+            # 4. Stream: send agent sections first, then stream verdict
             # ------------------------------------------------------------------
-            full_response = ""
-            stream_ok = False
+            full_response = agent_prefix
+            if agent_prefix:
+                await websocket.send_json({
+                    "type": "chunk",
+                    "thread_id": thread_id,
+                    "state": {"supervisor": {"final_output": full_response}},
+                })
+
             try:
                 async for token in chat_stream(
                     messages=[{"role": "system", "content": system}] + messages,
                     model=MAIN_MODEL,
-                    max_tokens=1024,
+                    max_tokens=512,
                     temperature=0.5,
                     timeout=8.0,
                 ):

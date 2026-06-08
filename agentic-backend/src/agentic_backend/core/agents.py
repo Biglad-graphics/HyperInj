@@ -1,15 +1,13 @@
 """
-Modular async agent system.
-Each agent runs independently with a timeout and structured JSON output.
-All agents run in parallel via run_agents_parallel().
+Modular async agent system — elite personalities.
 """
 import asyncio
 import json
 import logging
-from typing import Dict, Any, Optional
+from typing import Any, Dict
 
-from .groq_client import chat_complete, FAST_MODEL
 from .cache import agent_cache
+from .groq_client import FAST_MODEL, chat_complete
 
 logger = logging.getLogger(__name__)
 
@@ -29,13 +27,7 @@ def is_trade_query(text: str) -> bool:
     return any(kw in lower for kw in TRADE_KEYWORDS)
 
 
-async def _agent(
-    name: str,
-    system: str,
-    user_msg: str,
-    fallback: Dict,
-    timeout: float = AGENT_TIMEOUT,
-) -> Dict:
+async def _agent(name: str, system: str, user_msg: str, fallback: Dict, timeout: float = AGENT_TIMEOUT) -> Dict:
     try:
         raw = await asyncio.wait_for(
             chat_complete(
@@ -45,7 +37,7 @@ async def _agent(
                 ],
                 model=FAST_MODEL,
                 max_tokens=200,
-                temperature=0.2,
+                temperature=0.3,
                 json_mode=True,
                 timeout=timeout,
             ),
@@ -53,7 +45,6 @@ async def _agent(
         )
         parsed = json.loads(raw) if raw.strip() else None
         if parsed and isinstance(parsed, dict):
-            logger.debug(f"[{name}] OK: {parsed}")
             return parsed
     except (asyncio.TimeoutError, json.JSONDecodeError) as e:
         logger.warning(f"[{name}] {type(e).__name__}")
@@ -65,23 +56,23 @@ async def _agent(
 async def market_agent(query: str) -> Dict[str, Any]:
     return await _agent(
         "market",
-        """You are a crypto market analyst. Analyze the user query and return ONLY valid JSON:
+        """You are a hedge fund market analyst — calm, precise, data-driven. No hype, no emotion.
+Analyze the query and return ONLY valid JSON:
 {
   "trend": "bullish|bearish|neutral",
+  "signal": "BUY|SELL|HOLD",
   "confidence": <0-100>,
   "momentum": "strong|moderate|weak",
-  "key_level": "<brief support/resistance note>",
-  "signal": "BUY|SELL|HOLD",
-  "reasoning": "<one sentence>"
-}""",
+  "structure": "<one sharp sentence on price structure — use: momentum, liquidity, breakout, range, structure>"
+}
+'structure' must be under 20 words. Sound like a hedge fund analyst.""",
         query,
         fallback={
             "trend": "neutral",
+            "signal": "HOLD",
             "confidence": 50,
             "momentum": "moderate",
-            "key_level": "Data unavailable",
-            "signal": "HOLD",
-            "reasoning": "Insufficient real-time data for market analysis.",
+            "structure": "Price action is consolidating. No clear directional bias yet.",
         },
     )
 
@@ -89,21 +80,21 @@ async def market_agent(query: str) -> Dict[str, Any]:
 async def sentiment_agent(query: str) -> Dict[str, Any]:
     return await _agent(
         "sentiment",
-        """You are a crypto sentiment analyst. Analyze the user query and return ONLY valid JSON:
+        """You are a Crypto Twitter analyst hybrid — fast, reactive, plugged into crowd behavior.
+Analyze the query and return ONLY valid JSON:
 {
   "sentiment": "positive|negative|neutral",
   "score": <0-100>,
-  "social_mood": "fearful|greedy|neutral",
-  "news_tone": "positive|negative|mixed",
-  "summary": "<one sentence>"
-}""",
+  "phase": "early hype|overheated|fearful|recovering|neutral",
+  "crowd": "<one sharp sentence on crowd positioning — mention hype, fear, or positioning>"
+}
+'crowd' must be under 20 words. Energetic but controlled.""",
         query,
         fallback={
             "sentiment": "neutral",
             "score": 50,
-            "social_mood": "neutral",
-            "news_tone": "mixed",
-            "summary": "Sentiment data unavailable.",
+            "phase": "neutral",
+            "crowd": "No strong crowd signal. Market positioning is mixed.",
         },
     )
 
@@ -111,31 +102,29 @@ async def sentiment_agent(query: str) -> Dict[str, Any]:
 async def risk_agent(query: str) -> Dict[str, Any]:
     return await _agent(
         "risk",
-        """You are a crypto risk manager. Analyze the user query and return ONLY valid JSON:
+        """You are a strict risk manager — disciplined, slightly pessimistic, capital protection first.
+Analyze the query and return ONLY valid JSON:
 {
   "risk_level": "low|medium|high",
-  "volatility": "low|medium|high",
-  "primary_risk": "<main risk in 10 words>",
-  "stop_loss_hint": "<percentage or level>",
-  "position_size_hint": "<brief suggestion>"
-}""",
+  "downside": "<one sharp sentence on main downside — be direct, slightly harsh>",
+  "stop_loss": "<stop level or percentage>",
+  "probability_note": "<one sentence using probability language>"
+}
+Each field under 20 words. Lead with the downside.""",
         query,
         fallback={
             "risk_level": "medium",
-            "volatility": "medium",
-            "primary_risk": "Market volatility and liquidity risks apply.",
-            "stop_loss_hint": "2-5% below entry",
-            "position_size_hint": "Risk no more than 1-2% of portfolio.",
+            "downside": "Momentum stall here exposes a sharp pullback. Don't ignore it.",
+            "stop_loss": "2-5% below entry",
+            "probability_note": "Odds favor range continuation until a clear catalyst emerges.",
         },
     )
 
 
 async def run_agents(query: str) -> Dict[str, Any]:
-    """Run all agents in parallel. Results cached for CACHE_TTL seconds."""
     cache_key = f"agents:{query[:120]}"
     cached = agent_cache.get(cache_key, CACHE_TTL)
     if cached:
-        logger.debug("Agent cache hit")
         return cached
 
     market, sentiment, risk = await asyncio.gather(
@@ -150,14 +139,28 @@ async def run_agents(query: str) -> Dict[str, Any]:
 
 
 def build_agent_context(agents: Dict[str, Any]) -> str:
+    """Compact context string injected into the Decision Agent's system prompt."""
     m = agents.get("market", {})
     s = agents.get("sentiment", {})
     r = agents.get("risk", {})
     return (
-        f"[Market] trend={m.get('trend','?')} signal={m.get('signal','?')} "
-        f"confidence={m.get('confidence','?')}% momentum={m.get('momentum','?')} | "
-        f"[Sentiment] {s.get('sentiment','?')} score={s.get('score','?')} "
-        f"mood={s.get('social_mood','?')} | "
-        f"[Risk] level={r.get('risk_level','?')} volatility={r.get('volatility','?')} "
-        f"stop={r.get('stop_loss_hint','?')}"
+        f"MARKET: trend={m.get('trend')} signal={m.get('signal')} "
+        f"confidence={m.get('confidence')}% momentum={m.get('momentum')} — {m.get('structure','')}\n"
+        f"SENTIMENT: {s.get('sentiment')} score={s.get('score')} "
+        f"phase={s.get('phase')} — {s.get('crowd','')}\n"
+        f"RISK: level={r.get('risk_level')} stop={r.get('stop_loss')} — "
+        f"{r.get('downside','')} {r.get('probability_note','')}"
+    )
+
+
+def format_agent_sections(agents: Dict[str, Any]) -> str:
+    """Pre-formatted agent output blocks to prepend to the streamed response."""
+    m = agents.get("market", {})
+    s = agents.get("sentiment", {})
+    r = agents.get("risk", {})
+    return (
+        f"**Market Analysis:**\n{m.get('structure','')}\n\n"
+        f"**Sentiment:**\n{s.get('crowd','')}\n\n"
+        f"**Risk:**\n{r.get('downside','')} — Stop: {r.get('stop_loss','')}\n\n"
+        "---\n\n"
     )
