@@ -551,9 +551,8 @@ const AgentChat = ({
               <span className="text-body-2s">Processing...</span>
             </div>
           )}
-        </div>
           {tradeSignal && (
-            <div className="animate-slideIn px-6">
+            <div className="animate-slideIn">
               <TradeCard signal={tradeSignal} />
             </div>
           )}
