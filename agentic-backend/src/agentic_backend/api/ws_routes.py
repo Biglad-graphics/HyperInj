@@ -78,13 +78,21 @@ async def chat_endpoint(websocket: WebSocket):
 
     try:
         while True:
-            msg = await websocket.receive_text()
-            msg = json.loads(msg)
-            
+            raw = await websocket.receive_text()
+            if not raw or not raw.strip():
+                continue  # skip empty/ping frames
+
+            try:
+                msg = json.loads(raw)
+            except json.JSONDecodeError:
+                continue  # skip non-JSON frames
+
             thread_id = msg.get("thread_id", "default")
             user_id = msg.get("user_id", "User")
             user_message = msg.get("message", "")
-            print(f"Received message for thread {thread_id}: {user_message}")
+
+            if not user_message.strip():
+                continue  # nothing to process
 
             # Load existing memory for this thread
             print("==========================================",type(thread_id),type(user_id))
