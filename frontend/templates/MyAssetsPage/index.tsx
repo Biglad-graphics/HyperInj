@@ -8,7 +8,7 @@ import Summary from "./Summary";
 
 const MyAssetsPage = () => {
     return (
-        <Layout title="Dashboard">
+        <Layout title="Portfolio">
             <div className="space-y-2">
                 <div className="flex lg:block">
                     <TotalBalance />

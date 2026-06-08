@@ -509,12 +509,9 @@ const AgentChat = ({
       <div className="flex-1 overflow-y-auto px-6 py-4 scrollbar-thin">
         <div className="space-y-4">
           {messages.length === 0 && (
-            <div className="text-center text-theme-tertiary mt-16">
-              <div className="text-6xl mb-4">💬</div>
-              <p className="text-body-1m">
-                Start a conversation with the AI agents
-              </p>
-              <p className="text-body-2s mt-2">
+            <div className="text-center text-theme-tertiary mt-16 px-6">
+              <p className="text-body-1m">Start a conversation with the AI agents</p>
+              <p className="text-body-2s mt-1 opacity-60">
                 Try asking: "Give me the sentiment of BTC"
               </p>
             </div>

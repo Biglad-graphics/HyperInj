@@ -5,7 +5,7 @@ import Chat from "@/components/Chat";
 
 const ChatPage = () => {
   return (
-    <Layout title="HyperInj AI">
+    <Layout title="Copilot">
       <Chat />
     </Layout>
   );

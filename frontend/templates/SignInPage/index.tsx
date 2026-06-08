@@ -48,7 +48,7 @@ const SignInPage = () => {
           walletAddress: existingUser.data.walletAddress,
           apiWallet: existingUser.data.apiWallet,
         });
-        router.push("/my-assets");
+        router.push("/chat");
         return;
       }
 
@@ -69,7 +69,7 @@ const SignInPage = () => {
         });
       }
 
-      router.push("/my-assets");
+      router.push("/chat");
     })();
   }, [ready, authenticated, user, wallets]);
 
@@ -113,7 +113,7 @@ const SignInPage = () => {
           walletAddress: existingUser.data.walletAddress,
           apiWallet: existingUser.data.apiWallet,
         });
-        router.push("/my-assets");
+        router.push("/chat");
         return;
       }
 
@@ -135,7 +135,7 @@ const SignInPage = () => {
         });
       }
 
-      router.push("/my-assets");
+      router.push("/chat");
     } catch (err: any) {
       console.error("Keplr connect error:", err);
       setKeplrError(err?.message || "Failed to connect Keplr.");
