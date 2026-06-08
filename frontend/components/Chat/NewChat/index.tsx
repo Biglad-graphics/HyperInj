@@ -35,7 +35,7 @@ type AgentChatProps = {
 
 const AgentChat = ({
   // websocketUrl = "ws://127.0.0.1:8000/ws/chat",
-  websocketUrl = `${process.env.NEXT_PUBLIC_AI_BASE_URL}/chat`,
+  websocketUrl = `${process.env.NEXT_PUBLIC_AGENT_WS_URL || "ws://localhost:8000"}/ws/chat`,
   externalMessage,
   onMessageSent,
   onProcessingChange,
