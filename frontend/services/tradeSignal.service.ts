@@ -1,8 +1,4 @@
-import axios from "axios";
 import { TradeSignal } from "../components/Chat/TradeCard";
-
-const AGENTIC_URL =
-  process.env.NEXT_PUBLIC_AGENTIC_API_URL || "http://localhost:8000";
 
 const TRADE_KEYWORDS = [
   "buy", "sell", "trade", "should i", "sentiment", "trend",
@@ -20,11 +16,26 @@ export const fetchTradeSignal = async (
   asset?: string
 ): Promise<TradeSignal | null> => {
   try {
-    const { data } = await axios.post(`${AGENTIC_URL}/trade-signal`, {
-      prompt,
-      asset: asset || "",
+    const res = await fetch("/api/ai", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt, asset: asset || "" }),
     });
-    return data as TradeSignal;
+
+    const json = await res.json();
+
+    if (!json.success || !json.data) return null;
+
+    const d = json.data;
+    return {
+      trend: d.trend,
+      asset: d.asset,
+      explanation: d.explanation,
+      risk: d.risk,
+      action: d.action,
+      price: d.price,
+      change24h: d.change24h,
+    } as TradeSignal;
   } catch {
     return null;
   }
