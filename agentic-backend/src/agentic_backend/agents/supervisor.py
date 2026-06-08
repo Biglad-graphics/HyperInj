@@ -108,12 +108,22 @@ def supervisor_node(state: SupervisorState) -> SupervisorState:
 
     # --- try parse as JSON ---
     import json
+    parsed = None
     try:
         parsed = json.loads(raw_text)
     except Exception:
         # fallback: strip to nearest JSON object
-        json_str = raw_text[raw_text.find("{"): raw_text.rfind("}") + 1]
-        parsed = json.loads(json_str)
+        start = raw_text.find("{")
+        end = raw_text.rfind("}") + 1
+        if start != -1 and end > start:
+            try:
+                parsed = json.loads(raw_text[start:end])
+            except Exception:
+                pass
+
+    if not parsed:
+        # LLM returned no parseable JSON — treat as FINISH
+        parsed = {"selected_agent": "FINISH", "task": "", "reasoning": "No structured response from LLM"}
 
     selected_agent = parsed.get("selected_agent")
     task = parsed.get("task")
