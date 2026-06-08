@@ -130,12 +130,13 @@ async def chat_endpoint(websocket: WebSocket):
                     await websocket.send_json({
                         "type": "error",
                         "thread_id": thread_id,
-                        "message": str(e) or tb
+                        "message": str(e) or "Agent encountered an error. Please try again."
                     })
+                    # Send final so frontend knows the turn is over
+                    await websocket.send_json({"type": "final", "thread_id": thread_id})
                 except Exception:
-                    # WebSocket might already be closed
                     pass
-                break
+                continue  # keep connection alive for next message
 
             # Update memory after conversation turn
             if final_state:
