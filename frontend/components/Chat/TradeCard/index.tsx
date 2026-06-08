@@ -33,6 +33,7 @@ type Step = "idle" | "loading" | "success" | "error";
 const TradeCard = ({ signal }: { signal: TradeSignal }) => {
   const [quantity, setQuantity] = useState("1");
   const [step, setStep] = useState<Step>("idle");
+  const [isExecuting, setIsExecuting] = useState(false);
   const [activeSide, setActiveSide] = useState<"buy" | "sell" | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -52,6 +53,7 @@ const TradeCard = ({ signal }: { signal: TradeSignal }) => {
     }
     setActiveSide(side);
     setStep("loading");
+    setIsExecuting(true);
     setErrorMsg("");
 
     try {
@@ -74,6 +76,8 @@ const TradeCard = ({ signal }: { signal: TradeSignal }) => {
     } catch (err: any) {
       setErrorMsg(err?.response?.data?.error || err?.message || "Trade failed.");
       setStep("error");
+    } finally {
+      setIsExecuting(false);
     }
   };
 
@@ -189,7 +193,7 @@ const TradeCard = ({ signal }: { signal: TradeSignal }) => {
                         ? "bg-red-500 hover:bg-red-400 text-white shadow-[0_0_12px_rgba(239,68,68,0.3)]"
                         : "border border-white/10 text-zinc-400 hover:bg-white/5"
                     }`}
-                    disabled={step === "loading"}
+                    disabled={isExecuting}
                   >
                     {action.charAt(0).toUpperCase() + action.slice(1)}
                   </motion.button>
