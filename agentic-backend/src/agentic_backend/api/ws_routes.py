@@ -1,192 +1,117 @@
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from uuid import uuid4
-from ..models.state_models import SupervisorState
-from ..services.orchestrator import run_sync
-from ..services.persistence import get_thread_memory, update_thread_memory
-from fastapi.encoders import jsonable_encoder
-from typing import List, Dict
-import asyncio
-from ..api.xample import EXAMPLE_STRATEGY_CODE1 ,EXAMPLE_STRATEGY_CODE2 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, HTTPException
 from pydantic import BaseModel, Field
-from typing import Optional
-import json
+from typing import Optional, List, Dict
 import asyncio
+import json
 import os
-from datetime import datetime
 from datetime import datetime
 import subprocess
 import tempfile
 import sys
 import anthropic as _anthropic
-from dotenv import load_dotenv,find_dotenv
+from dotenv import load_dotenv, find_dotenv
+from ..api.xample import EXAMPLE_STRATEGY_CODE1, EXAMPLE_STRATEGY_CODE2
+from ..services.persistence import get_thread_memory, update_thread_memory
+
 load_dotenv(find_dotenv())
 router = APIRouter()
 
-def serialize_state(obj):
-    """
-    Recursively serialize any object to JSON-compatible format.
-    Handles Pydantic models, datetime objects, and nested structures.
-    """
-    # Handle None
-    if obj is None:
-        return None
-    
-    # Handle Pydantic models
-    if hasattr(obj, 'model_dump'):
-        return obj.model_dump(mode='json')
-    
-    # Handle datetime objects
-    if isinstance(obj, datetime):
-        return obj.isoformat()
-    
-    # Handle dictionaries
-    if isinstance(obj, dict):
-        return {key: serialize_state(value) for key, value in obj.items()}
-    
-    # Handle lists
-    if isinstance(obj, list):
-        return [serialize_state(item) for item in obj]
-    
-    # Handle tuples
-    if isinstance(obj, tuple):
-        return [serialize_state(item) for item in obj]
-    
-    # Return primitive types as-is
-    if isinstance(obj, (str, int, float, bool)):
-        return obj
-    
-    # For anything else, try to convert to string
-    try:
-        return str(obj)
-    except:
-        return None
-#   const payload = {
-#     user_id: userId,
-#     strategy_id: strategyId,
-#     timeframe: timeframe,
-#     asset_symbol: assetSymbol,
-#     indicator_name: indicatorName,
-#     direction: direction
-#   }
+SYSTEM_PROMPT = """You are HyperInj AI — an expert crypto trading assistant specializing in Injective Protocol (INJ) and the broader DeFi ecosystem.
 
-import traceback
+You provide concise, data-driven analysis: price trends, technical signals, sentiment, trade ideas, and risk assessments. You are direct and actionable. Never be vague.
+
+When asked about a trade (buy/sell/hold), always include:
+- Current market context (bullish/bearish/neutral)
+- Key risk factors
+- A clear recommendation with reasoning
+
+You are NOT a financial advisor. Always add a brief risk disclaimer when giving trade signals."""
+
+
 @router.websocket("/ws/chat")
 async def chat_endpoint(websocket: WebSocket):
     await websocket.accept()
+    client = _anthropic.Anthropic(
+        api_key=os.getenv("ANTHROPIC_API_KEY", ""),
+        base_url=os.getenv("ANTHROPIC_BASE_URL", "https://api.anthropic.com"),
+    )
 
     try:
         while True:
-            msg = await websocket.receive_text()
-            msg = json.loads(msg)
-            
+            raw = await websocket.receive_text()
+            if not raw or not raw.strip():
+                continue
+
+            try:
+                msg = json.loads(raw)
+            except json.JSONDecodeError:
+                continue
+
             thread_id = msg.get("thread_id", "default")
             user_id = msg.get("user_id", "User")
-            user_message = msg.get("message", "")
-            print(f"Received message for thread {thread_id}: {user_message}")
+            user_message = msg.get("message", "").strip()
 
-            # Load existing memory for this thread
-            print("==========================================",type(thread_id),type(user_id))
+            if not user_message:
+                continue
+
+            # Load conversation history for context
             memory = get_thread_memory(user_id, thread_id)
-            print("=============================================================",memory)
-            # Create state with memory context
-            incoming_state = SupervisorState(
-                user_query=user_message,
-                request_summary=memory["request_summary"] if memory else None,
-                response_summary=memory["response_summary"] if memory else None,
-                user_detail=user_id,
-                thread_id=thread_id,
-            )
-            # print(incoming_state)
+            history: List[Dict] = []
+            if memory:
+                for entry in (memory.get("raw_conversation") or [])[-6:]:  # last 6 turns
+                    if entry.get("user_query"):
+                        history.append({"role": "user", "content": entry["user_query"]})
+                    if entry.get("final_response"):
+                        history.append({"role": "assistant", "content": entry["final_response"]})
 
-            # Track only the final state
-            final_state = None
-            kwargs={
-                "user_id":user_id,
-                
-            }
+            history.append({"role": "user", "content": user_message})
+
+            # Stream response directly from Anthropic
+            full_response = ""
             try:
-                async for chunk in run_sync(incoming_state, thread_id=thread_id, **kwargs):
-                    chunk_data = serialize_state(chunk)
-
-                    # Keep updating final_state (last one will have everything)
-                    final_state = chunk_data
-
-                    await websocket.send_json({
-                        "type": "chunk",
-                        "thread_id": thread_id,
-                        "state": chunk_data
-                    })
-
-            except asyncio.CancelledError:
-                print(f"WebSocket task cancelled for thread {thread_id}")
-                break
+                with client.messages.stream(
+                    model="claude-haiku-4-5-20251001",
+                    system=SYSTEM_PROMPT,
+                    messages=history,
+                    max_tokens=1024,
+                ) as stream:
+                    for text_chunk in stream.text_stream:
+                        full_response += text_chunk
+                        await websocket.send_json({
+                            "type": "chunk",
+                            "thread_id": thread_id,
+                            "state": {
+                                "supervisor": {"final_output": full_response}
+                            }
+                        })
 
             except Exception as e:
-                tb = traceback.format_exc()
-                print("Exception occurred:", tb)
-                try:
-                    await websocket.send_json({
-                        "type": "error",
-                        "thread_id": thread_id,
-                        "message": str(e) or "Agent encountered an error. Please try again."
-                    })
-                    # Send final so frontend knows the turn is over
-                    await websocket.send_json({"type": "final", "thread_id": thread_id})
-                except Exception:
-                    pass
-                continue  # keep connection alive for next message
-
-            # Update memory after conversation turn
-            if final_state:
-                # Extract final output from the nested state structure
-                state_obj = final_state.get("supervisor") if isinstance(final_state, dict) else final_state
-                final_output = state_obj.get("final_output") if isinstance(state_obj, dict) else getattr(state_obj, "final_output", None)
-
-                # Save complete conversation turn with final state (which includes full execution)
-                conversation_entry = {
-                    "user_query": user_message,
-                    "final_state": final_state,  # Complete state with all decisions, agent_states, context
-                    "final_response": final_output or "Processing...",
-                }
-
-                # Update memory with summaries and raw conversation
-                update_thread_memory(
-                    user_id=user_id,
-                    thread_id=thread_id,
-                    request_summary=f"{user_message}",
-                    response_summary=f"{final_output or 'Processing...'}",
-                    conversation_entry=conversation_entry
-                )
-
-            # Send final message
-            try:
+                print(f"[ws/chat] Anthropic stream error: {e}")
                 await websocket.send_json({
-                    "type": "final",
-                    "thread_id": thread_id
+                    "type": "error",
+                    "thread_id": thread_id,
+                    "message": "AI service error. Please try again."
                 })
-            except Exception:
-                # WebSocket might already be closed
-                pass
+                await websocket.send_json({"type": "final", "thread_id": thread_id})
+                continue
+
+            # Persist turn to memory
+            update_thread_memory(
+                user_id=user_id,
+                thread_id=thread_id,
+                request_summary=user_message,
+                response_summary=full_response,
+                conversation_entry={"user_query": user_message, "final_response": full_response},
+            )
+
+            await websocket.send_json({"type": "final", "thread_id": thread_id})
 
     except WebSocketDisconnect:
         print("WebSocket disconnected")
     except asyncio.CancelledError:
-        print("WebSocket connection cancelled during shutdown")
+        print("WebSocket cancelled during shutdown")
     except Exception as e:
         print(f"Unexpected WebSocket error: {e}")
-
-# @router.websocket("/ws/spy")
-# async def cron_point(websocket: WebSocket):
-#     await websocket.accept()
-
-#     try:
-#         while True:
-#             msg = await websocket.receive_text()
-#             msg = json.loads(msg)
-#             user_id = msg.get("user_id", "default")
-#             strategy_id=msg.get("strategyId","default")
 
 
 
@@ -245,68 +170,38 @@ async def delete_thread(user_id: str, thread_id: str):
 @router.get("/threads/{user_id}/{thread_id}/report")
 async def generate_thread_report(user_id: str, thread_id: str):
     """Generate a markdown report for a specific thread using LLM."""
-    from ..services.persistence import get_thread_memory
-    from langchain.chat_models import init_chat_model
-    from dotenv import load_dotenv, find_dotenv
-
-    load_dotenv(find_dotenv())
-
-    # Get conversation history
     memory = get_thread_memory(user_id, thread_id)
     if not memory:
         return {"error": "Thread not found"}
 
-    # Extract conversation entries
     conversation_history = memory.get("raw_conversation", [])
     if not conversation_history:
         return {"error": "No conversation history found for this thread"}
 
-    # Build context from conversation history
     conversation_text = ""
     for idx, entry in enumerate(conversation_history, 1):
-        user_query = entry.get("user_query", "")
-        final_response = entry.get("final_response", "")
-        conversation_text += f"\n### Exchange {idx}\n**User Query:** {user_query}\n\n**Response:** {final_response}\n"
+        conversation_text += f"\n### Exchange {idx}\n**User:** {entry.get('user_query','')}\n\n**AI:** {entry.get('final_response','')}\n"
 
-    # Initialize LLM
-    llm = init_chat_model("anthropic:claude-haiku-4-5-20251001")
-
-    # Create prompt for report generation
-    report_prompt = f"""
-You are a professional financial report writer. Generate a comprehensive markdown report based on the following conversation history between a user and a financial advisory system.
+    report_prompt = f"""You are a professional financial report writer. Generate a comprehensive markdown report.
 
 Thread ID: {thread_id}
-User ID: {user_id}
 
 Conversation History:
 {conversation_text}
 
-Generate a well-structured markdown report that includes:
-1. **Executive Summary**: Brief overview of the conversation and key topics discussed
-2. **Key Queries and Insights**: Summarize each major query and the insights provided
-3. **Financial Recommendations**: Consolidate any recommendations or advice given
-4. **Data Points**: List important financial metrics, stock prices, or data mentioned
-5. **Action Items**: Any suggested actions or next steps for the user
-6. **Conclusion**: Final summary and overall assessment
+Include: Executive Summary, Key Insights, Recommendations, Data Points, Action Items, Conclusion.
+Return ONLY plain markdown (no code fences)."""
 
-Requirements:
-- Use proper markdown formatting (headers, lists, bold, italic, tables if appropriate)
-- Be concise but comprehensive
-- Focus on financial insights and actionable information
-- Use professional language
-- Structure the report logically
-- Return ONLY plain markdown content without any code fence markers (no ```markdown, no ```, no triple backticks)
-- Do not wrap the markdown in code blocks
-
-Generate the markdown report now:
-"""
-
-    # Generate report using LLM
-    response = llm.invoke(report_prompt)
-
-    # Extract markdown content
-    if hasattr(response, "content"):
-        markdown_report = response.content
+    _client = _anthropic.Anthropic(
+        api_key=os.getenv("ANTHROPIC_API_KEY", ""),
+        base_url=os.getenv("ANTHROPIC_BASE_URL", "https://api.anthropic.com"),
+    )
+    resp = _client.messages.create(
+        model="claude-haiku-4-5-20251001",
+        messages=[{"role": "user", "content": report_prompt}],
+        max_tokens=2000,
+    )
+    markdown_report = resp.content[0].text if resp.content else ""
 
     # Remove markdown code fence markers if present
     markdown_report = markdown_report.strip()
