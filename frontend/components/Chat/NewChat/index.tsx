@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import Icon from "@/components/Icon";
 import { getUserId } from "../../../utils/userStorage";
+import TradeCard, { TradeSignal } from "../TradeCard";
+import { fetchTradeSignal, isTradeRelated } from "../../../services/tradeSignal.service";
 
 type MessageContent = {
   type: "supervisor" | "agent" | "supervisor_final" | "error" | "unknown";
@@ -44,6 +46,8 @@ const AgentChat = ({
   const [isProcessing, setIsProcessing] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
   const [threadId, setThreadId] = useState<string | null>(null);
+  const [tradeSignal, setTradeSignal] = useState<TradeSignal | null>(null);
+  const lastUserMessageRef = useRef<string>("");
   const ws = useRef<WebSocket | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const prevMessageRef = useRef<string>("");
@@ -194,7 +198,12 @@ const AgentChat = ({
         // Check if this is the final signal
         if (data.type === "final") {
           setIsProcessing(false);
-          console.log("✅ Workflow completed. Ready for next message.");
+          // Fetch trade signal if the user's message was trade-related
+          if (isTradeRelated(lastUserMessageRef.current)) {
+            fetchTradeSignal(lastUserMessageRef.current).then((signal) => {
+              if (signal) setTradeSignal(signal);
+            });
+          }
           return;
         }
 
@@ -260,11 +269,11 @@ const AgentChat = ({
 
       const payload = {
         user_id: userId,
-        // thread_id: threadId,
-        thread_id: "6910c42cdcd64af5c6cfac34",
+        thread_id: threadId,
         message: messageText,
       };
-      console.log("Sending:", payload);
+      lastUserMessageRef.current = messageText;
+      setTradeSignal(null);
       ws.current.send(JSON.stringify(payload));
       setMessages((prev) => [
         ...prev,
@@ -538,6 +547,12 @@ const AgentChat = ({
                 ></span>
               </div>
               <span className="text-body-2s">Processing...</span>
+            </div>
+          )}
+        </div>
+          {tradeSignal && (
+            <div className="animate-slideIn px-6">
+              <TradeCard signal={tradeSignal} />
             </div>
           )}
         </div>

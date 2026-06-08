@@ -334,11 +334,108 @@ Generate the markdown report now:
 
 
 
+import httpx
+
 # Initialize Anthropic client (pointed at FreeModel)
 client = _anthropic.Anthropic(
     api_key=os.getenv("ANTHROPIC_API_KEY", ""),
     base_url=os.getenv("ANTHROPIC_BASE_URL", "https://api.anthropic.com"),
 )
+
+COINGECKO_IDS = {
+    "BTC": "bitcoin",
+    "ETH": "ethereum",
+    "INJ": "injective-protocol",
+    "SOL": "solana",
+    "BNB": "binancecoin",
+    "USDT": "tether",
+    "USDC": "usd-coin",
+    "ATOM": "cosmos",
+    "AVAX": "avalanche-2",
+    "MATIC": "matic-network",
+    "ARB": "arbitrum",
+    "OP": "optimism",
+}
+
+class TradeSignalRequest(BaseModel):
+    prompt: str
+    asset: Optional[str] = None
+
+@router.post("/trade-signal")
+async def trade_signal(request: TradeSignalRequest):
+    prompt = request.prompt
+    asset = (request.asset or "").upper()
+
+    # Extract asset from prompt if not provided
+    if not asset:
+        for symbol in COINGECKO_IDS:
+            if symbol.lower() in prompt.lower():
+                asset = symbol
+                break
+        if not asset:
+            asset = "INJ"
+
+    coingecko_id = COINGECKO_IDS.get(asset, "injective-protocol")
+    price = 0.0
+    change24h = 0.0
+
+    try:
+        async with httpx.AsyncClient(timeout=8.0) as http:
+            r = await http.get(
+                "https://api.coingecko.com/api/v3/simple/price",
+                params={"ids": coingecko_id, "vs_currencies": "usd", "include_24hr_change": "true"},
+            )
+            data = r.json().get(coingecko_id, {})
+            price = data.get("usd", 0.0)
+            change24h = round(data.get("usd_24h_change", 0.0), 2)
+    except Exception:
+        pass
+
+    trend_hint = "Bullish" if change24h > 1 else ("Bearish" if change24h < -1 else "Neutral")
+    risk_hint = "High" if abs(change24h) > 5 else ("Medium" if abs(change24h) > 2 else "Low")
+
+    analysis_prompt = f"""
+You are a crypto trading analyst. Based on the data below, return a JSON object only — no markdown, no explanation outside JSON.
+
+Asset: {asset}
+Current price: ${price}
+24h change: {change24h}%
+Trend hint: {trend_hint}
+User query: {prompt}
+
+Return exactly this JSON shape:
+{{
+  "trend": "Bullish" | "Bearish" | "Neutral",
+  "asset": "{asset}",
+  "explanation": "<2-sentence explanation>",
+  "risk": "Low" | "Medium" | "High",
+  "action": "Buy" | "Wait" | "Sell"
+}}
+"""
+
+    try:
+        response = client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            messages=[{"role": "user", "content": analysis_prompt}],
+            max_tokens=300,
+        )
+        raw = response.content[0].text.strip()
+        # Strip markdown fences if present
+        if raw.startswith("```"):
+            raw = raw.split("```")[1]
+            if raw.startswith("json"):
+                raw = raw[4:]
+        result = json.loads(raw)
+    except Exception as e:
+        result = {
+            "trend": trend_hint,
+            "asset": asset,
+            "explanation": f"{asset} is trading at ${price} with a {change24h:+.2f}% change over 24h.",
+            "risk": risk_hint,
+            "action": "Wait",
+        }
+
+    return {**result, "price": price, "change24h": change24h}
 
 # Pydantic models
 class BacktestRequest(BaseModel):
