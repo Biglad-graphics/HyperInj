@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Icon from "@/components/Icon";
 import { getUserId } from "../../../utils/userStorage";
 import TradeCard, { TradeSignal } from "../TradeCard";
@@ -309,12 +310,13 @@ const AgentChat = ({
     if (msg.from === "me") {
       return (
         <div className="flex justify-end">
-          <div className="max-w-[80%] bg-theme-brand text-theme-white-fixed rounded-2xl px-4 py-3">
+          <motion.div
+            whileTap={{ scale: 0.98 }}
+            className="max-w-[80%] bg-theme-brand text-theme-white-fixed rounded-2xl px-4 py-3"
+          >
             <p className="text-body-1m">{msg.text}</p>
-            <span className="text-caption-1m opacity-70 mt-1 block">
-              {msg.timestamp}
-            </span>
-          </div>
+            <span className="text-caption-1m opacity-70 mt-1 block">{msg.timestamp}</span>
+          </motion.div>
         </div>
       );
     }
@@ -518,44 +520,77 @@ const AgentChat = ({
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto px-6 py-4 scrollbar-thin">
-        <div className="space-y-4">
+        <AnimatePresence initial={false}>
           {messages.length === 0 && (
-            <div className="text-center text-theme-tertiary mt-16 px-6">
-              <p className="text-body-1m">Start a conversation with the AI agents</p>
-              <p className="text-body-2s mt-1 opacity-60">
-                Try asking: "Give me the sentiment of BTC"
-              </p>
-            </div>
-          )}
-          {messages.map((msg, i) => (
-            <div key={i} className="animate-slideIn">
-              {renderMessage(msg)}
-            </div>
-          ))}
-          {isProcessing && (
-            <div className="flex items-center gap-2 text-theme-secondary pl-11">
-              <div className="flex gap-1">
-                <span
-                  className="w-2 h-2 bg-theme-brand rounded-full animate-bounce"
-                  style={{ animationDelay: "0ms" }}
-                ></span>
-                <span
-                  className="w-2 h-2 bg-theme-brand rounded-full animate-bounce"
-                  style={{ animationDelay: "150ms" }}
-                ></span>
-                <span
-                  className="w-2 h-2 bg-theme-brand rounded-full animate-bounce"
-                  style={{ animationDelay: "300ms" }}
-                ></span>
+            <motion.div
+              key="empty"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col items-center justify-center h-full text-center px-6 pb-8"
+            >
+              <div className="w-14 h-14 rounded-2xl bg-theme-brand/10 flex items-center justify-center mb-4">
+                <Icon className="w-7 h-7 fill-theme-brand" name="star-plus" />
               </div>
-              <span className="text-body-2s">Processing...</span>
-            </div>
+              <p className="text-body-1s text-theme-primary mb-1">HyperInj Copilot</p>
+              <p className="text-body-2s text-theme-tertiary">
+                Ask anything — market trends, trade signals, or just "Should I buy INJ?"
+              </p>
+            </motion.div>
           )}
-          {tradeSignal && (
-            <div className="animate-slideIn">
-              <TradeCard signal={tradeSignal} />
-            </div>
-          )}
+        </AnimatePresence>
+
+        <div className="space-y-4">
+          {messages.map((msg, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
+            >
+              {renderMessage(msg)}
+            </motion.div>
+          ))}
+
+          <AnimatePresence>
+            {isProcessing && (
+              <motion.div
+                key="typing"
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 6 }}
+                className="flex items-center gap-3 pl-2"
+              >
+                <div className="w-8 h-8 rounded-full bg-theme-brand/10 flex items-center justify-center shrink-0">
+                  <Icon className="w-4 h-4 fill-theme-brand" name="star-plus" />
+                </div>
+                <div className="flex gap-1.5 px-4 py-3 rounded-2xl bg-theme-on-surface border border-theme-stroke">
+                  {[0, 1, 2].map((i) => (
+                    <motion.span
+                      key={i}
+                      className="w-2 h-2 rounded-full bg-theme-brand"
+                      animate={{ scale: [1, 1.5, 1], opacity: [0.4, 1, 0.4] }}
+                      transition={{ repeat: Infinity, duration: 0.9, delay: i * 0.2 }}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence>
+            {tradeSignal && (
+              <motion.div
+                key="tradecard"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <TradeCard signal={tradeSignal} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
         <div ref={messagesEndRef} />
       </div>
@@ -564,21 +599,3 @@ const AgentChat = ({
 };
 
 export default AgentChat;
-
-// Add to global CSS
-const animationStyles = `
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-.animate-slideIn {
-  animation: slideIn 0.3s ease-out;
-}
-`;

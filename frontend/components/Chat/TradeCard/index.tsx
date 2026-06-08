@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import { getUserId } from "../../../utils/userStorage";
 import { getTopSpotMarkets } from "../../../services/injectiveMarkets.service";
@@ -15,52 +16,53 @@ export interface TradeSignal {
   change24h: number;
 }
 
-const TREND_COLORS = {
-  Bullish: "bg-theme-green/10 text-theme-green border-theme-green/30",
-  Bearish: "bg-theme-red/10 text-theme-red border-theme-red/30",
-  Neutral: "bg-theme-secondary/10 text-theme-secondary border-theme-stroke",
+const TREND_BG: Record<string, string> = {
+  Bullish: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+  Bearish: "bg-red-500/10 text-red-400 border-red-500/20",
+  Neutral: "bg-zinc-500/10 text-zinc-400 border-zinc-500/20",
 };
 
-const RISK_COLORS = {
-  Low: "text-theme-green",
-  Medium: "text-theme-yellow",
-  High: "text-theme-red",
+const RISK_COLOR: Record<string, string> = {
+  Low: "text-emerald-400",
+  Medium: "text-yellow-400",
+  High: "text-red-400",
 };
 
-type TradeCardProps = {
-  signal: TradeSignal;
-};
+type Step = "idle" | "loading" | "success" | "error";
 
-const TradeCard = ({ signal }: TradeCardProps) => {
+const TradeCard = ({ signal }: { signal: TradeSignal }) => {
   const [quantity, setQuantity] = useState("1");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [step, setStep] = useState<Step>("idle");
+  const [activeSide, setActiveSide] = useState<"buy" | "sell" | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const executeTrade = async (side: "buy" | "sell") => {
+  const change24hLabel =
+    signal.change24h >= 0
+      ? `+${signal.change24h.toFixed(2)}%`
+      : `${signal.change24h.toFixed(2)}%`;
+  const changeColor =
+    signal.change24h >= 0 ? "text-emerald-400" : "text-red-400";
+
+  const execute = async (side: "buy" | "sell") => {
     const userId = getUserId();
     if (!userId) {
       setErrorMsg("Not logged in.");
-      setStatus("error");
+      setStep("error");
       return;
     }
-
-    setStatus("loading");
+    setActiveSide(side);
+    setStep("loading");
     setErrorMsg("");
 
     try {
-      // Look up the spot market ID for this asset
       const markets = await getTopSpotMarkets();
       const market = markets.find(
         (m) => m.baseSymbol.toUpperCase() === signal.asset.toUpperCase()
       );
+      if (!market) throw new Error(`No Injective market found for ${signal.asset}`);
 
-      if (!market) {
-        setErrorMsg(`No Injective market found for ${signal.asset}.`);
-        setStatus("error");
-        return;
-      }
-
-      const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000/api";
+      const apiBase =
+        process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:4000/api";
       await axios.post(`${apiBase}/injective/order`, {
         userId,
         marketId: market.marketId,
@@ -68,108 +70,146 @@ const TradeCard = ({ signal }: TradeCardProps) => {
         side,
         orderType: "spot",
       });
-
-      setStatus("success");
+      setStep("success");
     } catch (err: any) {
       setErrorMsg(err?.response?.data?.error || err?.message || "Trade failed.");
-      setStatus("error");
+      setStep("error");
     }
   };
 
-  const change24hFormatted = signal.change24h >= 0
-    ? `+${signal.change24h.toFixed(2)}%`
-    : `${signal.change24h.toFixed(2)}%`;
-  const changeColor = signal.change24h >= 0 ? "text-theme-green" : "text-theme-red";
-
-  if (status === "success") {
-    return (
-      <div className="mt-3 rounded-2xl border border-theme-green/30 bg-theme-green/10 px-5 py-4">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-theme-green flex items-center justify-center text-white text-sm font-bold">✓</div>
-          <div>
-            <p className="text-body-1s text-theme-primary">Order placed successfully</p>
-            <p className="text-body-2s text-theme-secondary mt-0.5">
-              {signal.asset} order submitted to Injective
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="mt-3 rounded-2xl border border-theme-stroke bg-theme-on-surface overflow-hidden">
-      {/* Header row */}
-      <div className="flex items-center justify-between px-5 py-3 border-b border-theme-stroke">
+    <motion.div
+      initial={{ opacity: 0, y: 8, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="mt-3 rounded-2xl border border-white/10 bg-[#111318] overflow-hidden"
+    >
+      {/* Header */}
+      <div className="flex items-center justify-between px-5 py-3 border-b border-white/8">
         <div className="flex items-center gap-2">
-          <span className={`px-2.5 py-0.5 rounded-full text-caption-1m border ${TREND_COLORS[signal.trend]}`}>
+          <span
+            className={`px-2.5 py-0.5 rounded-full text-xs font-medium border ${TREND_BG[signal.trend]}`}
+          >
             {signal.trend}
           </span>
-          <span className="text-title-2s text-theme-primary">{signal.asset}</span>
+          <span className="text-base font-bold text-white">{signal.asset}</span>
         </div>
         <div className="text-right">
           {signal.price > 0 && (
-            <p className="text-body-1s text-theme-primary">${signal.price.toLocaleString()}</p>
+            <p className="text-sm font-semibold text-white">
+              ${signal.price.toLocaleString()}
+            </p>
           )}
           {signal.change24h !== 0 && (
-            <p className={`text-caption-1m ${changeColor}`}>{change24hFormatted} 24h</p>
+            <p className={`text-xs ${changeColor}`}>{change24hLabel} 24h</p>
           )}
         </div>
       </div>
 
       {/* Explanation */}
-      <div className="px-5 py-3 border-b border-theme-stroke">
-        <p className="text-body-2s text-theme-secondary leading-relaxed">{signal.explanation}</p>
-        <p className="text-caption-1m text-theme-tertiary mt-2">
+      <div className="px-5 py-3 border-b border-white/8">
+        <p className="text-sm text-zinc-300 leading-relaxed">{signal.explanation}</p>
+        <p className="text-xs text-zinc-500 mt-2">
           Risk:{" "}
-          <span className={`font-semibold ${RISK_COLORS[signal.risk]}`}>{signal.risk}</span>
+          <span className={`font-semibold ${RISK_COLOR[signal.risk]}`}>
+            {signal.risk}
+          </span>
         </p>
       </div>
 
-      {/* Actions */}
-      <div className="px-5 py-3">
-        <div className="flex items-center gap-2 mb-3">
-          <label className="text-body-2s text-theme-secondary shrink-0">Quantity</label>
-          <input
-            type="number"
-            min="0.01"
-            step="0.01"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            className="w-24 px-3 py-1.5 bg-theme-n-8 border border-theme-stroke rounded-lg text-body-2s text-theme-primary outline-none focus:border-theme-brand"
-          />
-          <span className="text-caption-1m text-theme-tertiary">{signal.asset}</span>
-        </div>
+      {/* Action area */}
+      <div className="px-5 py-4">
+        <AnimatePresence mode="wait">
+          {step === "success" ? (
+            <motion.div
+              key="success"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex items-center gap-3 py-2"
+            >
+              <div className="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white font-bold text-sm">
+                ✓
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-white">
+                  Trade executed successfully
+                </p>
+                <p className="text-xs text-zinc-400 mt-0.5">
+                  +{quantity} {signal.asset} {activeSide === "buy" ? "bought" : "sold"} on Injective
+                </p>
+              </div>
+            </motion.div>
+          ) : step === "loading" ? (
+            <motion.div
+              key="loading"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex items-center gap-3 py-2"
+            >
+              <div className="flex gap-1">
+                {[0, 1, 2].map((i) => (
+                  <motion.span
+                    key={i}
+                    className="w-2 h-2 rounded-full bg-blue-400"
+                    animate={{ scale: [1, 1.4, 1], opacity: [0.4, 1, 0.4] }}
+                    transition={{ repeat: Infinity, duration: 0.9, delay: i * 0.2 }}
+                  />
+                ))}
+              </div>
+              <p className="text-sm text-zinc-300">
+                Executing {activeSide} order…
+              </p>
+            </motion.div>
+          ) : (
+            <motion.div key="actions" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+              <div className="flex items-center gap-2 mb-3">
+                <label className="text-xs text-zinc-500 shrink-0">Qty</label>
+                <input
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  value={quantity}
+                  onChange={(e) => setQuantity(e.target.value)}
+                  className="w-20 px-3 py-1.5 bg-white/5 border border-white/10 rounded-lg text-sm text-white outline-none focus:border-blue-500 transition-colors"
+                />
+                <span className="text-xs text-zinc-500">{signal.asset}</span>
+              </div>
 
-        <div className="flex gap-2">
-          <button
-            className="flex-1 py-2.5 rounded-xl bg-theme-green text-white text-body-2s font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
-            onClick={() => executeTrade("buy")}
-            disabled={status === "loading"}
-          >
-            {status === "loading" ? "..." : "Buy"}
-          </button>
-          <button
-            className="flex-1 py-2.5 rounded-xl border border-theme-stroke text-theme-secondary text-body-2s font-semibold hover:bg-theme-on-surface-2 transition-colors"
-            onClick={() => setStatus("idle")}
-            type="button"
-          >
-            Wait
-          </button>
-          <button
-            className="flex-1 py-2.5 rounded-xl bg-theme-red text-white text-body-2s font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
-            onClick={() => executeTrade("sell")}
-            disabled={status === "loading"}
-          >
-            {status === "loading" ? "..." : "Sell"}
-          </button>
-        </div>
+              <div className="flex gap-2">
+                {(["buy", "wait", "sell"] as const).map((action) => (
+                  <motion.button
+                    key={action}
+                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.02 }}
+                    onClick={() => action !== "wait" && execute(action)}
+                    className={`flex-1 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                      action === "buy"
+                        ? "bg-emerald-500 hover:bg-emerald-400 text-white shadow-[0_0_12px_rgba(16,185,129,0.3)]"
+                        : action === "sell"
+                        ? "bg-red-500 hover:bg-red-400 text-white shadow-[0_0_12px_rgba(239,68,68,0.3)]"
+                        : "border border-white/10 text-zinc-400 hover:bg-white/5"
+                    }`}
+                    disabled={step === "loading"}
+                  >
+                    {action.charAt(0).toUpperCase() + action.slice(1)}
+                  </motion.button>
+                ))}
+              </div>
 
-        {status === "error" && (
-          <p className="mt-2 text-caption-1m text-theme-red text-center">{errorMsg}</p>
-        )}
+              {step === "error" && (
+                <motion.p
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-2 text-xs text-red-400 text-center"
+                >
+                  {errorMsg}
+                </motion.p>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
