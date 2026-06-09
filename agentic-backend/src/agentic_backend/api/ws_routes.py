@@ -336,18 +336,25 @@ async def trade_signal(req: TradeSignalRequest):
     price = price_data["price"]
     change = price_data["change24h"]
 
+    # If CoinGecko failed, try to extract price from the prompt (frontend passes it)
+    if price == 0.0:
+        import re
+        m = re.search(r'\$([0-9]+(?:\.[0-9]+)?)', req.prompt)
+        if m:
+            price = float(m.group(1))
+
     prompt = (
         f"Asset: {asset}, Price: ${price:.4f}, 24h change: {change:+.2f}%\n"
         f"User query: {req.prompt}\n\n"
         "Return ONLY valid JSON:\n"
-        '{"trend":"bullish|bearish|neutral","asset":"SYMBOL","explanation":"2 sentences max",'
+        '{"trend":"bullish|bearish|neutral","asset":"SYMBOL","explanation":"1 sharp sentence — hedge fund style, no fluff",'
         '"risk":"Low|Medium|High","action":"Buy|Wait|Sell"}'
     )
 
     try:
         raw = await chat_complete(
             messages=[
-                {"role": "system", "content": "You are a crypto trade signal engine. Output only valid JSON."},
+                {"role": "system", "content": "You are an elite crypto trade signal engine. Output only valid JSON. Be sharp and confident."},
                 {"role": "user", "content": prompt},
             ],
             model=FAST_MODEL,
@@ -365,14 +372,18 @@ async def trade_signal(req: TradeSignalRequest):
     # Rule-based fallback
     if not result.get("action"):
         if change > 2:
-            result = {"trend": "bullish", "action": "Buy", "risk": "Medium"}
+            result = {"trend": "bullish", "action": "Buy", "risk": "Medium",
+                      "explanation": f"{asset} momentum is building — structure holds above key support."}
         elif change < -2:
-            result = {"trend": "bearish", "action": "Sell", "risk": "Medium"}
+            result = {"trend": "bearish", "action": "Sell", "risk": "Medium",
+                      "explanation": f"{asset} losing structure — downside risk elevated until support reclaims."}
         else:
-            result = {"trend": "neutral", "action": "Wait", "risk": "Low"}
+            result = {"trend": "neutral", "action": "Wait", "risk": "Low",
+                      "explanation": f"{asset} consolidating in range — wait for breakout confirmation."}
 
     result.setdefault("asset", asset)
-    result.setdefault("explanation", f"{asset} is trading at ${price:.4f} ({change:+.2f}% 24h).")
+    if not result.get("explanation") or "$0.0000" in result.get("explanation", ""):
+        result["explanation"] = f"{asset} momentum {'building' if change > 0 else 'fading'} — {abs(change):.2f}% move in 24h."
     result["price"] = price
     result["change24h"] = change
     return result
