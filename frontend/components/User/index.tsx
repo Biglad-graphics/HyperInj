@@ -1,13 +1,11 @@
 import { Menu, MenuButton, MenuItems, Transition } from "@headlessui/react";
-// import { useColorMode } from "@chakra-ui/color-mode";
 import { useColorMode } from "@chakra-ui/react";
-import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import Icon from "@/components/Icon";
 import Image from "@/components/Image";
 import Switch from "@/components/Switch";
 import NavLink from "./NavLink";
+import { useWalletCompat as useWallet } from "../../contexts/WalletContext";
 
 type UserProps = {
   className?: string;
@@ -16,43 +14,16 @@ type UserProps = {
 const User = ({ className }: UserProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const isLightMode = colorMode === "light";
-  const { logout, user } = usePrivy();
   const router = useRouter();
+  const { address, injBalance, disconnect, isConnected } = useWallet();
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      router.push("/sign-in");
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
+  const shortAddress = address
+    ? `${address.slice(0, 6)}…${address.slice(-4)}`
+    : "Not connected";
 
-  // Function to format wallet address
-  const formatAddress = (address: string) => {
-    if (!address) return "";
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  };
-
-  // Get the wallet address from the user object
-  const getWalletAddress = () => {
-    if (!user) return "Not Connected";
-
-    // Check for linked wallets (Ethereum or Solana)
-    const wallet = user.linkedAccounts?.find(
-      (account) => account.type === "wallet"
-    );
-
-    if (wallet && "address" in wallet) {
-      return formatAddress(wallet.address);
-    }
-
-    // Fallback to email or other identifier if no wallet
-    if (user.email?.address) {
-      return user.email.address;
-    }
-
-    return "User";
+  const handleLogout = () => {
+    disconnect();
+    router.push("/sign-in");
   };
 
   return (
@@ -89,15 +60,15 @@ const User = ({ className }: UserProps) => {
               />
             </div>
             <div className="grow pl-4.5">
-              <div className="text-title-1s">{getWalletAddress()}</div>
-              <div className="text-body-1m text-theme-secondary">
-                {user?.wallet?.walletClientType || "Wallet"}
-              </div>
+              <div className="font-mono text-title-1s">{shortAddress}</div>
+              {isConnected && (
+                <div className="text-body-1m text-theme-secondary">
+                  {injBalance.toFixed(4)} INJ
+                </div>
+              )}
             </div>
           </div>
           <div className="mb-2 space-y-1">
-            {/* <NavLink title="Settings" icon="settings" url="/settings" /> */}
-            {/* <NavLink title="Contact support" icon="support" url="/support" /> */}
             <div className="group flex items-center h-12 px-4 rounded-xl transition-colors hover:bg-theme-on-surface-2">
               <Icon
                 className="shrink-0 mr-4 fill-theme-secondary transition-colors group-hover:fill-theme-primary"
@@ -113,7 +84,6 @@ const User = ({ className }: UserProps) => {
                 theme
               />
             </div>
-            {/* <NavLink title="News" icon="news" url="/news" /> */}
           </div>
           <button
             onClick={handleLogout}
@@ -124,7 +94,7 @@ const User = ({ className }: UserProps) => {
               name="logout"
             />
             <div className="text-base-1s text-theme-secondary transition-colors group-hover:text-theme-primary">
-              Log out
+              {isConnected ? "Disconnect" : "Log out"}
             </div>
           </button>
         </MenuItems>
