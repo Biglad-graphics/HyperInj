@@ -4,45 +4,27 @@ import { useState, useEffect, useRef } from "react";
 import Layout from "@/components/Layout";
 import Icon from "@/components/Icon";
 import { useWalletCompat as useWallet } from "../../contexts/WalletContext";
-
-interface LocalPost {
-  id: string;
-  title: string;
-  content: string;
-  createdAt: string;
-}
+import { useAppStore, StorePost } from "../../store/useAppStore";
 
 interface CreatorSettings {
   requiredINJ: number;
   bio: string;
   displayName: string;
-  posts: LocalPost[];
 }
 
-const DEFAULT_SETTINGS: CreatorSettings = {
-  requiredINJ: 5,
-  bio: "",
-  displayName: "",
-  posts: [],
-};
-
-const STORAGE_KEY = "HyperInj_creator_settings";
+const DEFAULT_SETTINGS: CreatorSettings = { requiredINJ: 5, bio: "", displayName: "" };
+const SETTINGS_KEY = "HyperInj_creator_settings";
 
 function loadSettings(): CreatorSettings {
   if (typeof window === "undefined") return DEFAULT_SETTINGS;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(SETTINGS_KEY);
     return raw ? { ...DEFAULT_SETTINGS, ...JSON.parse(raw) } : DEFAULT_SETTINGS;
   } catch {
     return DEFAULT_SETTINGS;
   }
 }
 
-function saveSettings(s: CreatorSettings) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
-}
-
-// ── AI suggestion topics for the creator assistant
 const PROMPT_SUGGESTIONS = [
   "Generate 3 post ideas about INJ staking",
   "Write an intro post for my creator page",
@@ -53,8 +35,13 @@ const PROMPT_SUGGESTIONS = [
 
 const WS_URL = `${process.env.NEXT_PUBLIC_AGENT_WS_URL || "ws://localhost:8000"}/ws/chat`;
 
+function initials(name: string): string {
+  return name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2) || "ME";
+}
+
 const CreatorDashboardPage = () => {
   const { address, injBalance, isConnected, connect, connecting } = useWallet();
+  const { addPost, deletePost, upsertCreator, getPostsByCreator } = useAppStore();
 
   const [settings, setSettings] = useState<CreatorSettings>(DEFAULT_SETTINGS);
   const [activeTab, setActiveTab] = useState<"posts" | "settings" | "ai">("posts");
@@ -65,12 +52,14 @@ const CreatorDashboardPage = () => {
   const [nameInput, setNameInput] = useState("");
   const [saved, setSaved] = useState(false);
 
-  // AI panel state
   const [aiInput, setAiInput] = useState("");
   const [aiMessages, setAiMessages] = useState<{ role: "user" | "ai"; text: string }[]>([]);
   const [aiLoading, setAiLoading] = useState(false);
   const ws = useRef<WebSocket | null>(null);
   const aiEndRef = useRef<HTMLDivElement>(null);
+
+  // My posts from the global store, keyed by wallet address
+  const myPosts = address ? getPostsByCreator(address) : [];
 
   useEffect(() => {
     const s = loadSettings();
@@ -84,7 +73,6 @@ const CreatorDashboardPage = () => {
     aiEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [aiMessages]);
 
-  // ── WebSocket for AI assistant
   useEffect(() => {
     if (activeTab !== "ai") return;
     const socket = new WebSocket(WS_URL);
@@ -97,23 +85,19 @@ const CreatorDashboardPage = () => {
           if (!text) return;
           setAiMessages((prev) => {
             const last = prev[prev.length - 1];
-            if (last?.role === "ai") {
-              return [...prev.slice(0, -1), { role: "ai", text }];
-            }
+            if (last?.role === "ai") return [...prev.slice(0, -1), { role: "ai", text }];
             return [...prev, { role: "ai", text }];
           });
         }
         if (data.type === "final") setAiLoading(false);
         if (data.type === "error") {
           setAiLoading(false);
-          setAiMessages((prev) => [...prev, { role: "ai", text: "Sorry, something went wrong. Try again." }]);
+          setAiMessages((prev) => [...prev, { role: "ai", text: "Sorry, something went wrong." }]);
         }
       } catch {}
     };
     socket.onclose = () => setAiLoading(false);
-    return () => {
-      socket.close();
-    };
+    return () => { socket.close(); };
   }, [activeTab]);
 
   const sendAiMessage = (text: string) => {
@@ -130,37 +114,62 @@ const CreatorDashboardPage = () => {
   };
 
   const handleSaveSettings = () => {
-    const updated: CreatorSettings = {
-      ...settings,
-      requiredINJ: Math.max(0, parseFloat(requiredINJInput) || 0),
-      bio: bioInput,
-      displayName: nameInput,
-    };
+    if (!address) return;
+    const reqINJ = Math.max(0, parseFloat(requiredINJInput) || 0);
+    const updated: CreatorSettings = { requiredINJ: reqINJ, bio: bioInput, displayName: nameInput };
     setSettings(updated);
-    saveSettings(updated);
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(updated));
+
+    // Sync to global store so profile/explore pages reflect the change
+    upsertCreator({
+      id: address,
+      name: nameInput || `${address.slice(0, 6)}…${address.slice(-4)}`,
+      handle: `@${address.slice(0, 8)}`,
+      bio: bioInput,
+      category: "Creator",
+      requiredINJ: reqINJ,
+      avatarColor: "bg-brand-600",
+      initials: nameInput ? initials(nameInput) : "ME",
+      subscribers: 0,
+    });
+
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
 
   const handlePublishPost = () => {
-    if (!postTitle.trim() || !postContent.trim()) return;
-    const post: LocalPost = {
+    if (!address || !postTitle.trim() || !postContent.trim()) return;
+    const post: StorePost = {
       id: Date.now().toString(),
+      creatorId: address,
       title: postTitle,
       content: postContent,
+      preview: postContent.slice(0, 100) + (postContent.length > 100 ? "…" : ""),
       createdAt: new Date().toISOString().split("T")[0],
     };
-    const updated = { ...settings, posts: [post, ...settings.posts] };
-    setSettings(updated);
-    saveSettings(updated);
+
+    // Add to global store — instantly visible on profile/explore/my-access
+    addPost(post);
+
+    // Ensure the creator entry exists in the store
+    upsertCreator({
+      id: address,
+      name: settings.displayName || `${address.slice(0, 6)}…${address.slice(-4)}`,
+      handle: `@${address.slice(0, 8)}`,
+      bio: settings.bio,
+      category: "Creator",
+      requiredINJ: settings.requiredINJ,
+      avatarColor: "bg-brand-600",
+      initials: settings.displayName ? initials(settings.displayName) : "ME",
+      subscribers: 0,
+    });
+
     setPostTitle("");
     setPostContent("");
   };
 
   const handleDeletePost = (id: string) => {
-    const updated = { ...settings, posts: settings.posts.filter((p) => p.id !== id) };
-    setSettings(updated);
-    saveSettings(updated);
+    deletePost(id);
   };
 
   if (!isConnected) {
@@ -191,10 +200,10 @@ const CreatorDashboardPage = () => {
   return (
     <Layout title="Creator Dashboard">
       <div className="max-w-3xl mx-auto space-y-5">
-        {/* Creator stats */}
+        {/* Stats */}
         <div className="grid grid-cols-3 gap-3 md:grid-cols-1">
           <div className="p-4 rounded-2xl bg-theme-on-surface-1 border border-theme-stroke text-center">
-            <div className="text-h5 font-bold text-theme-primary">{settings.posts.length}</div>
+            <div className="text-h5 font-bold text-theme-primary">{myPosts.length}</div>
             <div className="text-caption-1m text-theme-secondary">Posts Published</div>
           </div>
           <div className="p-4 rounded-2xl bg-theme-on-surface-1 border border-theme-stroke text-center">
@@ -228,7 +237,6 @@ const CreatorDashboardPage = () => {
         {/* ── POSTS TAB ─────────────────────────── */}
         {activeTab === "posts" && (
           <div className="space-y-5">
-            {/* New post form */}
             <div className="p-5 rounded-2xl bg-theme-on-surface-1 border border-theme-stroke space-y-3">
               <h3 className="text-title-1s text-theme-primary">New Post</h3>
               <input
@@ -253,8 +261,7 @@ const CreatorDashboardPage = () => {
               </button>
             </div>
 
-            {/* Existing posts */}
-            {settings.posts.length === 0 ? (
+            {myPosts.length === 0 ? (
               <div className="flex flex-col items-center py-12 text-center">
                 <Icon className="w-8 h-8 fill-theme-tertiary mb-3" name="news" />
                 <p className="text-body-2s text-theme-secondary">No posts yet. Publish your first post above.</p>
@@ -262,9 +269,9 @@ const CreatorDashboardPage = () => {
             ) : (
               <div className="space-y-3">
                 <h3 className="text-title-1s text-theme-primary">
-                  Published <span className="text-theme-tertiary">({settings.posts.length})</span>
+                  Published <span className="text-theme-tertiary">({myPosts.length})</span>
                 </h3>
-                {settings.posts.map((post) => (
+                {myPosts.map((post) => (
                   <div key={post.id} className="p-5 rounded-2xl bg-theme-on-surface-1 border border-theme-stroke">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
@@ -293,7 +300,6 @@ const CreatorDashboardPage = () => {
               <h3 className="text-title-1s text-theme-primary mb-1">Creator Profile</h3>
               <p className="text-body-2s text-theme-secondary">Configure how fans see your profile and what INJ they need to hold.</p>
             </div>
-
             <div className="space-y-4">
               <div className="space-y-1.5">
                 <label className="text-caption-1m text-theme-secondary block">Display Name</label>
@@ -304,7 +310,6 @@ const CreatorDashboardPage = () => {
                   onChange={(e) => setNameInput(e.target.value)}
                 />
               </div>
-
               <div className="space-y-1.5">
                 <label className="text-caption-1m text-theme-secondary block">Bio</label>
                 <textarea
@@ -315,7 +320,6 @@ const CreatorDashboardPage = () => {
                   onChange={(e) => setBioInput(e.target.value)}
                 />
               </div>
-
               <div className="space-y-1.5">
                 <label className="text-caption-1m text-theme-secondary block">Required INJ to Unlock</label>
                 <div className="relative">
@@ -330,15 +334,11 @@ const CreatorDashboardPage = () => {
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-caption-1m text-theme-tertiary">INJ</span>
                 </div>
                 <p className="text-caption-1m text-theme-tertiary">
-                  Fans holding at least this amount of INJ will see your full content.
+                  Set to 0 to make all content free.
                 </p>
               </div>
             </div>
-
-            <button
-              className="btn-primary w-full"
-              onClick={handleSaveSettings}
-            >
+            <button className="btn-primary w-full" onClick={handleSaveSettings}>
               {saved ? "Saved ✓" : "Save Settings"}
             </button>
           </div>
@@ -356,8 +356,6 @@ const CreatorDashboardPage = () => {
                 Generate post ideas, rewrite content, and get engagement hooks for your Injective audience.
               </p>
             </div>
-
-            {/* Quick prompts */}
             {aiMessages.length === 0 && (
               <div className="px-5 py-4 border-b border-theme-stroke shrink-0">
                 <p className="text-caption-1m text-theme-tertiary mb-2">Try a prompt:</p>
@@ -374,8 +372,6 @@ const CreatorDashboardPage = () => {
                 </div>
               </div>
             )}
-
-            {/* Messages */}
             <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
               {aiMessages.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "gap-3"}`}>
@@ -402,19 +398,13 @@ const CreatorDashboardPage = () => {
                   </div>
                   <div className="flex gap-1.5 px-4 py-3 rounded-2xl bg-theme-on-surface border border-theme-stroke">
                     {[0, 1, 2].map((i) => (
-                      <span
-                        key={i}
-                        className="w-2 h-2 rounded-full bg-theme-brand animate-bounce"
-                        style={{ animationDelay: `${i * 0.15}s` }}
-                      />
+                      <span key={i} className="w-2 h-2 rounded-full bg-theme-brand animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
                     ))}
                   </div>
                 </div>
               )}
               <div ref={aiEndRef} />
             </div>
-
-            {/* Input */}
             <div className="px-4 py-3 border-t border-theme-stroke shrink-0">
               <div className="flex items-center gap-2">
                 <input
@@ -423,10 +413,7 @@ const CreatorDashboardPage = () => {
                   value={aiInput}
                   onChange={(e) => setAiInput(e.target.value)}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter" && !e.shiftKey) {
-                      e.preventDefault();
-                      sendAiMessage(aiInput);
-                    }
+                    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendAiMessage(aiInput); }
                   }}
                 />
                 <button

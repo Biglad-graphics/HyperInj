@@ -3,8 +3,8 @@
 import Link from "next/link";
 import Layout from "@/components/Layout";
 import Icon from "@/components/Icon";
-import { CREATORS } from "../../mocks/creators";
 import { useWalletCompat as useWallet } from "../../contexts/WalletContext";
+import { useAppStore } from "../../store/useAppStore";
 
 const CATEGORY_COLORS: Record<string, string> = {
   Research: "bg-brand-600/10 text-brand-600",
@@ -15,11 +15,11 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 const ExplorePage = () => {
   const { injBalance, isConnected } = useWallet();
+  const { creators, getPostsByCreator } = useAppStore();
 
   return (
     <Layout title="Explore Creators">
       <div className="space-y-6">
-        {/* Intro */}
         <div className="p-6 rounded-2xl bg-theme-on-surface-1 border border-theme-stroke">
           <h2 className="text-title-1s text-theme-primary mb-1">Discover Creators</h2>
           <p className="text-body-2s text-theme-secondary">
@@ -33,14 +33,14 @@ const ExplorePage = () => {
           )}
         </div>
 
-        {/* Creator grid */}
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-1">
-          {CREATORS.map((creator) => {
+          {creators.map((creator) => {
+            const postCount = getPostsByCreator(creator.id).length;
             const catClass = CATEGORY_COLORS[creator.category] ?? "bg-theme-on-surface-2 text-theme-secondary";
-            const hasAccess = isConnected && injBalance >= creator.requiredINJ;
-            const progress = isConnected
+            const hasAccess = creator.requiredINJ === 0 || (isConnected && injBalance >= creator.requiredINJ);
+            const progress = isConnected && creator.requiredINJ > 0
               ? Math.min((injBalance / creator.requiredINJ) * 100, 100)
-              : 0;
+              : 100;
 
             return (
               <div
@@ -48,7 +48,6 @@ const ExplorePage = () => {
                 className="flex flex-col p-6 rounded-2xl bg-theme-on-surface-1 border border-theme-stroke hover:border-brand-600/30 transition-all"
               >
                 <div className="flex items-start gap-4 mb-4">
-                  {/* Avatar */}
                   <div className={`w-14 h-14 rounded-2xl ${creator.avatarColor} flex items-center justify-center text-white font-bold shrink-0`}>
                     {creator.initials}
                   </div>
@@ -73,15 +72,18 @@ const ExplorePage = () => {
                   {creator.bio}
                 </p>
 
-                {/* Access requirement + progress */}
                 <div className="mt-auto space-y-2">
                   <div className="flex items-center justify-between text-caption-1m">
                     <span className="text-theme-secondary">
-                      {hasAccess ? "Access granted" : `Requires ${creator.requiredINJ} INJ`}
+                      {creator.requiredINJ === 0
+                        ? "Free"
+                        : hasAccess
+                          ? "Access granted"
+                          : `Requires ${creator.requiredINJ} INJ`}
                     </span>
-                    <span className="text-theme-tertiary">{creator.posts.length} posts</span>
+                    <span className="text-theme-tertiary">{postCount} posts</span>
                   </div>
-                  {isConnected && (
+                  {isConnected && creator.requiredINJ > 0 && (
                     <div className="h-1.5 rounded-full bg-theme-stroke overflow-hidden">
                       <div
                         className={`h-full rounded-full transition-all duration-500 ${hasAccess ? "bg-theme-green" : "bg-brand-600"}`}
@@ -91,10 +93,7 @@ const ExplorePage = () => {
                   )}
                 </div>
 
-                <Link
-                  href={`/creator/${creator.id}`}
-                  className="btn-secondary w-full mt-4 text-center"
-                >
+                <Link href={`/creator/${creator.id}`} className="btn-secondary w-full mt-4 text-center">
                   View Creator
                 </Link>
               </div>
@@ -102,7 +101,6 @@ const ExplorePage = () => {
           })}
         </div>
 
-        {/* Empty / connect CTA */}
         {!isConnected && (
           <div className="p-6 rounded-2xl border border-dashed border-theme-stroke text-center">
             <Icon className="w-8 h-8 fill-theme-tertiary mx-auto mb-3" name="wallet" />

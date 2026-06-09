@@ -3,8 +3,8 @@
 import Link from "next/link";
 import Layout from "@/components/Layout";
 import Icon from "@/components/Icon";
-import { CREATORS } from "../../mocks/creators";
 import { useWalletCompat as useWallet } from "../../contexts/WalletContext";
+import { useAppStore } from "../../store/useAppStore";
 
 const CATEGORY_COLORS: Record<string, string> = {
   Research: "bg-brand-600/10 text-brand-600",
@@ -15,6 +15,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 const MyAccessPage = () => {
   const { injBalance, isConnected, connect, connecting } = useWallet();
+  const { creators, getPostsByCreator } = useAppStore();
 
   if (!isConnected) {
     return (
@@ -35,8 +36,8 @@ const MyAccessPage = () => {
     );
   }
 
-  const unlocked = CREATORS.filter((c) => injBalance >= c.requiredINJ);
-  const locked = CREATORS.filter((c) => injBalance < c.requiredINJ);
+  const unlocked = creators.filter((c) => c.requiredINJ === 0 || injBalance >= c.requiredINJ);
+  const locked = creators.filter((c) => c.requiredINJ > 0 && injBalance < c.requiredINJ);
 
   return (
     <Layout title="My Access">
@@ -51,7 +52,7 @@ const MyAccessPage = () => {
             <div className="text-body-2s text-theme-secondary">Current balance · Injective Mainnet</div>
           </div>
           <div className="ml-auto text-right">
-            <div className="text-title-1s text-theme-primary">{unlocked.length}/{CREATORS.length}</div>
+            <div className="text-title-1s text-theme-primary">{unlocked.length}/{creators.length}</div>
             <div className="text-caption-1m text-theme-secondary">creators unlocked</div>
           </div>
         </div>
@@ -66,6 +67,7 @@ const MyAccessPage = () => {
             </h2>
             <div className="grid grid-cols-2 gap-3 lg:grid-cols-1">
               {unlocked.map((creator) => {
+                const postCount = getPostsByCreator(creator.id).length;
                 const catClass = CATEGORY_COLORS[creator.category] ?? "";
                 return (
                   <Link
@@ -85,7 +87,9 @@ const MyAccessPage = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-theme-green" />
-                        <span className="text-caption-1m text-theme-green">{creator.posts.length} posts unlocked</span>
+                        <span className="text-caption-1m text-theme-green">
+                          {postCount} posts {creator.requiredINJ === 0 ? "(free)" : "unlocked"}
+                        </span>
                       </div>
                     </div>
                     <Icon className="w-4 h-4 fill-theme-tertiary shrink-0" name="arrow-right" />
@@ -138,10 +142,7 @@ const MyAccessPage = () => {
                         <span>{Math.round(progress)}%</span>
                       </div>
                       <div className="h-1.5 rounded-full bg-theme-stroke overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-brand-600 transition-all"
-                          style={{ width: `${progress}%` }}
-                        />
+                        <div className="h-full rounded-full bg-brand-600 transition-all" style={{ width: `${progress}%` }} />
                       </div>
                     </div>
                   </Link>

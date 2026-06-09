@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useWalletCompat as useWallet } from "../../contexts/WalletContext";
-import { CREATORS } from "../../mocks/creators";
+import { useAppStore } from "../../store/useAppStore";
 
 const CATEGORY_COLORS: Record<string, string> = {
   Research: "bg-brand-600/10 text-brand-600",
@@ -15,6 +15,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 
 const LandingPage = () => {
   const { address, injBalance, isConnected, isInstalled, connecting, error, connect } = useWallet();
+  const { creators, getPostsByCreator } = useAppStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -157,9 +158,9 @@ const LandingPage = () => {
             </Link>
           </div>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-1">
-            {CREATORS.slice(0, 4).map((creator) => {
+            {creators.slice(0, 4).map((creator) => {
               const catClass = CATEGORY_COLORS[creator.category] ?? "bg-theme-on-surface-2 text-theme-secondary";
-              const hasAccess = isConnected && injBalance >= creator.requiredINJ;
+              const hasAccess = creator.requiredINJ === 0 || (isConnected && injBalance >= creator.requiredINJ);
               return (
                 <Link
                   key={creator.id}
