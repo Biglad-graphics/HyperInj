@@ -7,7 +7,7 @@ import Icon from "@/components/Icon";
 import Image from "@/components/Image";
 import Switch from "@/components/Switch";
 import NavLink from "./NavLink";
-import { getUserData, clearUserData } from "../../utils/userStorage";
+import { useWallet } from "../../contexts/WalletContext";
 
 type UserProps = {
   className?: string;
@@ -17,18 +17,16 @@ const User = ({ className }: UserProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const isLightMode = colorMode === "light";
   const router = useRouter();
-  const userData = getUserData();
+  const { address, injBalance, disconnect, isConnected } = useWallet();
 
   const handleLogout = () => {
-    clearUserData();
+    disconnect();
     router.push("/sign-in");
   };
 
-  const getWalletAddress = () => {
-    const addr = userData?.walletAddress;
-    if (!addr) return "Not Connected";
-    return `${addr.slice(0, 8)}...${addr.slice(-4)}`;
-  };
+  const shortAddress = address
+    ? `${address.slice(0, 8)}...${address.slice(-4)}`
+    : "Not Connected";
 
   return (
     <Menu className={`relative ${className || ""}`} as="div">
@@ -64,10 +62,13 @@ const User = ({ className }: UserProps) => {
               />
             </div>
             <div className="grow pl-4.5">
-              <div className="text-title-1s">{getWalletAddress()}</div>
-              <div className="text-body-1m text-theme-secondary">
-                Keplr Wallet
-              </div>
+              <div className="text-title-1s font-mono text-sm">{shortAddress}</div>
+              {isConnected && (
+                <div className="text-body-1m text-theme-secondary">
+                  {injBalance.toFixed(4)} INJ
+                </div>
+              )}
+              <div className="text-caption-1m text-theme-tertiary">Keplr · Injective</div>
             </div>
           </div>
           <div className="mb-2 space-y-1">

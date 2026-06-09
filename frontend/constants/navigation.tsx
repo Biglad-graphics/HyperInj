@@ -1,28 +1,7 @@
 export const navigation = [
-  {
-    id: "4",
-    title: "AI Assistant",
-    icon: "star-plus",
-    url: "/chat",
-  },
-  {
-    id: "1",
-    title: "Dashboard",
-    icon: "wallet",
-    url: "/my-assets",
-  },
-  {
-    id: "3",
-    title: "AI Trade Review",
-    icon: "trade",
-    url: "/trade",
-  },
-  {
-    id: "5",
-    title: "AI Strategy Lab",
-    icon: "settings",
-    url: "/strategies",
-  },
+  { id: "1", title: "Home", icon: "home", url: "/" },
+  { id: "2", title: "Explore", icon: "search", url: "/explore" },
+  { id: "3", title: "My Access", icon: "lock", url: "/my-access" },
+  { id: "4", title: "Creator Dashboard", icon: "star-plus", url: "/creator-dashboard" },
+  { id: "5", title: "Settings", icon: "settings", url: "/settings" },
 ];
-
-

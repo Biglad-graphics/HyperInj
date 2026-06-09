@@ -108,7 +108,7 @@ const Sidebar = ({ className, visible, onClick }: SidebarProps) => {
                     <NavLink
                         title="Log out"
                         icon="logout"
-                        url="/sign-up"
+                        url="/sign-in"
                         visible={visible}
                     />
                 </div>
