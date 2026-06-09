@@ -3,8 +3,7 @@
 import Layout from "@/components/Layout";
 import TotalBalance from "./TotalBalance";
 import InjectiveInsight from "./BestToBuy";
-import AllAssets from "./AllAssets";
-import Summary from "./Summary";
+import BehaviorActivityPanel from "./BehaviorActivity";
 
 const MyAssetsPage = () => {
     return (
@@ -15,8 +14,7 @@ const MyAssetsPage = () => {
                     <InjectiveInsight />
                 </div>
                 <div className="flex lg:block">
-                    <AllAssets />
-                    <Summary />
+                    <BehaviorActivityPanel />
                 </div>
             </div>
         </Layout>
