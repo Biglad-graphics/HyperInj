@@ -109,7 +109,7 @@ const CreatorDashboardPage = () => {
     ws.current.send(JSON.stringify({
       user_id: address ?? "anonymous",
       thread_id: "creator-ai",
-      message: `You are an AI creator assistant for the Injective ecosystem. Help with: ${text}`,
+      message: `You are an AI assistant specialized ONLY in the Injective blockchain ecosystem. Respond only in clean paragraphs using a natural human tone. Do not use bullet points, structured trading output, market analysis sections, sentiment ratings, risk levels, or buy/sell/wait recommendations. Only discuss Injective ecosystem, use cases, projects, creator economy, and token utility. Keep responses clear, expert, and conversational. Now answer: ${text}`,
       agent: "injective_analyst",
     }));
     setAiInput("");
@@ -266,7 +266,13 @@ const CreatorDashboardPage = () => {
                   className="hidden"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
-                    if (file) setPostImageUrl(URL.createObjectURL(file));
+                    if (!file) return;
+                    const reader = new FileReader();
+                    reader.onload = (ev) => {
+                      const result = ev.target?.result;
+                      if (typeof result === "string") setPostImageUrl(result);
+                    };
+                    reader.readAsDataURL(file);
                   }}
                 />
                 {postImageUrl ? (
