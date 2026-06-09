@@ -5,7 +5,7 @@ import { useInjectivePortfolio } from "../../../hooks/useInjectivePortfolio";
 type AvailableBalanceProps = {};
 
 const AvailableBalance = ({}: AvailableBalanceProps) => {
-  const { totalValue, loading } = useInjectivePortfolio();
+  const { totalValueUsd: totalValue, loading } = useInjectivePortfolio();
 
   return (
     <div className="card-sidebar">

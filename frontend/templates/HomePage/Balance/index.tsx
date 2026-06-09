@@ -49,7 +49,7 @@ const Balance = ({}: BalanceProps) => {
   const [time, setTime] = useState(duration[0]);
   const { colorMode } = useColorMode();
   const isDarkMode = colorMode === "dark";
-  const { totalValue: accountValue, loading } = useInjectivePortfolio();
+  const { totalValueUsd: accountValue, loading } = useInjectivePortfolio();
 
   return (
     <Card

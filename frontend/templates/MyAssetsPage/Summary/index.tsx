@@ -15,7 +15,7 @@ const Summary = ({}: SummaryProps) => {
     const [visibleModal, setVisibleModal] = useState(false);
     const [walletAddress, setWalletAddress] = useState("");
     const [withdrawAmount, setWithdrawAmount] = useState("");
-    const { totalValue, loading } = useInjectivePortfolio();
+    const { totalValueUsd: totalValue, loading } = useInjectivePortfolio();
 
     const items = [
         {
