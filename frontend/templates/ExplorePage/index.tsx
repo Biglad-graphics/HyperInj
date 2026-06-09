@@ -14,8 +14,8 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 const ExplorePage = () => {
-  const { injBalance, isConnected } = useWallet();
-  const { creators, getPostsByCreator } = useAppStore();
+  const { address, injBalance, isConnected } = useWallet();
+  const { creators, getPostsByCreator, isSubscribed } = useAppStore();
 
   return (
     <Layout title="Explore Creators">
@@ -38,6 +38,7 @@ const ExplorePage = () => {
             const postCount = getPostsByCreator(creator.id).length;
             const catClass = CATEGORY_COLORS[creator.category] ?? "bg-theme-on-surface-2 text-theme-secondary";
             const hasAccess = creator.requiredINJ === 0 || (isConnected && injBalance >= creator.requiredINJ);
+            const subbed = isSubscribed(address ?? null, creator.id);
             const progress = isConnected && creator.requiredINJ > 0
               ? Math.min((injBalance / creator.requiredINJ) * 100, 100)
               : 100;
@@ -60,12 +61,19 @@ const ExplorePage = () => {
                       {creator.category}
                     </span>
                   </div>
-                  {hasAccess && (
-                    <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-theme-green/10 border border-theme-green/20 shrink-0">
-                      <div className="w-1.5 h-1.5 rounded-full bg-theme-green" />
-                      <span className="text-xs text-theme-green font-medium">Unlocked</span>
-                    </div>
-                  )}
+                  <div className="flex flex-col gap-1 shrink-0">
+                    {hasAccess && (
+                      <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-theme-green/10 border border-theme-green/20">
+                        <div className="w-1.5 h-1.5 rounded-full bg-theme-green" />
+                        <span className="text-xs text-theme-green font-medium">Unlocked</span>
+                      </div>
+                    )}
+                    {subbed && (
+                      <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-brand-600/10 border border-brand-600/20">
+                        <span className="text-xs text-brand-600 font-medium">Subscribed</span>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <p className="text-body-2s text-theme-secondary leading-relaxed mb-4 line-clamp-2">

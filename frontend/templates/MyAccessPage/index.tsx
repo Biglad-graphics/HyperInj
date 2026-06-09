@@ -14,8 +14,9 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 const MyAccessPage = () => {
-  const { injBalance, isConnected, connect, connecting } = useWallet();
-  const { creators, getPostsByCreator } = useAppStore();
+  const { address, injBalance, isConnected, connect, connecting } = useWallet();
+  const { creators, getPostsByCreator, getSubscribedCreators, isSubscribed } = useAppStore();
+  const subscribedCreators = address ? getSubscribedCreators(address) : [];
 
   if (!isConnected) {
     return (
@@ -57,6 +58,44 @@ const MyAccessPage = () => {
           </div>
         </div>
 
+        {/* Subscribed creators */}
+        {subscribedCreators.length > 0 && (
+          <div className="space-y-3">
+            <h2 className="text-title-1s text-theme-primary flex items-center gap-2">
+              <Icon className="w-4 h-4 fill-brand-600" name="star-plus" />
+              Subscribed
+              <span className="text-theme-tertiary font-normal">({subscribedCreators.length})</span>
+            </h2>
+            <div className="grid grid-cols-2 gap-3 lg:grid-cols-1">
+              {subscribedCreators.map((creator) => {
+                const postCount = getPostsByCreator(creator.id).length;
+                const catClass = CATEGORY_COLORS[creator.category] ?? "";
+                return (
+                  <Link
+                    key={creator.id}
+                    href={`/creator/${creator.id}`}
+                    className="flex items-center gap-4 p-4 rounded-2xl bg-theme-on-surface-1 border border-brand-600/20 hover:border-brand-600/40 transition-all"
+                  >
+                    <div className={`w-12 h-12 rounded-xl ${creator.avatarColor} flex items-center justify-center text-white font-bold shrink-0`}>
+                      {creator.initials}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-0.5 flex-wrap">
+                        <span className="text-base-1s text-theme-primary font-semibold">{creator.name}</span>
+                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${catClass}`}>
+                          {creator.category}
+                        </span>
+                      </div>
+                      <span className="text-caption-1m text-theme-secondary">{postCount} posts</span>
+                    </div>
+                    <Icon className="w-4 h-4 fill-theme-tertiary shrink-0" name="arrow-right" />
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         {/* Unlocked */}
         {unlocked.length > 0 && (
           <div className="space-y-3">
@@ -69,6 +108,7 @@ const MyAccessPage = () => {
               {unlocked.map((creator) => {
                 const postCount = getPostsByCreator(creator.id).length;
                 const catClass = CATEGORY_COLORS[creator.category] ?? "";
+                const subbed = isSubscribed(address ?? null, creator.id);
                 return (
                   <Link
                     key={creator.id}
@@ -84,6 +124,11 @@ const MyAccessPage = () => {
                         <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${catClass}`}>
                           {creator.category}
                         </span>
+                        {subbed && (
+                          <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-brand-600/10 text-brand-600">
+                            Subscribed
+                          </span>
+                        )}
                       </div>
                       <div className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 rounded-full bg-theme-green" />

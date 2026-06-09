@@ -6,6 +6,7 @@ import Layout from "@/components/Layout";
 import Icon from "@/components/Icon";
 import { useWalletCompat as useWallet } from "../../contexts/WalletContext";
 import { useAppStore, StorePost } from "../../store/useAppStore";
+import SubscribeButton from "./SubscribeButton";
 
 const CATEGORY_COLORS: Record<string, string> = {
   Research: "bg-brand-600/10 text-brand-600",
@@ -36,6 +37,9 @@ function PostCard({ post, locked }: { post: StorePost; locked: boolean }) {
           <div className="text-caption-1m text-theme-tertiary mb-2">{post.createdAt}</div>
           <h3 className="text-base-1s text-theme-primary font-semibold mb-3">{post.title}</h3>
           <p className="text-body-2s text-theme-secondary leading-relaxed whitespace-pre-line">{post.content}</p>
+          {post.imageUrl && (
+            <img src={post.imageUrl} alt="" className="mt-4 w-full max-h-80 object-cover rounded-xl" />
+          )}
         </div>
       )}
     </div>
@@ -90,12 +94,15 @@ const CreatorProfilePage = () => {
               <p className="text-body-2s text-theme-secondary leading-relaxed">{creator.bio}</p>
             </div>
           </div>
-          <div className="flex items-center gap-6 mt-4 pt-4 border-t border-theme-stroke text-caption-1m text-theme-secondary">
-            <span>{posts.length} posts</span>
-            <span>{creator.subscribers.toLocaleString()} subscribers</span>
-            <span className="ml-auto font-semibold text-theme-primary">
+          <div className="flex items-center gap-4 mt-4 pt-4 border-t border-theme-stroke">
+            <span className="text-caption-1m text-theme-secondary">{posts.length} posts</span>
+            <span className="text-caption-1m text-theme-secondary">{creator.subscribers.toLocaleString()} subscribers</span>
+            <span className="text-caption-1m font-semibold text-theme-primary">
               {creator.requiredINJ === 0 ? "Free" : `${creator.requiredINJ} INJ required`}
             </span>
+            <div className="ml-auto">
+              <SubscribeButton creatorId={creator.id} />
+            </div>
           </div>
         </div>
 

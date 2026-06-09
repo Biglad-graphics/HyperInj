@@ -47,6 +47,8 @@ const CreatorDashboardPage = () => {
   const [activeTab, setActiveTab] = useState<"posts" | "settings" | "ai">("posts");
   const [postTitle, setPostTitle] = useState("");
   const [postContent, setPostContent] = useState("");
+  const [postImageUrl, setPostImageUrl] = useState<string | null>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
   const [requiredINJInput, setRequiredINJInput] = useState("5");
   const [bioInput, setBioInput] = useState("");
   const [nameInput, setNameInput] = useState("");
@@ -146,9 +148,9 @@ const CreatorDashboardPage = () => {
       content: postContent,
       preview: postContent.slice(0, 100) + (postContent.length > 100 ? "…" : ""),
       createdAt: new Date().toISOString().split("T")[0],
+      ...(postImageUrl ? { imageUrl: postImageUrl } : {}),
     };
 
-    // Add to global store — instantly visible on profile/explore/my-access
     addPost(post);
 
     // Ensure the creator entry exists in the store
@@ -166,6 +168,8 @@ const CreatorDashboardPage = () => {
 
     setPostTitle("");
     setPostContent("");
+    setPostImageUrl(null);
+    if (imageInputRef.current) imageInputRef.current.value = "";
   };
 
   const handleDeletePost = (id: string) => {
@@ -252,6 +256,44 @@ const CreatorDashboardPage = () => {
                 value={postContent}
                 onChange={(e) => setPostContent(e.target.value)}
               />
+
+              {/* Image upload */}
+              <div className="space-y-2">
+                <input
+                  ref={imageInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) setPostImageUrl(URL.createObjectURL(file));
+                  }}
+                />
+                {postImageUrl ? (
+                  <div className="relative rounded-xl overflow-hidden border border-theme-stroke">
+                    <img src={postImageUrl} alt="preview" className="w-full max-h-64 object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => { setPostImageUrl(null); if (imageInputRef.current) imageInputRef.current.value = ""; }}
+                      className="absolute top-2 right-2 w-7 h-7 rounded-full bg-theme-n-8/80 flex items-center justify-center hover:bg-theme-n-8 transition-colors"
+                    >
+                      <Icon className="w-3.5 h-3.5 fill-theme-primary" name="close" />
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => imageInputRef.current?.click()}
+                    className="w-full flex items-center justify-center gap-2 h-10 rounded-xl border border-dashed border-theme-stroke text-body-2s text-theme-secondary hover:border-brand-600/50 hover:text-theme-primary transition-all"
+                  >
+                    <svg className="w-4 h-4 shrink-0 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                    </svg>
+                    Add image (optional)
+                  </button>
+                )}
+              </div>
+
               <button
                 className="btn-primary w-full"
                 onClick={handlePublishPost}
@@ -278,6 +320,9 @@ const CreatorDashboardPage = () => {
                         <div className="text-caption-1m text-theme-tertiary mb-1">{post.createdAt}</div>
                         <h4 className="text-base-1s text-theme-primary font-semibold mb-2">{post.title}</h4>
                         <p className="text-body-2s text-theme-secondary line-clamp-3 leading-relaxed">{post.content}</p>
+                        {post.imageUrl && (
+                          <img src={post.imageUrl} alt="" className="mt-3 w-full max-h-48 object-cover rounded-xl" />
+                        )}
                       </div>
                       <button
                         onClick={() => handleDeletePost(post.id)}
