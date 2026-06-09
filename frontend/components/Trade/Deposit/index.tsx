@@ -1,8 +1,5 @@
 import { useState } from "react";
 import CurrencyInput from "react-currency-input-field";
-import { useWallets } from "@privy-io/react-auth";
-import { createWalletClient, custom } from "viem";
-import { arbitrum } from "viem/chains";
 
 type DepositProps = {};
 
@@ -13,63 +10,9 @@ const Deposit = ({}: DepositProps) => {
     const [depositStep, setDepositStep] = useState<"bridge" | "transfer">("bridge");
     const [isTransferring, setIsTransferring] = useState(false);
     const [bridgeCompleted, setBridgeCompleted] = useState(false);
-    const { wallets } = useWallets();
 
     const handleSecondaryTransfer = async () => {
-        if (!amount || parseFloat(amount) <= 0) return;
-
-        try {
-            setIsTransferring(true);
-            const wallet = wallets[0];
-            if (!wallet) {
-                alert("No wallet connected");
-                return;
-            }
-
-            const provider = await wallet.getEthereumProvider();
-            const walletClient = createWalletClient({
-                account: wallet.address as `0x${string}`,
-                chain: arbitrum,
-                transport: custom(provider),
-            });
-
-            // USDC contract address on Arbitrum
-            const USDC_ADDRESS = "0xaf88d065e77c8cC2239327C5EDb3A432268e5831";
-
-            // ERC20 Transfer ABI
-            const transferAbi = [
-                {
-                    name: "transfer",
-                    type: "function",
-                    stateMutability: "nonpayable",
-                    inputs: [
-                        { name: "to", type: "address" },
-                        { name: "amount", type: "uint256" },
-                    ],
-                    outputs: [{ type: "bool" }],
-                },
-            ] as const;
-
-            // Convert amount to proper decimals (USDC has 6 decimals)
-            const amountInWei = BigInt(Math.floor(parseFloat(amount) * 1_000_000));
-
-            const hash = await walletClient.writeContract({
-                address: USDC_ADDRESS,
-                abi: transferAbi,
-                functionName: "transfer",
-                args: [VAULT_ADDRESS, amountInWei],
-            });
-
-            console.log("Transfer transaction hash:", hash);
-            alert(`Transfer successful! Tx: ${hash}`);
-            setAmount("");
-            setDepositStep("bridge");
-        } catch (error) {
-            console.error("Transfer failed:", error);
-            alert("Transfer failed. Please try again.");
-        } finally {
-            setIsTransferring(false);
-        }
+        alert("Deposit functionality is not available in this version.");
     };
 
     return (

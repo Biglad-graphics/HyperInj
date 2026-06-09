@@ -1,8 +1,5 @@
-import type { NextPage } from "next";
-import SignUpPage from "@/templates/SignUpPage";
+import { redirect } from "next/navigation";
 
-const SignUp: NextPage = () => {
-    return <SignUpPage />;
-};
-
-export default SignUp;
+export default function SignUp() {
+  redirect("/sign-in");
+}

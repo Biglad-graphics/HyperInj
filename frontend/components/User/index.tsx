@@ -1,13 +1,13 @@
 import { Menu, MenuButton, MenuItems, Transition } from "@headlessui/react";
 // import { useColorMode } from "@chakra-ui/color-mode";
 import { useColorMode } from "@chakra-ui/react";
-import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Icon from "@/components/Icon";
 import Image from "@/components/Image";
 import Switch from "@/components/Switch";
 import NavLink from "./NavLink";
+import { getUserData, clearUserData } from "../../utils/userStorage";
 
 type UserProps = {
   className?: string;
@@ -16,43 +16,18 @@ type UserProps = {
 const User = ({ className }: UserProps) => {
   const { colorMode, toggleColorMode } = useColorMode();
   const isLightMode = colorMode === "light";
-  const { logout, user } = usePrivy();
   const router = useRouter();
+  const userData = getUserData();
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      router.push("/sign-in");
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
+  const handleLogout = () => {
+    clearUserData();
+    router.push("/sign-in");
   };
 
-  // Function to format wallet address
-  const formatAddress = (address: string) => {
-    if (!address) return "";
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  };
-
-  // Get the wallet address from the user object
   const getWalletAddress = () => {
-    if (!user) return "Not Connected";
-
-    // Check for linked wallets (Ethereum or Solana)
-    const wallet = user.linkedAccounts?.find(
-      (account) => account.type === "wallet"
-    );
-
-    if (wallet && "address" in wallet) {
-      return formatAddress(wallet.address);
-    }
-
-    // Fallback to email or other identifier if no wallet
-    if (user.email?.address) {
-      return user.email.address;
-    }
-
-    return "User";
+    const addr = userData?.walletAddress;
+    if (!addr) return "Not Connected";
+    return `${addr.slice(0, 8)}...${addr.slice(-4)}`;
   };
 
   return (
@@ -91,7 +66,7 @@ const User = ({ className }: UserProps) => {
             <div className="grow pl-4.5">
               <div className="text-title-1s">{getWalletAddress()}</div>
               <div className="text-body-1m text-theme-secondary">
-                {user?.wallet?.walletClientType || "Wallet"}
+                Keplr Wallet
               </div>
             </div>
           </div>

@@ -2,17 +2,17 @@
 
 import Layout from "@/components/Layout";
 import TotalBalance from "./TotalBalance";
-import BestToBuy from "./BestToBuy";
+import InjectiveInsight from "./BestToBuy";
 import AllAssets from "./AllAssets";
 import Summary from "./Summary";
 
 const MyAssetsPage = () => {
     return (
-        <Layout title="Portfolio">
+        <Layout title="Dashboard">
             <div className="space-y-2">
                 <div className="flex lg:block">
                     <TotalBalance />
-                    <BestToBuy />
+                    <InjectiveInsight />
                 </div>
                 <div className="flex lg:block">
                     <AllAssets />

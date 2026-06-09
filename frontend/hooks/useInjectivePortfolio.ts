@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
-import { usePrivy } from "@privy-io/react-auth";
-import { getUserPortfolio, getUserPositions } from "../services/hyperliquidPortfolio.service";
-import { toInjectiveAddress } from "../utils/injectiveAddress";
+import { getUserPortfolio } from "../services/hyperliquidPortfolio.service";
+import { getUserData } from "../utils/userStorage";
 
 export interface PortfolioState {
   totalValue: number;
@@ -11,7 +10,6 @@ export interface PortfolioState {
 }
 
 export const useInjectivePortfolio = (): PortfolioState => {
-  const { authenticated, user } = usePrivy();
   const [state, setState] = useState<PortfolioState>({
     totalValue: 0,
     loading: false,
@@ -20,19 +18,16 @@ export const useInjectivePortfolio = (): PortfolioState => {
   });
 
   useEffect(() => {
-    if (!authenticated || !user) return;
+    const userData = getUserData();
+    if (!userData?.walletAddress) return;
+
+    const injAddress = userData.walletAddress;
 
     const fetchData = async () => {
       setState((s) => ({ ...s, loading: true, error: null }));
       try {
-        const wallet = user.linkedAccounts?.find((a) => a.type === "wallet");
-        if (!wallet || !("address" in wallet)) return;
-
-        const injAddress = toInjectiveAddress(wallet.address as string);
-
         const portfolio = await getUserPortfolio(injAddress);
 
-        // Injective portfolio response shape: portfolio.bankBalances, portfolio.subaccounts
         let totalValue = 0;
         if (portfolio?.bankBalancesList) {
           for (const bal of portfolio.bankBalancesList) {
@@ -56,7 +51,7 @@ export const useInjectivePortfolio = (): PortfolioState => {
     };
 
     fetchData();
-  }, [authenticated, user]);
+  }, []);
 
   return state;
 };

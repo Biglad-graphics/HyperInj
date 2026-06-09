@@ -6,10 +6,18 @@ import Message from "@/components/Message";
 import NewChat from "./NewChat";
 
 const SUGGESTED_PROMPTS = [
-  "Should I buy INJ?",
-  "Best trade today?",
-  "Market trend for BTC?",
-  "Give me the sentiment of ETH",
+  "What is the current trend of INJ?",
+  "What is the sentiment on Injective?",
+  "Any recent activity on Injective?",
+  "What is happening in Injective perps?",
+  "How is Injective staking performing?",
+];
+
+export const AGENTS = [
+  { id: "injective_analyst", label: "Injective Analyst" },
+  { id: "onchain_analyst", label: "On-chain Analyst" },
+  { id: "perp_analyst", label: "Perp Market Analyst" },
+  { id: "news_analyst", label: "News Analyst" },
 ];
 
 type ChatProps = {
@@ -21,6 +29,7 @@ const Chat = ({ children }: ChatProps) => {
   const [triggerMessage, setTriggerMessage] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [hasMessages, setHasMessages] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState(AGENTS[0].id);
 
   const fire = (text: string) => {
     if (!text.trim()) return;
@@ -43,6 +52,23 @@ const Chat = ({ children }: ChatProps) => {
   return (
     <div className="relative flex h-[calc(100svh-8.5rem)] xl:overflow-hidden xl:rounded-2xl md:h-[calc(100svh-11rem)] md:-mb-2">
       <div className="card flex flex-col w-[calc(100%-21.75rem)] 2xl:w-[calc(100%-20.5rem)] xl:w-full">
+        {/* Agent selector */}
+        <div className="flex items-center gap-2 px-1 pb-3 shrink-0 overflow-x-auto">
+          {AGENTS.map((agent) => (
+            <button
+              key={agent.id}
+              onClick={() => setSelectedAgent(agent.id)}
+              className={`px-3 py-1.5 text-sm rounded-full whitespace-nowrap transition-colors border ${
+                selectedAgent === agent.id
+                  ? "bg-theme-brand text-white border-theme-brand"
+                  : "border-theme-stroke text-theme-secondary hover:border-theme-brand hover:text-theme-brand"
+              }`}
+            >
+              {agent.label}
+            </button>
+          ))}
+        </div>
+
         {/* Chat area */}
         <div className="flex grow overflow-auto -mx-6">
           {children ? (
@@ -52,11 +78,12 @@ const Chat = ({ children }: ChatProps) => {
               externalMessage={triggerMessage}
               onMessageSent={handleMessageSent}
               onProcessingChange={setIsProcessing}
+              selectedAgent={selectedAgent}
             />
           )}
         </div>
 
-        {/* Suggested prompts — only before first message */}
+        {/* Suggested prompts */}
         <AnimatePresence>
           {!hasMessages && !isProcessing && (
             <motion.div

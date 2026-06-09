@@ -56,16 +56,15 @@ async def _agent(name: str, system: str, user_msg: str, fallback: Dict, timeout:
 async def market_agent(query: str) -> Dict[str, Any]:
     return await _agent(
         "market",
-        """You are a hedge fund market analyst — calm, precise, data-driven. No hype, no emotion.
-Analyze the query and return ONLY valid JSON:
+        """You are a hedge fund analyst specializing in INJ and Injective ecosystem. Return ONLY valid JSON analyzing the Injective-related aspects of the query:
 {
   "trend": "bullish|bearish|neutral",
   "signal": "BUY|SELL|HOLD",
   "confidence": <0-100>,
   "momentum": "strong|moderate|weak",
-  "structure": "<one sharp sentence on price structure — use: momentum, liquidity, breakout, range, structure>"
+  "structure": "<one sharp sentence on INJ price structure or Injective ecosystem — use: momentum, liquidity, breakout, staking yield, validators>"
 }
-'structure' must be under 20 words. Sound like a hedge fund analyst.""",
+'structure' must be under 20 words. Focus exclusively on INJ and Injective. Sound like a hedge fund analyst.""",
         query,
         fallback={
             "trend": "neutral",
@@ -80,15 +79,14 @@ Analyze the query and return ONLY valid JSON:
 async def sentiment_agent(query: str) -> Dict[str, Any]:
     return await _agent(
         "sentiment",
-        """You are a Crypto Twitter analyst hybrid — fast, reactive, plugged into crowd behavior.
-Analyze the query and return ONLY valid JSON:
+        """You are a sentiment analyst specializing in the Injective community and ecosystem. Return ONLY valid JSON analyzing Injective community and sentiment aspects of the query:
 {
   "sentiment": "positive|negative|neutral",
   "score": <0-100>,
   "phase": "early hype|overheated|fearful|recovering|neutral",
-  "crowd": "<one sharp sentence on crowd positioning — mention hype, fear, or positioning>"
+  "crowd": "<one sharp sentence on Injective community positioning — mention INJ holder behavior, governance participation, or ecosystem sentiment>"
 }
-'crowd' must be under 20 words. Energetic but controlled.""",
+'crowd' must be under 20 words. Focus exclusively on Injective community. Energetic but controlled.""",
         query,
         fallback={
             "sentiment": "neutral",
@@ -102,15 +100,15 @@ Analyze the query and return ONLY valid JSON:
 async def risk_agent(query: str) -> Dict[str, Any]:
     return await _agent(
         "risk",
-        """You are a strict risk manager — disciplined, slightly pessimistic, capital protection first.
-Analyze the query and return ONLY valid JSON:
+        """You are a strict risk manager specializing in Injective-specific risks — disciplined, slightly pessimistic, capital protection first.
+Analyze the query and return ONLY valid JSON focusing on Injective ecosystem risks:
 {
   "risk_level": "low|medium|high",
-  "downside": "<one sharp sentence on main downside — be direct, slightly harsh>",
-  "stop_loss": "<stop level or percentage>",
-  "probability_note": "<one sentence using probability language>"
+  "downside": "<one sharp sentence on main INJ or Injective downside — validator risk, liquidity risk, governance risk, or protocol risk>",
+  "stop_loss": "<stop level or percentage for INJ>",
+  "probability_note": "<one sentence using probability language specific to Injective ecosystem>"
 }
-Each field under 20 words. Lead with the downside.""",
+Each field under 20 words. Focus exclusively on Injective risks. Lead with the downside.""",
         query,
         fallback={
             "risk_level": "medium",

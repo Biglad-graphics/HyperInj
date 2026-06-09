@@ -1,174 +1,101 @@
-import { useState } from "react";
-import { AreaChart, Area, ResponsiveContainer } from "recharts";
-import { useRouter } from "next/navigation";
+"use client";
+
+import { useState, useEffect } from "react";
 import Card from "@/components/Card";
 import Icon from "@/components/Icon";
-import CurrencyFormat from "@/components/CurrencyFormat";
-import Image from "@/components/Image";
-import Percent from "@/components/Percent";
-import Modal from "@/components/Modal";
-import SetAlert from "@/components/SetAlert";
-import Switch from "@/components/Switch";
-import Tooltip from "@/components/Tooltip";
 
-import { chartBestToBuy } from "@/mocks/charts";
-
-type BestToBuyProps = {};
-
-const BestToBuy = ({}: BestToBuyProps) => {
-    const router = useRouter();
-    const [visibleModal, setVisibleModal] = useState(false);
-    const [smartTradeEnabled, setSmartTradeEnabled] = useState(false);
-
-    return (
-        <>
-            <Card
-                className="card-sidebar"
-                title="Best to buy"
-                rightContent={
-                    <button className="group w-9 h-9 border-2 border-theme-stroke rounded-xl text-0 transition-colors hover:bg-theme-stroke">
-                        <Icon
-                            className="!w-5 !h-5 fill-theme-secondary transition-colors group-hover:fill-theme-primary"
-                            name="refresh"
-                        />
-                    </button>
-                }
-            >
-                <div className="pt-6">
-                    <CurrencyFormat
-                        className="mb-3 text-h3"
-                        value={3980.80} // TODO: Price Update ETH
-                        currency="$"
-                    />
-                    <div className="flex items-center">
-                        <div className="mr-2">
-                            <Image
-                                className="w-6"
-                                src="/images/eth-gray.svg"
-                                width={24}
-                                height={24}
-                                alt=""
-                            />
-                        </div>
-                        <div className="text-base-1s">
-                            Ethereum{" "}
-                            <span className="text-theme-tertiary">ETH</span>
-                        </div>
-                        <Percent className="ml-2 text-base-2" value={2.73} />
-                    </div>
-                    <div className="h-38 my-2 -mx-6 md:-mx-4">
-                        <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart
-                                width={730}
-                                height={250}
-                                data={chartBestToBuy}
-                                margin={{
-                                    top: 0,
-                                    right: 0,
-                                    left: 0,
-                                    bottom: 0,
-                                }}
-                            >
-                                <defs>
-                                    <linearGradient
-                                        id="color"
-                                        x1="0"
-                                        y1="0"
-                                        x2="0"
-                                        y2="1"
-                                    >
-                                        <stop
-                                            offset="5%"
-                                            stopColor="#32AE60"
-                                            stopOpacity={0.15}
-                                        />
-                                        <stop
-                                            offset="95%"
-                                            stopColor="#32AE60"
-                                            stopOpacity={0}
-                                        />
-                                    </linearGradient>
-                                </defs>
-                                <Area
-                                    type="linear"
-                                    dataKey="price"
-                                    stroke="#32AE60"
-                                    strokeWidth={2}
-                                    fillOpacity={1}
-                                    fill="url(#color)"
-                                />
-                            </AreaChart>
-                        </ResponsiveContainer>
-                    </div>
-                    <div className="flex items-center mb-8 text-caption-1 text-theme-secondary md:mb-6">
-                        <div className="mr-3">
-                            <Image
-                                className="w-6"
-                                src="/images/logo-1.svg"
-                                width={24}
-                                height={24}
-                                alt=""
-                            />
-                        </div>
-                        Method: LSTM, Accuracy: 87%
-                    </div>
-                    <div className="space-y-3">
-                        <div className="flex items-center justify-between p-3 bg-theme-on-surface-1 rounded-xl border border-theme-stroke">
-                            <div className="flex items-center">
-                                <Icon
-                                    className="w-5 h-5 mr-2 fill-theme-secondary"
-                                    name="eye"
-                                />
-                                <span className="text-base-1s text-theme-primary">
-                                    Smart Trade
-                                </span>
-                                <Tooltip
-                                    title={
-                                        smartTradeEnabled
-                                            ? "Trades will be placed autonomously without confirmation"
-                                            : "You will need to confirm trades before they are placed"
-                                    }
-                                />
-                            </div>
-                            <Switch
-                                value={smartTradeEnabled}
-                                setValue={setSmartTradeEnabled}
-                                small
-                            />
-                        </div>
-                        <div className="flex space-x-2">
-                            <button
-                                className={`flex-1 px-2 ${
-                                    smartTradeEnabled
-                                        ? "btn-secondary"
-                                        : "btn-gray"
-                                }`}
-                                onClick={() => router.push("/trade")}
-                            >
-                                Go to Trade
-                            </button>
-                            <button
-                                className="btn-gray flex-1 px-2"
-                                onClick={() => setVisibleModal(true)}
-                            >
-                                Set Alert
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </Card>
-            <Modal
-                classWrap="max-w-[28.5rem] rounded-3xl"
-                showButtonClose
-                visible={visibleModal}
-                onClose={() => setVisibleModal(false)}
-            >
-                <>
-                    <SetAlert />
-                </>
-            </Modal>
-        </>
-    );
+const RISK_COLORS: Record<string, string> = {
+  low: "text-theme-green bg-theme-green/10",
+  medium: "text-theme-yellow bg-theme-yellow/10",
+  high: "text-theme-red bg-theme-red/10",
 };
 
-export default BestToBuy;
+const FALLBACK_INSIGHTS = [
+  {
+    insight:
+      "INJ staking yield remains competitive among Cosmos chains, with validators offering 12–15% APR as network activity picks up.",
+    risk: "low",
+  },
+  {
+    insight:
+      "Injective perp markets show elevated open interest on INJ/USDT — funding rates suggest moderately bullish positioning.",
+    risk: "medium",
+  },
+  {
+    insight:
+      "Governance activity on Injective has increased; several proposals around fee burn mechanics could tighten INJ supply.",
+    risk: "low",
+  },
+  {
+    insight:
+      "On-chain data shows accumulation near key support zones. Watch for validator delegation shifts as a leading signal.",
+    risk: "medium",
+  },
+];
+
+const InjectiveInsight = () => {
+  const [insight, setInsight] = useState<{ insight: string; risk: string } | null>(null);
+
+  useEffect(() => {
+    const pick = FALLBACK_INSIGHTS[Math.floor(Math.random() * FALLBACK_INSIGHTS.length)];
+    setInsight(pick);
+  }, []);
+
+  const riskClass = insight ? (RISK_COLORS[insight.risk] ?? RISK_COLORS.medium) : "";
+
+  return (
+    <Card
+      className="card-sidebar"
+      title="Injective Insight of the Day"
+      rightContent={
+        <button
+          className="group w-9 h-9 border-2 border-theme-stroke rounded-xl text-0 transition-colors hover:bg-theme-stroke"
+          onClick={() => {
+            const pick = FALLBACK_INSIGHTS[Math.floor(Math.random() * FALLBACK_INSIGHTS.length)];
+            setInsight(pick);
+          }}
+        >
+          <Icon
+            className="!w-5 !h-5 fill-theme-secondary transition-colors group-hover:fill-theme-primary"
+            name="refresh"
+          />
+        </button>
+      }
+    >
+      <div className="pt-4 space-y-4">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-brand-600/10 flex items-center justify-center shrink-0">
+            <Icon className="w-4 h-4 fill-theme-brand" name="star-plus" />
+          </div>
+          <span className="text-caption-1m text-theme-secondary uppercase tracking-wide">
+            AI-Generated · Injective Ecosystem
+          </span>
+        </div>
+
+        {insight ? (
+          <>
+            <p className="text-body-1m text-theme-primary leading-relaxed">
+              {insight.insight}
+            </p>
+            <div className="flex items-center justify-between pt-2 border-t border-theme-stroke">
+              <span className="text-caption-1m text-theme-tertiary">Risk Level</span>
+              <span
+                className={`text-caption-1m font-semibold px-3 py-1 rounded-full capitalize ${riskClass}`}
+              >
+                {insight.risk}
+              </span>
+            </div>
+          </>
+        ) : (
+          <div className="space-y-2 animate-pulse">
+            <div className="h-4 bg-theme-stroke rounded w-full" />
+            <div className="h-4 bg-theme-stroke rounded w-5/6" />
+            <div className="h-4 bg-theme-stroke rounded w-4/6" />
+          </div>
+        )}
+      </div>
+    </Card>
+  );
+};
+
+export default InjectiveInsight;

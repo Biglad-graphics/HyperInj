@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import { usePrivy } from "@privy-io/react-auth";
 import Icon from "@/components/Icon";
 import { getUserTradeHistory } from "../../services/hyperliquidPortfolio.service";
+import { getUserData } from "../../utils/userStorage";
 
 type TradeHistoryItem = {
   coin: string;
@@ -18,18 +18,17 @@ const TradeHistory = () => {
   const [trades, setTrades] = useState<TradeHistoryItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const { authenticated, user } = usePrivy();
+  const userData = getUserData();
+  const walletAddress = userData?.walletAddress ?? null;
 
   const ITEMS_PER_PAGE = 10;
 
   const fetchTradeHistory = useCallback(async () => {
-    if (!authenticated || !user) return;
-    const wallet = user.linkedAccounts?.find((a) => a.type === "wallet");
-    if (!wallet || !("address" in wallet)) return;
+    if (!walletAddress) return;
 
     try {
       setLoading(true);
-      const { spotTrades, derivativeTrades } = await getUserTradeHistory(wallet.address);
+      const { spotTrades, derivativeTrades } = await getUserTradeHistory(walletAddress);
 
       const normalized: TradeHistoryItem[] = [
         ...((spotTrades?.trades ?? []).map((t: any) => ({
@@ -61,7 +60,7 @@ const TradeHistory = () => {
     } finally {
       setLoading(false);
     }
-  }, [authenticated, user]);
+  }, [walletAddress]);
 
   useEffect(() => {
     fetchTradeHistory();
@@ -96,11 +95,11 @@ const TradeHistory = () => {
     );
   }
 
-  if (!authenticated || trades.length === 0) {
+  if (!walletAddress || trades.length === 0) {
     return (
       <div className="flex justify-center items-center py-8">
         <div className="text-base-1 text-theme-secondary">
-          {!authenticated ? "Please connect your wallet to view trade history" : "No trades found"}
+          {!walletAddress ? "Please connect your wallet to view trade history" : "No trades found"}
         </div>
       </div>
     );
