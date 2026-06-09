@@ -7,7 +7,7 @@ import Link from "next/link";
 import Icon from "@/components/Icon";
 import User from "@/components/User";
 import Image from "@/components/Image";
-import { useWallet } from "../../contexts/WalletContext";
+import WalletButton from "@/components/WalletButton";
 
 type HeaderProps = {
     title: string;
@@ -19,11 +19,6 @@ type HeaderProps = {
 const Header = ({ title, visible, showMenu, onClickBurger }: HeaderProps) => {
     const router = useRouter();
     const { colorMode } = useColorMode();
-    const { address, injBalance, isConnected, connect, connecting } = useWallet();
-
-    const shortAddress = address
-        ? `${address.slice(0, 8)}…${address.slice(-4)}`
-        : null;
 
     return (
         <div
@@ -67,22 +62,7 @@ const Header = ({ title, visible, showMenu, onClickBurger }: HeaderProps) => {
                 </button>
 
                 <div className="flex items-center ml-auto gap-4">
-                    {/* Wallet pill */}
-                    {isConnected ? (
-                        <div className="hidden md:hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-theme-on-surface-1 border border-theme-stroke text-sm">
-                            <div className="w-2 h-2 rounded-full bg-theme-green" />
-                            <span className="text-theme-secondary font-mono text-xs">{shortAddress}</span>
-                            <span className="text-theme-primary font-semibold">{injBalance.toFixed(2)} INJ</span>
-                        </div>
-                    ) : (
-                        <button
-                            className="btn-primary md:hidden"
-                            onClick={connect}
-                            disabled={connecting}
-                        >
-                            {connecting ? "Connecting…" : "Connect Keplr"}
-                        </button>
-                    )}
+                    <WalletButton className="md:hidden" />
 
                     <button
                         className={`hidden rounded-full transition-shadow md:block ${

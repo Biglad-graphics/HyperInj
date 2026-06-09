@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Layout from "@/components/Layout";
 import Icon from "@/components/Icon";
-import { useWallet } from "../../contexts/WalletContext";
+import { useWalletCompat as useWallet } from "../../contexts/WalletContext";
 
 interface LocalPost {
   id: string;

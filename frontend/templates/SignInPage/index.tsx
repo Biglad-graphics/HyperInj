@@ -1,20 +1,18 @@
 "use client";
 
 import { useEffect } from "react";
+import { useColorMode } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useWallet } from "../../contexts/WalletContext";
+import { useWalletCompat as useWallet } from "../../contexts/WalletContext";
 import Login from "@/components/Login";
 
-declare global {
-  interface Window { keplr?: any; getOfflineSigner?: any; }
-}
-
 const SignInPage = () => {
-  const { isConnected, isInstalled, connecting, error, connect } = useWallet();
+  const { colorMode } = useColorMode();
   const router = useRouter();
+  const { isConnected, isInstalled, connecting, error, connect } = useWallet();
 
   useEffect(() => {
-    if (isConnected) router.replace("/explore");
+    if (isConnected) router.push("/explore");
   }, [isConnected, router]);
 
   return (
@@ -22,57 +20,73 @@ const SignInPage = () => {
       <div className="mb-8 space-y-6">
         <div className="space-y-2">
           <h1 className="text-2xl font-bold text-base-2 leading-tight">
-            Token-Gated Content on{" "}
-            <span className="text-brand-600">Injective</span>
+            Token-Gated Creator Platform{" "}
+            <span className="text-yellow-200">on Injective</span>
           </h1>
-          <p className="text-sm text-base-2/60 leading-relaxed">
-            Connect your Keplr wallet. Your INJ balance determines which creators you can access.
-          </p>
         </div>
 
-        <div className="space-y-2.5">
-          {[
-            { title: "Gate content with INJ", desc: "Creators set an INJ requirement. Fans unlock access by holding tokens." },
-            { title: "On-chain access control", desc: "Your wallet balance is checked in real time via Injective mainnet." },
-            { title: "No keys, no custody", desc: "Read-only balance check — your funds stay safe at all times." },
-          ].map((f) => (
-            <div key={f.title} className="flex items-start gap-3 p-4 rounded-xl border border-theme-stroke bg-theme-on-surface-1">
-              <div className="flex-shrink-0 w-2 h-2 rounded-full bg-brand-600 mt-1.5" />
-              <div>
-                <h3 className="font-semibold text-sm text-base-2 mb-0.5">{f.title}</h3>
-                <p className="text-xs text-base-2/60 leading-relaxed">{f.desc}</p>
-              </div>
+        <div className="space-y-3">
+          <div className="flex items-start gap-4 p-4 rounded-xl border border-theme-stroke bg-theme-on-surface-1">
+            <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-brand-600/10">
+              <svg className="w-5 h-5 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
             </div>
-          ))}
+            <div>
+              <h3 className="font-semibold text-base text-base-2 mb-1">Token-Gated Access</h3>
+              <p className="text-sm text-base-2/70">Hold INJ to unlock exclusive creator content</p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-4 p-4 rounded-xl border border-theme-stroke bg-theme-on-surface-1">
+            <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-brand-600/10">
+              <svg className="w-5 h-5 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-semibold text-base text-base-2 mb-1">Creator Tools</h3>
+              <p className="text-sm text-base-2/70">Publish posts, set access tiers, and grow your audience</p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-4 p-4 rounded-xl border border-theme-stroke bg-theme-on-surface-1">
+            <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-brand-600/10">
+              <svg className="w-5 h-5 text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div>
+              <h3 className="font-semibold text-base text-base-2 mb-1">AI Assistant</h3>
+              <p className="text-sm text-base-2/70">AI-powered content suggestions and on-chain analysis</p>
+            </div>
+          </div>
         </div>
-
-        <p className="text-xs text-base-2/40 text-center">
-          No trading · No financial advice · Read-only wallet access
-        </p>
       </div>
 
-      <div className="space-y-3">
-        {!isInstalled ? (
-          <a
-            href="https://www.keplr.app/download"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary w-full rounded-xl h-14 text-base font-semibold flex items-center justify-center"
-          >
-            Install Keplr Extension
-          </a>
-        ) : (
-          <button
-            className="btn-primary w-full rounded-xl h-14 text-base font-semibold flex items-center justify-center gap-2"
-            onClick={connect}
-            disabled={connecting}
-            type="button"
-          >
-            {connecting ? "Connecting…" : "Connect Keplr Wallet"}
-          </button>
-        )}
-        {error && <p className="text-sm text-theme-red text-center">{error}</p>}
-      </div>
+      {!isInstalled ? (
+        <a
+          href="https://www.keplr.app/download"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-secondary w-full rounded-xl h-14 text-base font-semibold flex items-center justify-center gap-2"
+        >
+          Install Keplr Wallet
+        </a>
+      ) : (
+        <button
+          className="btn-primary w-full rounded-xl h-14 text-base font-semibold"
+          onClick={connect}
+          disabled={connecting}
+          type="button"
+        >
+          {connecting ? "Connecting…" : "Connect Keplr Wallet"}
+        </button>
+      )}
+
+      {error && (
+        <p className="mt-3 text-sm text-center text-red-400">{error}</p>
+      )}
     </Login>
   );
 };

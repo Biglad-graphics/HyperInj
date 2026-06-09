@@ -1,13 +1,11 @@
 import { Menu, MenuButton, MenuItems, Transition } from "@headlessui/react";
-// import { useColorMode } from "@chakra-ui/color-mode";
 import { useColorMode } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import Icon from "@/components/Icon";
 import Image from "@/components/Image";
 import Switch from "@/components/Switch";
 import NavLink from "./NavLink";
-import { useWallet } from "../../contexts/WalletContext";
+import { useWalletCompat as useWallet } from "../../contexts/WalletContext";
 
 type UserProps = {
   className?: string;
@@ -19,14 +17,14 @@ const User = ({ className }: UserProps) => {
   const router = useRouter();
   const { address, injBalance, disconnect, isConnected } = useWallet();
 
+  const shortAddress = address
+    ? `${address.slice(0, 6)}…${address.slice(-4)}`
+    : "Not connected";
+
   const handleLogout = () => {
     disconnect();
     router.push("/sign-in");
   };
-
-  const shortAddress = address
-    ? `${address.slice(0, 8)}...${address.slice(-4)}`
-    : "Not Connected";
 
   return (
     <Menu className={`relative ${className || ""}`} as="div">
@@ -62,18 +60,15 @@ const User = ({ className }: UserProps) => {
               />
             </div>
             <div className="grow pl-4.5">
-              <div className="text-title-1s font-mono text-sm">{shortAddress}</div>
+              <div className="font-mono text-title-1s">{shortAddress}</div>
               {isConnected && (
                 <div className="text-body-1m text-theme-secondary">
                   {injBalance.toFixed(4)} INJ
                 </div>
               )}
-              <div className="text-caption-1m text-theme-tertiary">Keplr · Injective</div>
             </div>
           </div>
           <div className="mb-2 space-y-1">
-            {/* <NavLink title="Settings" icon="settings" url="/settings" /> */}
-            {/* <NavLink title="Contact support" icon="support" url="/support" /> */}
             <div className="group flex items-center h-12 px-4 rounded-xl transition-colors hover:bg-theme-on-surface-2">
               <Icon
                 className="shrink-0 mr-4 fill-theme-secondary transition-colors group-hover:fill-theme-primary"
@@ -89,7 +84,6 @@ const User = ({ className }: UserProps) => {
                 theme
               />
             </div>
-            {/* <NavLink title="News" icon="news" url="/news" /> */}
           </div>
           <button
             onClick={handleLogout}
@@ -100,7 +94,7 @@ const User = ({ className }: UserProps) => {
               name="logout"
             />
             <div className="text-base-1s text-theme-secondary transition-colors group-hover:text-theme-primary">
-              Log out
+              {isConnected ? "Disconnect" : "Log out"}
             </div>
           </button>
         </MenuItems>

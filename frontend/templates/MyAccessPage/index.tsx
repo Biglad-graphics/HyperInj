@@ -4,7 +4,7 @@ import Link from "next/link";
 import Layout from "@/components/Layout";
 import Icon from "@/components/Icon";
 import { CREATORS } from "../../mocks/creators";
-import { useWallet } from "../../contexts/WalletContext";
+import { useWalletCompat as useWallet } from "../../contexts/WalletContext";
 
 const CATEGORY_COLORS: Record<string, string> = {
   Research: "bg-brand-600/10 text-brand-600",

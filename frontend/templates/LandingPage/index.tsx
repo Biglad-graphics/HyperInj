@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useWallet } from "../../contexts/WalletContext";
+import { useWalletCompat as useWallet } from "../../contexts/WalletContext";
 import { CREATORS } from "../../mocks/creators";
 
 const CATEGORY_COLORS: Record<string, string> = {
