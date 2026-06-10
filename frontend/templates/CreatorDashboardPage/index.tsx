@@ -456,7 +456,17 @@ const CreatorDashboardPage = () => {
                         : "bg-theme-on-surface border border-theme-stroke text-theme-primary"
                     }`}
                   >
-                    {msg.text}
+                    {msg.role === "user" ? (
+                      msg.text
+                    ) : (
+                      <div className="space-y-3">
+                        {msg.text.split(/\n\n+/).filter(Boolean).map((para, i) => (
+                          <p key={i} className="leading-relaxed">
+                            {para.trim()}
+                          </p>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
