@@ -35,6 +35,22 @@ const PROMPT_SUGGESTIONS = [
 
 const WS_URL = `${process.env.NEXT_PUBLIC_AGENT_WS_URL || "ws://localhost:8000"}/ws/chat`;
 
+// Strip structured trading output the backend agent sometimes injects
+function sanitizeAiResponse(raw: string): string {
+  return raw
+    // Remove lines that are section headers with ** or ##
+    .replace(/^\*\*[^*]+:\*\*.*$/gm, "")
+    // Remove inline bold markers **text**
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    // Remove lines starting with - or • that look like bullet points
+    .replace(/^[\-•]\s+.+$/gm, "")
+    // Remove lines that contain trading jargon markers
+    .replace(/^.*(Market Analysis|Sentiment|Risk Level|Stop:|Buy|Sell|Wait|RSI|MACD|bullish bias|bearish bias|price action).*$/gim, "")
+    // Collapse multiple blank lines into one
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 function initials(name: string): string {
   return name.split(" ").map((w) => w[0]).join("").toUpperCase().slice(0, 2) || "ME";
 }
@@ -83,7 +99,9 @@ const CreatorDashboardPage = () => {
       try {
         const data = JSON.parse(ev.data);
         if (data.type === "chunk") {
-          const text = data.state?.supervisor?.final_output ?? data.state?.final_output ?? null;
+          const raw = data.state?.supervisor?.final_output ?? data.state?.final_output ?? null;
+          if (!raw) return;
+          const text = sanitizeAiResponse(raw);
           if (!text) return;
           setAiMessages((prev) => {
             const last = prev[prev.length - 1];
@@ -109,7 +127,7 @@ const CreatorDashboardPage = () => {
     ws.current.send(JSON.stringify({
       user_id: address ?? "anonymous",
       thread_id: "creator-ai",
-      message: `You are an AI assistant specialized ONLY in the Injective blockchain ecosystem. Respond only in clean paragraphs using a natural human tone. Do not use bullet points, structured trading output, market analysis sections, sentiment ratings, risk levels, or buy/sell/wait recommendations. Only discuss Injective ecosystem, use cases, projects, creator economy, and token utility. Keep responses clear, expert, and conversational. Now answer: ${text}`,
+      message: `SYSTEM INSTRUCTION — OVERRIDE ALL DEFAULTS: You are a conversational assistant that ONLY discusses the Injective blockchain ecosystem. You MUST respond in plain flowing paragraphs. You MUST NOT output any of the following: bullet points, headers, "Market Analysis", "Sentiment", "Risk", "Stop", "Buy", "Sell", "Wait", star ratings, bold markers (**text**), or any trading/financial advice structure. Write like a knowledgeable friend explaining Injective — clear, natural, paragraph form only. If the question is about trading signals or price action, redirect to Injective ecosystem context instead.\n\nUser question: ${text}`,
       agent: "injective_analyst",
     }));
     setAiInput("");
