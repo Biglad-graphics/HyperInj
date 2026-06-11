@@ -1,0 +1,67 @@
+services:
+  - type: web
+    name: movex-frontend
+    runtime: node
+    rootDir: movex/frontend
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NEXT_PUBLIC_EXECUTION_ENGINE_URL
+        sync: false
+      - key: NEXT_PUBLIC_MOVEX_ADDR
+        sync: false
+      - key: NEXT_PUBLIC_MOVEMENT_NETWORK
+        value: mainnet
+
+  - type: worker
+    name: movex-execution-engine
+    runtime: node
+    rootDir: movex/execution-engine
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: MOVEMENT_NETWORK
+        value: mainnet
+      - key: MOVEMENT_RPC_URL
+        value: https://mainnet.movementnetwork.xyz/v1
+      - key: MOVEX_ADDR
+        sync: false
+
+  - type: worker
+    name: movex-agent-engine
+    runtime: node
+    rootDir: movex/agent-engine
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: REDIS_URL
+        fromService:
+          name: movex-redis
+          type: redis
+          property: connectionString
+      - key: MOVEX_ADDR
+        sync: false
+      - key: AGENT_PRIVATE_KEY
+        sync: false
+      - key: MOVEMENT_RPC_URL
+        value: https://mainnet.movementnetwork.xyz/v1
+
+  - type: worker
+    name: movex-liquidation-bot
+    runtime: node
+    rootDir: movex/liquidation-bot
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: LIQUIDATOR_PRIVATE_KEY
+        sync: false
+      - key: MOVEX_ADDR
+        sync: false
+      - key: MOVEMENT_RPC_URL
+        value: https://mainnet.movementnetwork.xyz/v1
+
+  - type: redis
+    name: movex-redis
+    ipAllowList: []
