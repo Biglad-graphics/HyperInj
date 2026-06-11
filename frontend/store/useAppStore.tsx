@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useReducer, useEffect, ReactNode } from "react";
 import { CREATORS } from "../mocks/creators";
+import { apiGetPosts, ApiPost } from "../services/postsApi";
 
 // ── Types ──────────────────────────────────────────────────────────────────
 export interface StorePost {
@@ -43,7 +44,8 @@ type Action =
   | { type: "UPSERT_CREATOR"; creator: StoreCreator }
   | { type: "ADD_SUBSCRIPTION"; sub: Subscription }
   | { type: "REMOVE_SUBSCRIPTION"; walletAddress: string; creatorId: string }
-  | { type: "HYDRATE"; state: AppState };
+  | { type: "HYDRATE"; state: AppState }
+  | { type: "MERGE_API_POSTS"; posts: StorePost[] };
 
 // ── Seed data from mocks ───────────────────────────────────────────────────
 const SEED_CREATORS: StoreCreator[] = CREATORS.map(({ posts: _p, ...c }) => c);
@@ -116,6 +118,13 @@ function reducer(state: AppState, action: Action): AppState {
       };
     case "HYDRATE":
       return action.state;
+    case "MERGE_API_POSTS": {
+      // Keep seed posts, replace/add any posts that came from the API
+      const seedIds = new Set(SEED_POSTS.map((p) => p.id));
+      const apiIds = new Set(action.posts.map((p: StorePost) => p.id));
+      const localOnly = state.posts.filter((p) => seedIds.has(p.id) || !apiIds.has(p.id));
+      return { ...state, posts: [...localOnly, ...action.posts] };
+    }
     default:
       return state;
   }
@@ -151,6 +160,22 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
   }, [state]);
+
+  useEffect(() => {
+    apiGetPosts().then((apiPosts: ApiPost[]) => {
+      if (apiPosts.length === 0) return;
+      const storePosts: StorePost[] = apiPosts.map((p) => ({
+        id: p.id,
+        creatorId: p.creatorId,
+        title: p.title,
+        content: p.content,
+        preview: p.preview,
+        createdAt: p.createdAt,
+        imageUrl: p.imageUrl,
+      }));
+      dispatch({ type: "MERGE_API_POSTS", posts: storePosts });
+    }).catch(() => {});
+  }, []);
 
   const store: AppStore = {
     creators: state.creators,

@@ -4,6 +4,7 @@ import asyncio
 from .config import settings
 from .api.ws_routes import router as ws_router
 from .api.user_routes import router as user_router
+from .api.post_routes import router as post_router
 from .models.db_models import init_db
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -33,6 +34,7 @@ def create_app() -> FastAPI:
     )
     app.include_router(ws_router)  # WebSocket routes don't need prefix
     app.include_router(user_router)
+    app.include_router(post_router)
     return app
 
 app = create_app()

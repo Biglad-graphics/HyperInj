@@ -5,6 +5,7 @@ import Layout from "@/components/Layout";
 import Icon from "@/components/Icon";
 import { useWalletCompat as useWallet } from "../../contexts/WalletContext";
 import { useAppStore, StorePost } from "../../store/useAppStore";
+import { apiCreatePost, apiDeletePost, apiUpsertCreator } from "../../services/postsApi";
 
 interface CreatorSettings {
   requiredINJ: number;
@@ -153,26 +154,23 @@ const CreatorDashboardPage = () => {
       subscribers: 0,
     });
 
+    // Persist to backend
+    apiUpsertCreator({
+      walletAddress: address,
+      displayName: nameInput || undefined,
+      bio: bioInput || undefined,
+      requiredInj: String(reqINJ),
+      category: "Creator",
+    }).catch(() => {});
+
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
 
-  const handlePublishPost = () => {
+  const handlePublishPost = async () => {
     if (!address || !postTitle.trim() || !postContent.trim()) return;
-    const post: StorePost = {
-      id: Date.now().toString(),
-      creatorId: address,
-      title: postTitle,
-      content: postContent,
-      preview: postContent.slice(0, 100) + (postContent.length > 100 ? "…" : ""),
-      createdAt: new Date().toISOString().split("T")[0],
-      ...(postImageUrl ? { imageUrl: postImageUrl } : {}),
-    };
-
-    addPost(post);
-
-    // Ensure the creator entry exists in the store
-    upsertCreator({
+    const preview = postContent.slice(0, 100) + (postContent.length > 100 ? "…" : "");
+    const creatorPayload = {
       id: address,
       name: settings.displayName || `${address.slice(0, 6)}…${address.slice(-4)}`,
       handle: `@${address.slice(0, 8)}`,
@@ -182,7 +180,32 @@ const CreatorDashboardPage = () => {
       avatarColor: "bg-brand-600",
       initials: settings.displayName ? initials(settings.displayName) : "ME",
       subscribers: 0,
-    });
+    };
+
+    try {
+      const saved = await apiCreatePost({
+        id: Date.now().toString(),
+        creatorId: address,
+        title: postTitle,
+        content: postContent,
+        preview,
+        ...(postImageUrl ? { imageUrl: postImageUrl } : {}),
+      });
+      addPost({ ...saved });
+      upsertCreator(creatorPayload);
+    } catch {
+      // fallback: save locally only
+      addPost({
+        id: Date.now().toString(),
+        creatorId: address,
+        title: postTitle,
+        content: postContent,
+        preview,
+        createdAt: new Date().toISOString().split("T")[0],
+        ...(postImageUrl ? { imageUrl: postImageUrl } : {}),
+      });
+      upsertCreator(creatorPayload);
+    }
 
     setPostTitle("");
     setPostContent("");
@@ -192,6 +215,7 @@ const CreatorDashboardPage = () => {
 
   const handleDeletePost = (id: string) => {
     deletePost(id);
+    apiDeletePost(id).catch(() => {});
   };
 
   if (!isConnected) {
